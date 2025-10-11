@@ -1,0 +1,47 @@
+---
+title: Friend
+---
+在C++中，`friend` 是一个关键字，用于声明一个函数或类为另一个类的友元。**友元函数或友元类可以访问另一个类的私有成员和受保护成员，即使这些成员在普通情况下是不可访问的。** 这种机制打破了类的封装性，允许指定的函数或类访问类的私有部分，从而实现更灵活的设计。
+
+### 使用情况： \[#使用情况]
+
+1. **友元函数**：声明一个非成员函数为类的友元函数，使得该函数能够访问类的私有成员和受保护成员。
+
+```cpp
+class MyClass {
+private:
+    int privateMember;
+
+    friend void friendFunction(MyClass); // 友元函数声明
+};
+
+void friendFunction(MyClass obj) {
+    obj.privateMember = 10; // 可以访问私有成员 privateMember
+}
+```
+
+2. **友元类**：声明一个类为另一个类的友元，使得友元类的所有成员函数都能够访问被声明为友元的类的私有成员和受保护成员。
+
+```cpp
+class MyClass {
+private:
+    int privateMember;
+
+    friend class FriendClass; // 友元类声明
+};
+
+class FriendClass {
+public:
+    void modifyPrivateMember(MyClass& obj) {
+        obj.privateMember = 10; // 可以访问私有成员 privateMember
+    }
+};
+```
+
+### 注意事项： \[#注意事项]
+
+* 友元关系是单向的。如果类 A 声明类 B 为友元，则类 B 的成员函数可以访问类 A 的私有成员，但并不意味着类 A 的成员函数可以访问类 B 的私有成员。
+
+* 友元关系破坏了类的封装性，因此应该慎重使用。通常，友元关系被用于提高效率或简化设计，在某些特定的情况下是合理的选择。
+
+* 尽量避免滥用友元关系，因为它会降低代码的可维护性和可理解性，违背了面向对象设计的原则。

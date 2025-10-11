@@ -1,0 +1,561 @@
+---
+title: Lua 入门基础
+---
+### 变量和数据类型 \[#变量和数据类型]
+
+在 C++ 里，我们定义变量时通常会明确指定它的类型，比如 `int age = 30;` 或者 `std::string name = "Alice";`。这在编译的时候就会确定下来。
+
+而在 Lua 里，情况有点不一样。Lua 是一种**动态类型语言**。这意味着你**不需要**在定义变量的时候就指定它的类型。变量的类型是根据它里面存储的值来决定的，而且可以在程序运行过程中改变。
+
+比如：
+
+```lua
+-- 这是一个 Lua 变量
+myVariable = 10
+print(type(myVariable)) -- 输出: number
+
+myVariable = "Hello Lua!"
+print(type(myVariable)) -- 输出: string
+
+myVariable = true
+print(type(myVariable)) -- 输出: boolean
+```
+
+看到没？同一个 `myVariable` 变量，我可以先给它一个数字，再给它一个字符串，最后又给它一个布尔值，而且 Lua 会自动识别并改变它的类型。
+
+***
+
+#### Lua 有哪些基本数据类型呢？ \[#lua-有哪些基本数据类型呢]
+
+Lua 的基本数据类型不多，但都很实用：
+
+* **nil**: 表示“空”或者“没有值”。如果你声明了一个变量但没给它赋值，它的默认值就是 `nil`。
+
+* **boolean**: 只有 `true` 和 `false` 两个值。
+
+* **number**: 默认是双精度浮点数，可以表示整数和小数。
+
+* **string**: 字符串，可以用单引号 `' '` 或双引号 `" "` 包裹。
+
+* **table**: **这个是 Lua 的核心！** 它是一种非常灵活的数据结构，可以当作数组、哈希表、字典来用。我们后面会详细聊它。
+
+* **function**: 函数也是一种数据类型，可以像变量一样被传递和存储。
+
+* **userdata**: 允许你存储任意的 C/C++ 数据，是 C++ 和 Lua 交互的关键。
+
+* **thread**: 用于协程（coroutine）。
+
+分析得非常到位，完全抓住了重点！
+
+***
+
+### Lua 的 `nil` 和布尔类型 \[#lua-的-nil-和布尔类型]
+
+既然你已经理解了变量和类型的基础，我们再来看看两个特别的类型：`nil` 和 **boolean**。
+
+#### `nil` 类型 \[#nil-类型]
+
+前面提到了，`nil` 表示“空”或者“没有值”。在 Lua 中：
+
+* 任何你没有赋值的变量，它的值就是 `nil`。
+
+* 当你把一个变量的值设置为 `nil`，就相当于删除了这个变量。
+
+```lua
+local my_var -- 声明但未赋值，my_var 就是 nil
+print(my_var) -- 输出 nil
+
+my_var = 123
+print(my_var) -- 输出 123
+
+my_var = nil -- 将 my_var 设置为 nil，相当于删除了它
+print(my_var) -- 输出 nil
+```
+
+#### **boolean** 类型 \[#boolean-类型]
+
+布尔类型只有两个值：`true` 和 `false`。这和 C++ 的 `bool` 类型一样。
+
+但有一个**重要的区别**，在 Lua 中，**只有 `false` 和 `nil` 被认为是假（falsey）**。所有其他的值，包括数字 `0` 和空字符串 `""`，都被认为是真（truthy）。
+
+这和 C++ 或者 JavaScript 有点不一样，比如在 C++ 里 `0` 通常会被当作 `false`。
+
+举个例子：
+
+```lua
+local my_number = 0
+local my_string = ""
+local my_nil = nil
+
+if my_number then
+    print("0 在 Lua 中是真") -- 会执行
+end
+
+if my_string then
+    print("空字符串在 Lua 中是真") -- 会执行
+end
+
+if my_nil then
+    print("nil 是真") -- 不会执行
+else
+    print("nil 在 Lua 中是假") -- 会执行
+end
+
+if false then
+    print("false 是真") -- 不会执行
+else
+    print("false 在 Lua 中是假") -- 会执行
+end
+```
+
+太棒了！很高兴看到你仔细排查并解决了问题。这正是学习编程的好习惯！
+
+***
+
+### Lua 的“瑞士军刀”——表（Table） \[#lua-的瑞士军刀表table]
+
+在 Lua 里，\*\*表（Table）\*\*是唯一的数据结构，但它功能极其强大，几乎可以替代 C++ 里你用过的所有集合类型，比如：
+
+* **数组（Arrays）**：存储一系列有序的数据。
+
+* **哈希表/字典（Hash Maps/Dictionaries）**：存储键值对（key-value pairs）。
+
+* **结构体/对象（Structs/Objects）**：存储多个相关联的属性。
+
+***
+
+#### 1. 创建表 \[#1-创建表]
+
+创建一个表非常简单，用一对花括号 `{}` 就行了：
+
+```lua
+local myTable = {} -- 创建一个空表
+print(type(myTable)) -- 输出: table
+```
+
+#### 2. 表作为数组 \[#2-表作为数组]
+
+你可以用数字作为索引来存储和访问元素，就像 C++ 的数组一样。不过，Lua 的数组索引**从 1 开始**，而不是 0！
+
+```lua
+local fruits = {"Apple", "Banana", "Cherry"}
+
+print(fruits[1]) -- 输出: Apple
+print(fruits[2]) -- 输出: Banana
+
+fruits[4] = "Grape" -- 也可以直接给新索引赋值，表会自动扩展
+print(fruits[4]) -- 输出: Grape
+
+print(#fruits) -- 使用 # 操作符获取表的长度（数组部分）
+```
+
+注意，`#` 操作符在 Lua 中用于获取表的“长度”，它通常指表中**连续的、从 1 开始的整数键值对的数量**。如果中间有空缺，或者键不是从 1 连续的，结果可能会出乎意料。
+
+#### 3. 表作为哈希表/字典 \[#3-表作为哈希表字典]
+
+你可以用**字符串**（或者其他类型，但字符串最常用）作为键来存储和访问值，这就像 C++ 中的 `std::map` 或 Python 的字典。
+
+有两种方式来设置和获取键值对：
+
+* **点操作符（`.`）**：更简洁，但键必须是合法的标识符（类似变量名）。
+
+* **方括号 `[]`**：键可以是任何值（除了 `nil`），更灵活。
+
+```lua
+local player = {}
+
+-- 使用点操作符赋值
+player.name = "Hero"
+player.level = 10
+
+-- 使用方括号赋值
+player["class"] = "Warrior"
+local skill_name = "strength"
+player[skill_name] = 100 -- 键也可以是变量
+
+print(player.name) -- 输出: Hero
+print(player["level"]) -- 输出: 10
+print(player.class) -- 输出: Warrior
+print(player.strength) -- 输出: 100
+```
+
+#### 4. 表的混合使用 \[#4-表的混合使用]
+
+表的强大之处在于，你可以把数组和哈希表的用法**混合起来**：
+
+```lua
+local gameSettings = {
+    -- 数组部分 (隐式数字键)
+    "Easy", "Normal", "Hard",
+    -- 哈希表部分 (显式字符串键)
+    difficulty = "Normal",
+    playerHealth = 100,
+    enemies = {"Goblin", "Orc", "Dragon"}
+}
+
+print(gameSettings[1]) -- 输出: Easy (数组的第一个元素)
+print(gameSettings.difficulty) -- 输出: Normal (哈希表部分的键值对)
+print(gameSettings.enemies[2]) -- 输出: Orc (哈希表里嵌套的数组)
+```
+
+***
+
+### 表的遍历（循环） \[#表的遍历循环]
+
+既然你已经掌握了表的创建和基本访问，那咱们再来了解一下如何**遍历**表。在 C++ 里，你可能会用 `for` 循环加索引，或者使用范围-based `for` 循环来遍历容器。在 Lua 里，也有类似的概念，但更灵活一些。
+
+Lua 主要提供了几种遍历表的方式：
+
+1. **数字索引遍历（类似数组）**
+
+2. **键值对遍历（`pairs` 函数，适合字典）**
+
+3. **值遍历（`ipairs` 函数，适合连续数组）**
+
+#### 1. 数字索引遍历 \[#1-数字索引遍历]
+
+如果你知道你的表是一个连续的“数组”，你可以像 C++ 那样用 `for` 循环和数字索引来遍历：
+
+```lua
+local fruits = {"Apple", "Banana", "Cherry"}
+
+for i = 1, #fruits do -- 从 1 到 表的长度
+    print(i, fruits[i])
+end
+-- 输出：
+-- 1   Apple
+-- 2   Banana
+-- 3   Cherry
+```
+
+这里再次提醒，Lua 数组索引**从 1 开始**。
+
+***
+
+#### 2. 键值对遍历 (`pairs` 函数) \[#2-键值对遍历-pairs-函数]
+
+这是遍历表中**所有键值对**（包括数字键和字符串键）最常用的方式。`pairs` 会迭代表中的每一个元素，每次循环返回一个**键**和一个**值**。
+
+```lua
+local player = {
+    name = "Hero",
+    level = 10,
+    ["class"] = "Warrior",
+    100 -- 这是一个隐式的数字键，键是 1
+}
+
+for key, value in pairs(player) do
+    print(key, value)
+end
+-- 输出可能像这样 (顺序不保证):
+-- name   Hero
+-- level  10
+-- class  Warrior
+-- 1      100
+```
+
+需要注意的是，`pairs` 遍历的顺序是**不固定**的，因为表在底层可能实现为哈希表。
+
+***
+
+#### 3. 值遍历 (`ipairs` 函数) \[#3-值遍历-ipairs-函数]
+
+`ipairs` 函数专门用于遍历表中**连续的、从 1 开始的整数键值对**。它和 `pairs` 的主要区别在于：
+
+* `ipairs` 只遍历数字键。
+
+* `ipairs` 在遇到第一个 `nil` 值时会停止遍历。
+
+```lua
+local items = {"Sword", "Shield", nil, "Armor"} -- nil 在中间
+local moreItems = {"Potion", "Scroll"}
+
+print("--- 使用 ipairs 遍历 items ---")
+for index, value in ipairs(items) do
+    print(index, value)
+end
+-- 输出：
+-- 1   Sword
+-- 2   Shield
+-- (在遇到 nil 时停止了，Armor 没有被遍历到)
+
+print("--- 使用 ipairs 遍历 moreItems ---")
+for index, value in ipairs(moreItems) do
+    print(index, value)
+end
+-- 输出：
+-- 1   Potion
+-- 2   Scroll
+```
+
+好的，没问题！咱们就先专注于把 Lua 的核心基础打扎实。这样你在写 Lua 脚本时会感觉更得心应手，等后面再学习和 C++ 交互时，也能更好地理解它是如何工作的。
+
+***
+
+### 表的高级用法：模拟面向对象和模块 \[#表的高级用法模拟面向对象和模块]
+
+你已经了解了表的基本用法，它是 Lua 的“瑞士军刀”。现在，咱们可以再深入一点，看看如何用表来模拟一些在 C++ 中你可能熟悉的**面向对象编程（OOP）概念，以及如何用它来组织代码成为模块**。
+
+***
+
+#### 1. 用表模拟对象（Object-like Tables） \[#1-用表模拟对象object-like-tables]
+
+在 C++ 中，我们有类（class）和对象（object），对象是类的实例，包含数据（成员变量）和行为（成员函数）。在 Lua 中虽然没有类的概念，但我们可以巧妙地利用**表和函数**来模拟这些特性。
+
+一个“对象”在 Lua 中通常就是一个表，这个表里面既包含了数据，也包含了处理这些数据的函数。
+
+```lua
+-- 模拟一个“玩家”对象
+local player = {
+    name = "Hero",
+    health = 100,
+    level = 1,
+
+    -- 这是一个方法（函数），它在表内部定义
+    -- 注意这里的冒号 `:` 语法，它是 Lua 提供的一个语法糖，
+    -- 相当于自动传入了当前对象作为第一个参数（self）
+    takeDamage = function(self, amount)
+        self.health = self.health - amount
+        if self.health < 0 then
+            self.health = 0
+        end
+        print(self.name .. " 受到 " .. amount .. " 点伤害，当前生命值：" .. self.health)
+    end,
+
+    -- 另一个方法
+    levelUp = function(self)
+        self.level = self.level + 1
+        print(self.name .. " 升级了！当前等级：" .. self.level)
+    end
+}
+
+-- 调用方法时也用冒号 `:`
+player:takeDamage(20) -- 相当于 player.takeDamage(player, 20)
+player:levelUp()      -- 相当于 player.levelUp(player)
+
+-- 你也可以直接访问属性
+print("玩家名字：" .. player.name)
+```
+
+你会发现，使用冒号 `:` 来定义和调用方法，可以让代码看起来更接近传统的面向对象语法，而且 Lua 会自动把当前对象（`self`）作为第一个隐藏参数传递给方法，非常方便。
+
+***
+
+#### 2. 简单的模块（Modules） \[#2-简单的模块modules]
+
+当你的 Lua 代码量逐渐增大时，你肯定希望像 C++ 那样把代码组织成不同的文件或模块，方便管理和重用。在 Lua 中，最简单的模块就是一个**包含函数和数据的表**。
+
+我们通常使用 `require` 函数来加载模块。
+
+比如，我们可以创建一个名为 `math_utils.lua` 的文件：
+
+```lua
+-- math_utils.lua 文件内容
+local M = {} -- 创建一个局部表，作为模块的容器
+
+function M.add(a, b)
+    return a + b
+end
+
+function M.subtract(a, b)
+    return a - b
+end
+
+return M -- 将这个表作为模块导出
+```
+
+然后，在另一个 Lua 文件中（比如 `main.lua`）：
+
+```lua
+-- main.lua 文件内容
+local MathUtils = require("math_utils") -- 加载 math_utils.lua 模块
+
+print(MathUtils.add(10, 5))      -- 输出: 15
+print(MathUtils.subtract(10, 5)) -- 输出: 5
+```
+
+这里的 `local M = {}` 是一种常见的 Lua 模块模式，`M` 是模块的私有表，所有的函数和变量都定义在 `M` 上，最后通过 `return M` 将其暴露出去。这样可以避免全局变量污染。
+
+***
+
+### 什么是协程？ \[#什么是协程]
+
+在 C++ 里，你可能熟悉 **线程（Threads）** 的概念，它们是操作系统调度的，可以实现并行执行。但线程的创建和切换开销比较大，而且涉及到复杂的同步机制（比如互斥锁、信号量）来避免数据竞争。
+
+而 Lua 的协程，和线程有点像，但又很不一样。它们是：
+
+1. **轻量级的**：协程的创建和切换开销非常小，比操作系统线程轻量得多。
+
+2. **协作式的**：这是最关键的区别！线程是由操作系统强制调度的，你无法控制它何时暂停或恢复。而协程是\*\*“协作式”**的，这意味着一个协程会主动**暂停（yield）**自己，然后将控制权**交还**给它的调用者，并在稍后**恢复（resume）\*\*执行，从它上次暂停的地方继续。
+
+你可以把协程想象成一个你正在读的故事书。读到精彩处，你决定暂时放下书去做点别的事（协程 `yield`），等你回来，可以直接翻到你上次放下书的那一页继续读（协程 `resume`）。而线程更像是，你读着读着，突然被别人把书抢走了，你不知道什么时候能再拿回来。
+
+***
+
+#### 协程的基本操作 \[#协程的基本操作]
+
+Lua 中使用 `coroutine` 库来创建和管理协程。主要有以下几个函数：
+
+* **`coroutine.create(function)`**：创建一个新的协程。它接收一个函数作为参数，这个函数就是协程要执行的代码。`create` 函数会返回一个表示新协程的**线程对象（thread）**。协程创建后并不会立即运行。
+
+* **`coroutine.resume(co, ...)`**：**恢复**（或者说是“启动”）一个协程的执行。`co` 是你创建的协程对象，`...` 是你可以传递给协程的参数。`resume` 会返回两个值：第一个是布尔值，表示协程是否成功执行（`true` 表示成功，`false` 表示出错）；第二个及后续的值是协程 `yield` 或最终 `return` 的值。
+
+* **`coroutine.yield(...)`**：**暂停**当前正在执行的协程，并将控制权返回给调用它的 `resume` 函数。`...` 是协程 `yield` 时可以传递给 `resume` 的值。当协程被 `resume` 再次激活时，它会从 `yield` 的位置继续执行，并且 `yield` 函数会返回 `resume` 传给它的值。
+
+* **`coroutine.status(co)`**：查询协程的当前状态，可能的返回值有 `"running"`（正在运行）、`"suspended"`（已暂停）、`"normal"`（主线程，或不是当前活跃的协程）、`"dead"`（已结束）。
+
+***
+
+#### 让我们看一个简单的例子 \[#让我们看一个简单的例子]
+
+```lua
+-- 定义一个函数，这个函数将被协程执行
+local function myCoroutineFunction()
+    print("协程：开始执行...")
+    local val1 = coroutine.yield("第一个暂停点") -- 协程在这里暂停，并传出 "第一个暂停点"
+    print("协程：从第一个暂停点恢复，收到值:", val1)
+
+    local val2 = coroutine.yield("第二个暂停点") -- 再次暂停，传出 "第二个暂停点"
+    print("协程：从第二个暂停点恢复，收到值:", val2)
+
+    print("协程：执行完毕！")
+    return "协程最终返回值" -- 协程最终返回的值
+end
+
+-- 1. 创建协程
+local co = coroutine.create(myCoroutineFunction)
+print("主程序：协程状态:", coroutine.status(co)) -- 输出: suspended
+
+-- 2. 第一次恢复协程
+print("主程序：第一次恢复协程...")
+local status, msg1 = coroutine.resume(co, "这是给协程的第一个值")
+print("主程序：恢复结果:", status, "协程传出的消息:", msg1)
+print("主程序：协程状态:", coroutine.status(co)) -- 输出: suspended
+
+-- 3. 第二次恢复协程
+print("主程序：第二次恢复协程...")
+local status, msg2 = coroutine.resume(co, "这是给协程的第二个值")
+print("主程序：恢复结果:", status, "协程传出的消息:", msg2)
+print("主程序：协程状态:", coroutine.status(co)) -- 输出: suspended
+
+-- 4. 第三次恢复协程 (将协程执行完毕)
+print("主程序：第三次恢复协程...")
+local status, finalMsg = coroutine.resume(co) -- 再次恢复，直到协程结束
+print("主程序：恢复结果:", status, "协程最终返回值:", finalMsg)
+print("主程序：协程状态:", coroutine.status(co)) -- 输出: dead
+```
+
+运行这段代码，你会看到主程序和协程之间的执行是如何**交替进行**的，`resume` 启动协程，协程通过 `yield` 暂停并返回值，`resume` 再次被调用时，可以传递新值给协程，协程从上次 `yield` 的地方继续执行。
+
+***
+
+### 什么是元表（Metatable）？ \[#什么是元表metatable]
+
+简单来说，**元表（Metatable）就是一张普通的 Lua 表，它能修改另一张表的行为。**
+
+它就像给一个普通的 Lua 表施加了一层“魔法”，当这张普通的表进行某些操作（比如加减乘除、访问不存在的字段、比较大小等等）时，如果这张表设置了元表，Lua 就会去它的元表里查找对应的**元方法（Metamethod）**。
+
+元方法其实就是元表中的一些**特定命名的函数**。当 Lua 遇到被元表“修改”的操作时，它不会直接报错或执行默认行为，而是会调用元表里对应的元方法来处理。
+
+***
+
+#### 为什么需要元表？ \[#为什么需要元表]
+
+在 Lua 中，表是唯一的数据结构，这赋予了它极大的灵活性，但有些操作是默认不支持的。比如，你不能直接对两个表进行相加操作：
+
+```lua
+local table1 = { x = 1, y = 2 }
+local table2 = { x = 3, y = 4 }
+
+-- local sumTable = table1 + table2 -- 这会报错！
+```
+
+Lua 默认不知道两个表相加是什么意思。但有了元表，你就可以**自定义**这种行为！
+
+元表主要用于实现：
+
+* **运算符重载（Operator Overloading）**：让表能够像数字一样进行加减乘除等运算。
+
+* **模拟面向对象**：实现继承、属性访问控制等 OOP 特性。
+
+* **数据访问控制**：例如，防止访问不存在的字段，或者在访问时进行额外处理。
+
+* **实现代理（Proxy）或拦截器**：在访问或修改数据时插入自定义逻辑。
+
+***
+
+#### 如何使用元表？ \[#如何使用元表]
+
+使用元表主要涉及到两个核心函数：
+
+* **`setmetatable(table, metatable)`**：为**第一个参数 `table`** 设置它的**元表 `metatable`**。它会返回被设置了元表的 `table`。
+
+* **`getmetatable(table)`**：获取一个表当前设置的元表。
+
+以及一些**预定义的元方法名称**，这些名称都以两个下划线 `__` 开头。
+
+***
+
+#### 一个简单的例子：让表可以相加 \[#一个简单的例子让表可以相加]
+
+我们来用元表实现一个向量相加的功能。
+
+```lua
+-- 定义一个表示二维向量的表
+local vector = {}
+
+-- 定义向量的元表
+local vector_metatable = {}
+
+-- [[ 重点在这里：__add 元方法 ]]
+-- 当两个表使用 '+' 运算符相加时，Lua 会查找元表中的 __add 元方法
+-- 这个元方法会接收两个操作数（这里是 v1 和 v2）作为参数
+function vector_metatable.__add(v1, v2)
+    -- 返回一个新的表，表示相加的结果
+    return { x = v1.x + v2.x, y = v1.y + v2.y }
+end
+
+-- 定义一个创建新向量的工厂函数（可选，但通常这样用）
+function vector.new(x, y)
+    local v = { x = x, y = y }
+    setmetatable(v, vector_metatable) -- 为新创建的向量设置元表
+    return v
+end
+
+-- 创建两个向量
+local vec1 = vector.new(1, 2)
+local vec2 = vector.new(3, 4)
+
+-- 现在，我们可以直接相加这两个表了！
+local vec_sum = vec1 + vec2
+
+print("向量相加的结果：")
+print("x:", vec_sum.x, "y:", vec_sum.y) -- 输出：x: 4 y: 6
+```
+
+在这个例子中，我们创建了一个 `vector_metatable`，并在其中定义了 `__add` 元方法。当 `vec1 + vec2` 运行时，Lua 发现 `vec1` 有一个元表，并且这个元表里有 `__add` 这个元方法，于是就调用它来完成相加操作。
+
+***
+
+#### 常见的元方法 \[#常见的元方法]
+
+除了 `__add`，还有许多其他的元方法可以重载各种操作：
+
+|元方法名称|描述|对应的操作符/事件|
+|---|---|---|
+|`__add`|加法|`+`|
+|`__sub`|减法|`-`|
+|`__mul`|乘法|`*`|
+|`__div`|除法|`/`|
+|`__mod`|取模|`%`|
+|`__pow`|幂运算|`^`|
+|`__unm`|取负（一元减号）|`-` (如 `-table`)|
+|`__concat`|字符串连接|`..`|
+|`__len`|获取长度|`#` (如 `#table`)|
+|`__eq`|相等比较|`==`|
+|`__lt`|小于比较|`<`|
+|`__le`|小于等于比较|`<=`|
+|`__index`|访问表中不存在的键或实现继承|`table.key` 或 `table[key]` (读取时)|
+|`__newindex`|给表中不存在的键赋值时调用|`table.key = value` 或 `table[key] = value` (写入时)|
+|`__call`|当表被当作函数调用时调用|`table(...)`|
+|`__tostring`|当表需要转换为字符串时调用|`tostring(table)` 或 `print(table)`|

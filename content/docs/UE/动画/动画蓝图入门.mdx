@@ -1,0 +1,47 @@
+---
+title: 动画蓝图入门
+---
+# 必要的移动数据 \[#必要的移动数据]
+
+![Pasted image 20250604220734.png](/附件/pasted-image-20250604220734.png)
+
+使用`Event Blueprint Initialize Animation` 获取角色和角色移动组件的引用 (`Event Blueprint Initialize Animation`有点像蓝图中的`Begin Play`)。
+![Pasted image 20250604220832.png](/附件/pasted-image-20250604220832.png)
+
+只有在角色引用有效时才执行获取移动数据，使用`Event Blueprint Update Animation` 获取，有点像蓝图中的 `Tick` 。
+![Pasted image 20250604221026.png](/附件/pasted-image-20250604221026.png)
+获取 Velocity(带方向的速度 AKA向量) 和 在地面上的速度（浮点型）。
+![Pasted image 20250604221241.png](/附件/pasted-image-20250604221241.png)
+
+通过加速度不为零且速度大于阈值判断是否能移动。
+通过调用移动组件中的`Is Falling`方法判断是否在空中。
+![Pasted image 20250604221536.png](/附件/pasted-image-20250604221536.png)
+
+获得Velocity归一化（只保留**方向信息**，忽略实际速度大小），找出获得Velocity相对于角色当前朝向的角度。我们将用它来决定我们应该朝哪个方向移动。
+第一个 `dot` 节点:
+
+* 输入A: 归一化后的速度向量。
+* 输入B: 角色的正前方向量 (`Get Actor Forward Vector` 的结果)。
+* `dot` (点积) 运算结果：这个结果表示归一化速度在角色“前进方向”上的投影大小。
+  * 如果结果为 `1`，表示角色正笔直向前移动。
+  * 如果结果为 `-1`，表示角色正笔直向后移动。
+    第二个 `dot` 节点:
+* 输入A: 归一化后的速度向量。
+* 输入B: 角色的正右方向量 (`Get Actor Right Vector` 的结果)。
+* `dot` (点积) 运算结果：这个结果表示归一化速度在角色“右侧方向”上的投影大小。
+  * 如果结果为 `1`，表示角色正笔直向右平移。
+  * 如果结果为 `-1`，表示角色正笔直向左平移。
+    因为我们可以知道 `dot` 点积可以用来计算方向。
+    ![Pasted image 20250604221701.png](/附件/pasted-image-20250604221701.png)
+
+## 状态机 \[#状态机]
+
+### 状态机：Locomotion \[#状态机locomotion]
+
+简单的 Idle 和 Walk/Run 相互过渡即可
+
+### 状态机： MainState \[#状态机-mainstate]
+
+在Locomotion状态机的基础上，添加跳跃和下落相关的状态。
+TODO:  别名的使用
+![Pasted image 20250604222238.png](/附件/pasted-image-20250604222238.png)

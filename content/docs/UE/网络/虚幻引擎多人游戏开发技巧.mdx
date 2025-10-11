@@ -1,0 +1,1202 @@
+---
+title: 虚幻引擎多人游戏开发技巧
+---
+随着你不断在虚幻引擎中练习在线多人游戏，你可能已经想知道如何处理特定问题的最佳实践，甚至可能因为你的代码没有按照预期运行而抱怨。在这篇文章中，我尝试汇总我在改进我谦逊的网络体验过程中收集的所有技巧和窍门。
+
+这些绝对不是如果你选择不遵守就会受到评判的规则。然而，在我的虚幻引擎网络代码经验过程中，它们被证明是有用的。
+
+## 1. 了解在线方面的 [**游戏框架对象**](https://wizardcell.com/unreal/persistent-data/#gameframework-objects) \[#1-了解在线方面的-游戏框架对象]
+
+无论网络如何，理解 **虚幻的游戏框架** ，不仅会使你的代码结构良好，还能让你避免重新发明轮子，这将节省你宝贵的时间。
+
+现在在多人游戏方面，游戏框架 **Object** ，更具体地说 **Actor** ，在网络上的行为可能不同。当一个 **Actor** 总是对所有客户端相关时，另一个总是只对其拥有客户端相关，而另一个则完全不相关。这对单人游戏爱好者来说意义不大，但对他们的多人游戏伙伴来说应该意义重大。这不仅仅是 [**相关性**](https://docs.unrealengine.com/en-US/actor-relevancy-and-priority-in-unreal-engine/) ，其他复制设置也可能不同。事实上，如果相关的 **Actor** 没有设置为复制，那么相关性和大多数其他复制设置都没有意义。下表简要介绍了一些最显著的复制设置差异，涉及多种不同类型的可复制 **Actor** ：
+
+| Actor类               | bOnlyRelevantToOwner？ | bAlwaysRelevant？ | bReplicateMovement？ | NetUpdateFrequency | NetPriority |
+| -------------------- | --------------------- | ---------------- | ------------------- | ------------------ | ----------- |
+| **GameState**        |                       | ✔️               |                     | 10.0               | 1.0         |
+| **PlayerState**      |                       | ✔️               |                     | 1.0                | 1.0         |
+| **PlayerController** | ✔️                    |                  |                     | 100.0              | 3.0         |
+| **Pawn**             |                       |                  | ✔️                  | 100.0              | 3.0         |
+| **Actor**            |                       |                  |                     | 100.0              | 1.0         |
+
+现在我们来了解一下这些设置的含义：
+
+1. `bOnlyRelevantToOwner`：如果为真，则此 **Actor** 仅对其拥有客户端相关。如果在游戏过程中更改此标志，所有非拥有通道（属于模拟代理的通道）都需要显式关闭。
+
+2. `bAlwaysRelevant`：对所有客户端始终相关（覆盖 `bOnlyRelevantToOwner`）。
+
+3. `bReplicateMovement`：如果为真，则复制与移动/位置相关的属性。
+
+4. `NetUpdateFrequency`：这个 **Actor** 被考虑进行复制的频率（每秒），用于确定 `NextUpdateTime`。
+
+5. `NetPriority`：在低带宽或拥塞情况下检查复制时，此 **Actor** 的优先级，优先级越高，复制的可能性越大。
+
+我强烈建议你进一步阅读有关[详细 Actor 复制流程](https://docs.unrealengine.com/4.27/en-US/InteractiveExperiences/Networking/Actors/ReplicationFlow/)的内容。
+
+## 2. 谨慎使用 GetPlayerXXX(0)静态函数 \[#2-谨慎使用-getplayerxxx0静态函数]
+
+我经常看到有人在在线多人游戏中使用以下静态函数：
+
+![Bad Nodes](https://wizardcell.com//assets/blog/tips-and-tricks/bad-nodes.png)
+
+以及它们对应的本地版本：
+
+* `UGameplayStatics::GetPlayerController(const UObject* WorldContextObject, int32 PlayerIndex)`.
+
+* `UGameplayStatics::GetPlayerCharacter(const UObject* WorldContextObject, int32 PlayerIndex)`.
+
+* `UGameplayStatics::GetPlayerPawn(const UObject* WorldContextObject, int32 PlayerIndex)`.
+
+* `UGameplayStatics::GetPlayerState(const UObject* WorldContextObject, int32 PlayerStateIndex)`.
+
+* `UGameplayStatics::GetPlayerCameraManager(const UObject* WorldContextObject, int32 PlayerIndex)`.
+
+使用这些函数可能弊大于利，除非你清楚自己在做什么（遗憾的是在大多数情况下并非如此）或者你只在做本地多人游戏（分屏游戏），那么你就可以放心使用了。
+
+例如调用 `GetPlayerController(0)` 或相应的本地 `UGameplayStatics::GetPlayerController(GetWorld(), 0)` 将会根据上下文返回不同的结果，通常为：
+
+* **监听服务器:** 该 **监听服务器的 PlayerController**。
+* **专用服务器:** 第一个客户端的 **PlayerController**。
+* **客户端:** 该 **客户端的 PlayerController**。
+
+基于上下文的行为差异对于初学者来说并不是一个明确的问题。除此之外，几乎不需要通过索引来获取那个 **Actor**，因为索引在不同客户端和服务器之间并不一致。此外，**PlayerController** 迭代器的顺序在地图传输过程中也不一致，所以我们不想使用那个索引。99% 的情况下，人们传递索引 0 并希望获取主要的本地 **PlayerController**，而有时在监听服务器环境中，例如，客户端连接得足够快（通过无缝旅行），最终在监听服务器上成为索引 0，结果你得到了一个不希望的 **PlayerController**，而你期望的是监听服务器的 **PlayerController**。相反，使用 `UGameInstance::GetFirstLocalPlayerController()` 将安全地检索到你想要的本地主要 **PlayerController**。遗憾的是，它没有在蓝图中公开，但你可以继续阅读下面的公开节点。
+
+正因如此，我强烈建议您避免使用这些函数，因为*总有*其他方法可以检索到相关的 **Actor**。
+
+根据上下文（您尝试检索的 **Actor** 所在的类）不同的替代函数/属性会有所不同，但以下是最实用的：
+
+推荐的蓝图节点
+
+安全可靠的节点，用于在各种上下文中检索所需的 Actor。
+
+![安全可靠的节点，用于在各种上下文中检索所需的 Actor](https://wizardcell.com/assets/blog/tips-and-tricks/good-nodes.png)
+
+以及它们对应的原生版本：
+
+* `AActor::GetOwner()`
+* `UActorComponent::GetOwner()`
+* `APawn::GetController()`
+* `AController::GetPawn()`
+* `APlayerState::GetPlayerController()`
+* `UUserWidget::GetOwningPlayer()`
+* `AHUD::GetOwningPlayerController()`
+* `APlayerCameraManager::GetOwningPlayerController()`
+* `APlayerState::GetPawn()`
+* `AController::GetPlayerState()`
+* `APlayerController.PlayerCameraManager`
+
+## 3. 注意，只用蓝图的多人功能有限制 \[#3-注意只用蓝图的多人功能有限制]
+
+大多数刚开始使用虚幻引擎的人，都会从蓝图开始编码。毫无疑问，这也适用于那些从多玩家开始的人。虽然仅限蓝图的多玩家功能是可以的，并且对于简单的需求来说可能足够，但你很快就会意识到它的局限性。让我们来发现蓝图所缺乏的强大工具：
+
+* [**Replication Graph**](https://www.unrealengine.com/en-US/tech-blog/replication-graph-overview-and-proper-replication-methods) ：虽然它很可能会被 [**Iris**](https://docs.unrealengine.com/en-US/introduction-to-iris-in-unreal-engine/) 所取代，但如果你是仅使用蓝图的项目，了解这一点仍然很有价值，你将无法将其作为旧常规相关性系统的替代品使用。它不会减少复制的**Actor数量，但会导致服务器在每个数据通道上需要评估的**Actor数量减少，因此这确实是一种改进的相关性机制，旨在优化服务器 CPU 使用率以及网络带宽使用率。
+
+* **[类型的自定义网络序列化](http://www.aclockworkberry.com/custom-struct-serialization-for-networking-in-unreal-engine/)** ：基本上，在 C++中，你可以自定义特定类型在网络上的序列化方式。通常，为了做到这一点，我们只需将这些类型包装在一个\*\*结构体中，并在内部实现 `NetSerialize()。`实际上，这也帮助实现了[原子复制](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#16-use-atomic-replication) 。
+
+* [**快速 TArray 复制 - FTR**](http://www.aclockworkberry.com/custom-struct-serialization-for-networking-in-unreal-engine/)：这是一个复杂的 Unreal 内置容器，通常比常规的 **TArray** 更受青睐，用于复制大量 **TArrays** 的**结构体** 。它的目标是降低每次数组被污染时检查元素复制的服务器 CPU 时间。您还可以获得非常实用的针对客户端每个添加、删除或甚至更改的元素的复制回调。
+
+* **基本虚函数** ：意识到这个仅限 C++的功能有多大局限性是一个时间问题。以下是最值得注意的虚函数，在任何实际项目中几乎都要重写 (Override)这些函数：
+  * `AActor::IsNetRelevantFor()`：这允许您设置自己的标准，以确定一个 **Actor** 是否对特定的网络连接相关。
+  * `AController::SetPawn()`：这是一个进行额外 **Pawn** 初始化的好地方，服务器和客户端都需要进行这些初始化。
+  * `AController/APawn::OnRep_PlayerState()` : 当我们的 **PlayerState** 复制时触发的复制回调。在蓝图中，您可能需要进行非常 [复杂的折衷方案和技巧](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#7-refrain-from-using-delay-to-account-for-replication-time) 。
+
+* **适当的复制回调** ：基本上，蓝图中 `OnRep/RepNotify` 函数的行为与 C++ 中的行为有所不同，这是设计上的考虑。在蓝图中，它们通常在每次变量设置时本地调用，不考虑设置的位置（服务器或客户端），这绝对不是复制回调。不过，与之对应的 C++ 回调是真正的复制回调，仅在客户端触发，且仅在服务器设置时触发。 [这篇文章](https://vorixo.github.io/devtricks/stateful-events-multiplayer/#onreps) 是最全面的来源，解释了它们的大部分细微差别。此外，C++ 中的 `OnRep` 有一个具有复制前值的函数重载，这非常有用： `AMyActor::OnRep_MyReplicatedProperty(MyType OldValue)` 。
+
+* **对复制条件的精细控制** ：默认情况下，在 C++ 和蓝图中，服务器上设置相同旧值的 `RepNotify/OnRep` 属性不会在客户端触发复制回调（蓝图仍然会在服务器上触发它，因为如前所述，这是设计使然）。然而，如果我们想改变这种行为，并使复制回调始终在客户端触发，即使新设置的值没有改变，我们可以执行以下操作：
+
+```cpp
+void AMyActor::GetLifetimeReplicatedProps(TArray& OutLifetimeProps) const 
+{
+  Super::GetLifetimeReplicatedProps(OutLifetimeProps);
+  	
+  DOREPLIFETIME_CONDITION_NOTIFY(ThisClass, MyRepNotifyProperty, COND_None, REPNOTIFY_Always);
+}
+```
+
+   
+
+* **结构体属性复制排除**： C++ **结构体**可以将其部分成员排除在复制之外，而蓝图中的结构体则不行。下面是具体操作方法：
+
+```cpp
+USTRUCT() struct FMyStruct 
+{ 
+  GENERATED_BODY()
+  
+  UPROPERTY()  
+  float ReplicatedProperty;  
+​  
+  UPROPERTY(NotReplicated)  
+  float NotReplicatedProperty;
+
+}
+
+UCLASS() class MyProject_API AMyActor : public AActor 
+{
+  GENERATED_BODY()
+
+  UPROPERTY(Replicated)  
+  FMyStruct MyReplicatedStructProperty;
+
+}
+
+```
+
+* **复制非 ActorComponents 的子对象** ：与 **UObjects** 相比，**Actors**/**ActorComponents** 更适合复制，因为它们更轻量。在 C++ 中至少有 [两种方法](https://docs.unrealengine.com/en-US/replicated-subobjects-in-unreal-engine/) 可以使这类 **Objects** 支持复制，但在 Blueprints 中没有。\
+  ​  ​
+
+## 4. 阅读源代码 \[#4-阅读源代码]
+
+您应该知道，虚幻引擎的源代码[可供下载](https://www.unrealengine.com/en-US/ue-on-github) ，应该掌握在您的手中。它应该是您获取与虚幻引擎相关信息的首要可靠来源。\
+ \
+它旨在帮助您：\
+​
+
+* 理解引擎的基础架构。
+* 更好地理解事情出错的原因和地点。
+* 提出更好、更聪明的问题。\
+  ​
+
+## 5. 过滤客户端-服务器执行路径 \[#5-过滤客户端-服务器执行路径]
+
+ \
+对于在服务器和客户端都激活的函数，有一些方便的方法可以过滤它们的执行：\
+​
+
+### 5.1 通过 **网络角色** 过滤 \[#51-通过-网络角色-过滤]
+
+​\
+对于每个 在 **World** 中的 **Actor**，通常服务器或客户端将拥有对该 **Actor** 的控制权。\
+ \
+对于服务器上存在的每个 **Actor** ，服务器将拥有对该 **Actor** 的控制权 - 包括所有复制的 **Actor** ，以及预先放置（未特别复制的） **Actor** 。因此，当客户端上运行 `AActor::HasAuthority()` 函数时，如果目标是复制给他们的 **Actor** ，它将返回 `false`。您还可以在蓝图中使用方便的宏 `Switch Has Authority` 来快速为复制的 **Actor** 分支不同的服务器和客户端行为：\
+​\
+![Filter by NetRole](https://wizardcell.com//assets/blog/tips-and-tricks/filter-by-net-role.png)\
+​\
+对于仅存在于客户端的每个 **Actor** ，只有该客户端将拥有对该 **Actor** 的控制权 - 包括主要是外观（对游戏玩法没有影响）的 **Actor** 。\
+ \
+此方法使用 [**网络角色**](https://docs.unrealengine.com/en-US/InteractiveExperiences/Networking/Actors/Roles/) ：\
+​\
+EngineBaseTypes.h
+
+```cpp
+/** Actor在本地/远程网络环境中的网络角色 */
+UENUM()
+enum ENetRole
+{
+    /** No role at all. */
+    ROLE_None,
+    /** Locally simulated proxy of this actor. */
+    ROLE_SimulatedProxy,
+    /** Locally autonomous proxy of this actor. */
+    ROLE_AutonomousProxy,
+    /** Authoritative control over the actor. */
+    ROLE_Authority,
+    ROLE_MAX,
+};
+
+```
+
+​
+
+### 5.2 通过 **网络模式** 过滤 \[#52-通过-网络模式-过滤]
+
+ \
+此方法使用 [**网络模式**](https://docs.unrealengine.com/en-US/InteractiveExperiences/Networking/Overview/#networkmodesandservertypes) ：\
+​\
+EngineBaseTypes.h\
+​
+
+```cpp
+/**
+ * The network mode the game is currently running.
+ * @see https://docs.unrealengine.com/latest/INT/Gameplay/Networking/Overview/
+ */
+enum ENetMode
+{
+    /** 单机：不联网的游戏，有一个或多个本地玩家。仍被视为服务器，因为它具有所有服务器功能. */
+    NM_Standalone,
+
+    /** 专用服务器：没有本地玩家的服务器. */
+    NM_DedicatedServer,
+
+    /** 监听服务器：也有本地玩家主持游戏的服务器，可供网络上的其他玩家使用. */
+    NM_ListenServer,
+
+    /**
+     * 网络客户端：连接到远程服务器的客户端.
+     * 请注意，小于此值的每种模式都是一种服务器，因此检查 NetMode < NM_Client 总是某种服务器.
+     */
+    NM_Client,
+
+    NM_MAX,
+};
+
+```
+
+ \
+通过调用 `GetNetMode()` 和 `IsNetMode()`，您可以可靠地决定 **NetMode** 的 **Actor**，通过回溯到其所属的 **World** 和拥有它的游戏实例，该实例可以具有任何之前的网络模式。\
+​
+
+### 5.3 **网络模式** 与 **网络角色** \[#53-网络模式-与-网络角色]
+
+​\
+在大多数情况下，您可以选择其中任何一个来获得相同的结果，这是我使用它们的方式：\
+​
+
+* **网络模式**: 我在 [生命周期早期](https://docs.unrealengine.com/en-US/ProgrammingAndScripting/ProgrammingWithCPP/UnrealArchitecture/Actors/ActorLifecycle/#spawning) 的 **Actor** 中使用此方法，所以任何在 `AActor::PreInitializeComponents()` 之前的点都会被调用，因为网络角色尚未正确设置。\
+     
+* **网络角色**: 我在包括 `AActor::PreInitializeComponents()` 调用之后的任何时间点使用此方法。从理论上讲，此方法比之前的方法更快，因此当可能时应该优先选择。
+
+简而言之，**网络模式** 更可靠，而 **网络角色** 更快。\
+​
+
+## 6. 过滤所属客户端执行路径 \[#6-过滤所属客户端执行路径]
+
+ \
+基于是否与所属客户端相关来过滤执行，是过滤在所属和非所属客户端上都激活的函数/事件的另一种有用方法。
+​
+下面是一些您希望利用此类过滤的最显著场景：\
+​
+
+* 将 **用户控件** 添加到屏幕上。
+* 生成视觉效果。
+* 播放音效。\
+  ​
+  过滤将根据上下文而变化，但以下是最实用的方法，您可能希望使用：\
+  ​
+*   `APawn::IsLocallyControlled()`
+*   `APawn::IsLocallyViewed()`
+*   `UGameplayAbility::IsLocallyControlled()`
+*   `UAbilityTask::IsLocallyControlled()`
+*   `AController::IsLocalController()`
+*   `AController::IsLocalPlayerController()`\
+   \
+  **注意：** 并非所有功能都暴露给蓝图，但这些是你最常使用的功能。
+
+**警告：** 在[生成](https://docs.unrealengine.com/en-US/ProgrammingAndScripting/ProgrammingWithCPP/UnrealArchitecture/Actors/ActorLifecycle/#spawning)过程中，尤其是在 `BeginPlay` 期间，应避免使用这些函数，因为在此期间， **Pawn**可能还没有分配到**Controller** 。\
+​
+
+### 6.1 示例用法 \[#61-示例用法]
+
+ \
+使用这种执行过滤方法的一个非常常见的情况是，如果您想在与 **Actor** 重叠时添加一个 3D 交互小部件，但你不想其他玩家看到你的模拟**Pawn**的交互小部件！\
+​\
+![Filter by Owning Client](https://wizardcell.com//assets/blog/tips-and-tricks/filter-by-owning-client.png)\
+​\
+ \
+**注意：**`AActor.Instigator` 是有效的，因为 **Pawn** 总是它自己的instigator。参见 `APawn::PreInitializeComponents()` 以获取参考。\
+​
+
+## 7. 避免使用延迟来处理复制时间 \[#7-避免使用延迟来处理复制时间]
+
+​\
+你可能已经遇到过这种情况，你试图检索一个特定的已复制属性，通常是一个 **Actor**，不幸的是得到了一个空值。经过一番调查，你发现该属性没有足够的时间复制，因此无效。在虚幻引擎中，属性复制到客户端所需的时间可能受到多个因素的影响，包括 [RTT](https://en.wikipedia.org/wiki/Round-trip_delay)（也称为 [ping](https://docs.unrealengine.com/en-US/BlueprintAPI/PlayerState/GetPinginMilliseconds/)），正在复制的 **Object** 的复杂性，复制的属性数量以及使用的复制设置。此时，你错误地认为你应该延迟检索，这看起来也很糟糕。\
+​\
+我见过的最常见的延迟行为是在客户端访问 **PlayerState** 之前，众所周知，在游戏框架的 Actor 类中，**PlayerState** 是一个复制属性。这是因为 **PlayerState** 默认的 [**NetUpdateFrequency**](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#1-get-to-know-the-game-framework-objects-online-wise) 很低，简单来说就是 **PlayerState**\***Actor** 可能需要比其游戏框架对应物更多的时间来复制。这种情况导致许多新手开发者使用 [Delay](https://docs.unrealengine.com/en-US/BlueprintAPI/Utilities/FlowControl/Delay/) 节点（或其原生函数，但大多数来自仅使用蓝图的开发者），但这并不是一个真正的解决方案，因为你永远无法可靠地预测复制需要多少时间。\
+ \
+真正的解决方案是“监听”**PlayerState** 作为一个整体复制，或者其特定属性之一从不同的地方复制，根据各种具体需求：\
+​
+
+* `APawn::OnRep_PlayerState()`：与其他 [OnRep](https://vorixo.github.io/devtricks/stateful-events-multiplayer/#onreps) 函数一样，该函数只在客户端（服务器除外）上自动调用，每次将新的 **Pawn** 分配给一个新的 **PlayerState** 时，默认情况下，当 **Pawn** 被拥有相关 **PlayerState** 的 **PlayerController** 控制时，都会发生这种情况。请注意，通常你不能依赖这个调用，尤其是当你想监听一个可能会在整个游戏中不断变化并复制的特定属性时。不过，在 **Pawn** 的生命周期开始时，这可能会很有用。请注意，由于相关性等原因，一个 **Pawn** 可能会在不同的客户端实例上被销毁和生成多次，在这种情况下，这个复制回调将被调用。 在调用该函数时，在前一种情况发生之前设置的所有属性都应可能被复制（除非是未映射的属性，即分配了 [网络 GUIDs](https://docs.unrealengine.com/en-US/API/Runtime/Core/Misc/FNetworkGUID/) 的属性，以及那些通常是 **UObjects** 和 **FNames**，它们没有在 `UnrealNames.inl` 中硬编码）。\
+     
+* `AController::OnRep_PlayerState` : 这通常比之前少用，然而了解它的用法是好的，因为它在 **PlayerController** 生命开始时被调用，或者在一个 [持久的 **PlayerController**](https://wizardcell.com/unreal/persistent-data/#4-playercontroller) 完成无缝旅行之后。\
+     
+* `APlayerState::BeginPlay()` [**客户端**](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#5-filter-client-server-execution-paths) ：这通常被仅使用蓝图的热衷者使用，因为他们无法访问前两种方法，这两种方法仅限于 C++。过滤客户端执行路径意味着我们正在寻找 **PlayerState** 的复制客户端版本。\
+     
+* [**忙等待轮询**](https://en.wikipedia.org/wiki/Polling_\(computer_science\)) ：检查在 `Tick` 上 **PlayerState** 是否有效，或者更确切地说，使用 `可重触发延迟` 节点，然后检查有效性是一个简单但有些粗糙的修复方法。这在使用蓝图进行原型设计时传统上很有用。\
+     
+* `AMyPlayerState::OnRep_MyProperty()` ：这是首选的、最常用的方法，因为它可以帮助你跟踪每个属性何时被复制，在它可能发生变化之后。\
+   \
+  通常人们希望例如 UI 能够监听这些复制回调何时发生，以便 UI 可以相应地更新。在那个时刻，他们应该在需要的地方绑定到一个代理，并在上述任一函数中调用它。在 C++ 中它们被称为 [**委托**](https://benui.ca/unreal/delegates-intro/) ，而在蓝图中被称为 [**事件分发器**](https://docs.unrealengine.com/en-US/ProgrammingAndScripting/Blueprints/UserGuide/EventDispatcher/) ，蓝图版本是各种 C++ 实现方式的一种特定形式。\
+  ​
+
+## 8. 知道何时调用 **RPC** 是安全的 \[#8-知道何时调用-rpc-是安全的]
+
+​\
+我经常看到人们使用 [**RPCs**](https://docs.unrealengine.com/en-US/InteractiveExperiences/Networking/Actors/RPCs/)（远程过程调用，也称为复制函数），并且想知道为什么它们没有在期望的  [FunctionCallspace](https://docs.unrealengine.com/en-US/API/Runtime/CoreUObject/UObject/FunctionCallspace__Type/) 中被调用（更准确地说是处理/执行）。在游戏的一个实例上被调用的 RPC 可能会变成：\
+​
+
+* **被吸收** ：根本未执行。
+* **远程执行** ：在游戏的远程实例上执行。
+* **本地执行** ：在调用它的本地游戏实例上执行。
+* **本地执行和远程执行**\
+  ​\
+  未安全调用的 RPC，最终可能被吸收、本地执行并变得[无意义](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#10-dont-call-meaningless-rpcs) ，甚至丢失。
+
+### 8.1 **被吸收的 RPC**：没有[拥有连接](https://docs.unrealengine.com/en-US/InteractiveExperiences/Networking/Actors/OwningConnections/)的 **Actor** \[#81-被吸收的-rpc没有拥有连接的-actor]
+
+ \
+此问题适用于在不是由 [**NetConnection**](https://docs.unrealengine.com/en-US/API/Runtime/Engine/GameFramework/APlayerController/NetConnection/)（即不由玩家/客户端拥有）拥有的 **Actor** 上/从调用**服务器 RPC** 的情况，这意味着它们将不会被处理，你会在`输出日志窗口`或 `YourProjectName/Saved/Logs` 目录中的某个日志文件中看到以下非常相似的警告：
+
+```
+  LogNet: Warning: UNetDriver::ProcessRemoteFunction: No owning connection for actor BP_MyActor_C_UAID_E0D55EF827881F5A01_1104206655. Function Server RPC will not be processed.
+```
+
+这种情况通常发生在以下两种情况之一：前者是指相关的 Actor 并非客户端所拥有，并且也**不应该**被客户端拥有；而后者是指它**应该**被客户端拥有，但是 RPC 调用的时机发生在 Actor 被客户端正确拥有之前。
+ \
+**注意：** 返回 **Actor** 的 **NetConnection** 的本地函数是 `AActor::GetNetConnection()`，并在 `APawn` 和 `APlayerController` 中被重写。
+
+#### 8.1.1 **Actor** 不应该有 **NetConnection** \[#811-actor-不应该有-netconnection]
+
+ \
+唯一默认具有 **NetConnection** 的 **Actor** 是 **PlayerController**。任何其他被 PlayerController 直接或间接拥有的 Actor，也会拥有 NetConnection，这些 Actor 通常是：Pawn、PlayerState。因此，通常情况下，从这三个 Actor 发送 Server/Client RPC 是安全的（我们将看到这并不总是如此，因为 [时间](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#812-bad-timing-actor-has-no-netconnection-yet) 的问题）。\
+ \
+虽然从理论上讲，人们可以拥有他们想要从 **Actor** 中 **Server**/**Client RPC** 的任何 **Actor**，但这是一种非常糟糕的方法，原因有几个：
+
+* 由于一个 **Actor** 在任何时候只能有一个 [owner](https://docs.unrealengine.com/en-US/BlueprintAPI/Actor/GetOwner/)，不同的客户端将无法同时与同一个 **Actor** 交互。
+* 你可能会拥有过多的 **Actors**，这会导致过多的不必要的 [硬引用](https://raharuu.github.io/unreal/hard-references-reasons-avoid/)。
+* 对于这种情况来说， [多态](https://en.wikipedia.org/wiki/Polymorphism_\(computer_science\))是完美的，但它的用法却让人感觉反直觉。\
+  ​
+
+#####  8.1.1.1 示例用法 \[#8111-示例用法]
+
+ \
+上述情况的一个常见的例子是，如果客户端想要与一个 **Actor** 交互。在这种情况下，客户端应该遵循以下基本步骤：
+
+```
+Input（玩家按键与角色互动）→ServerInteract（PlayerController/Pawn 中的服务器 RPC）→Interact（在被互动角色中实现的接口函数）
+```
+
+#### 8.1.2 错误的时间：**Actor** 尚未建立 **NetConnection** \[#812-错误的时间actor-尚未建立-netconnection]
+
+ \
+虽然这个问题看起来与之前的问题相似，但本质上却是不同的。这个问题涉及到应该具有 **NetConnection** 的 **Actor** ，例如： **PlayerController** / **PlayerState** / **Pawn** ，其中 RPC 仍然会被丢弃/吸收。原因是 RPC 调用发生在一个时间点，此时所涉及的 **Actor** 还没有被 **NetConnection** 所拥有。\
+ \
+经常看到在自定义蓝图 **Character** 类中存在以下 **不幸的代码** ：\
+​\
+![Bad Server RPC](https://wizardcell.com//assets/blog/tips-and-tricks/bad-server-rpc.png)
+
+**注意：** 上面的代码仅用于演示目的，你几乎不需要在同时触发服务器和客户端的事件（在我们的例子中是 `BeginPlay` ）上执行 RPC。 [过滤客户端-服务器执行路径](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#5-filter-client-server-execution-paths) 可以帮助我们避免调用那些 [无意义的](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#10-dont-call-meaningless-rpcs) 、 [不必要的](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#9-dont-call-unnecessary-rpcs) RPC。\
+ \
+虽然服务器 RPC 可能在服务器上正常执行，因为拥有 **NetConnection** 的 **PlayerController** 比 **Pawn** 创建得早，所以通常会先进行复制。然而，考虑到这两个 **Actor** 可能具有不同的网络属性，例如更新频率和优先级，甚至由于数据包丢失，情况并非总是如此。
+ \
+**注意：** 不要让像 `AActor::HasNetOwner()` 这样的函数让你误以为这意味着 **Actor** 保证能够发出有意义的 RPC，事实并非如此。在上面的情况下，**PlayerController** 拥有网络所有者，但没有 **NetConnection**。因此，这个函数表明该 **Actor** 可能能够发出有意义的 RPC。然而，唯一能保证这一点的是之前提到的 `AActor::GetNetConnection()`，只有当它返回非空值时才行。\
+ \
+另一个常见但不幸的 **被吸收的客户端 RPC**，这在自定义蓝图 **PlyerState** 类中很常见：\
+​\
+![Bad Client RPC PlayerState](https://wizardcell.com//assets/blog/tips-and-tricks/bad-client-rpc-playerstate.png)\
+​\
+**注意：** 上面的代码仅用于演示目的，你几乎不需要在同时触发服务器和客户端的事件（在我们的例子中是 `BeginPlay`）上执行 RPC。 [过滤客户端-服务器执行路径](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#5-filter-client-server-execution-paths) 可以节省我们调用那些 [无意义](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#10-dont-call-meaningless-rpcs) 、 [不必要的](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#9-dont-call-unnecessary-rpcs) RPC。\
+ \
+尽管此时 **PlayerState** 由 **PlayerController** 拥有，但后者仍然没有拥有 **Plyaer** （另一种说法是 **NetConnection** ，因为它是一个 **玩家** 的子类），这是因为 `APlayerState::BeginPlay()` 在 [`AGameModeBase::PostLogin()`](https://docs.unrealengine.com/en-US/API/Runtime/Engine/GameFramework/AGameModeBase/PostLogin/) 有机会之前发生，它保证了有一个 **Player** 已经与一个 **PlayerController** 关联，从而使其能够调用 RPC 而不会使它们被**吸收** 。
+
+### 8.2 **本地 RPC** \[#82-本地-rpc]
+
+ \
+另一个决定在特定时间点调用任何类型的 RPC 是否安全的重要因素，是逻辑上判断那个时间点是否安全。\
+ \
+例如，[`AGameModeBase::PostLogin()`](https://docs.unrealengine.com/en-US/API/Runtime/Engine/GameFramework/AGameModeBase/PostLogin/) 是第一个可以安全在 **PlayerController** 上调用复制函数的地方。\
+ \
+经常看到在自定义蓝图 **Character** 类中以下 **不良代码** ：\
+​\
+![Bad Client RPC](https://wizardcell.com//assets/blog/tips-and-tricks/bad-client-rpc.png)\
+​\
+**注意：** 上面的代码仅用于演示目的，并且你几乎不需要在同时触发服务器和客户端的事件（在我们的例子中是 `BeginPlay`）上调用 RPC。 [过滤客户端-服务器执行路径](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#5-filter-client-server-execution-paths) 可以避免调用 [无意义](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#10-dont-call-meaningless-rpcs) 、 [不必要的](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#9-dont-call-unnecessary-rpcs) RPC。\
+ \
+在运行有一个已连接客户端的专用服务器时，`输出日志`中会打印出以下字符串：
+
+```
+LogBlueprintUserMessages: [BP_ThirdPersonCharacter_C_0] Server: Client RPC executed!
+```
+
+你可以知道这并不是我们预期的，因为它应该显示 **“Client：”** 而不是 **“Server：”**。这意味着，我们在服务器上调用并期望在客户端执行的 Client RPC，却在服务器本地执行了。原因是在 `BeginPlay` 执行时，无法保证 **Pawn**/**Character** 拥有一个所有者连接（更别提它是否已经被拥有了，你可以通过打印函数 `AActor::GetOwner()` 的值来验证这一点），根据 [服务器调用的 RPC](https://docs.unrealengine.com/en-US/InteractiveExperiences/Networking/Actors/RPCs/#rpcinvokedfromtheserver) 表，这意味着它会在服务器上运行，这是完全不可取的，也是 [无意义的](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#10-dont-call-meaningless-rpcs) 。
+
+我们可以通过这个 [糟糕的临时修复](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#7-refrain-from-using-delay-to-account-for-replication-time) 来缓解这个问题：
+
+![Bad Client RPC Hotfix](https://wizardcell.com//assets/blog/tips-and-tricks/bad-client-rpc-hotfix.png)
+
+在运行有一个已连接客户端的专用服务器时，`输出日志`中会打印出以下字符串：
+
+```
+LogBlueprintUserMessages: [BP_ThirdPersonCharacter_C_0] Client 1: Client RPC executed!
+```
+
+然而，这里有一个更合适的修复方法：
+
+![Client RPC Real Fix](https://wizardcell.com//assets/blog/tips-and-tricks/client-rpc-real-fix.png)
+
+我们使用 `Possessed` 事件的原因是，当保证我们已被 **Controller** 拥有时，它会在服务器上执行，这将自动为我们调用 [`AActor::SetOwner()`](https://www.google.com/search?q=%5Bhttps://docs.unrealengine.com/en-US/API/Runtime/Engine/GameFramework/AActor/SetOwner/%5D\(https://docs.unrealengine.com/en-US/API/Runtime/Engine/GameFramework/AActor/SetOwner/\)) 函数，从而让 **Controller** 拥有 **Pawn**，因此它可以链接回 **NetConnection** 并能够触发 **客户端 RPC**。
+
+综上所述，[不调用不必要的 RPC](https://www.google.com/search?q=https://wizardcell.com/unreal/multiplayer-tips-and-tricks/%239-dont-call-unnecessary-rpcs) 来强制执行另一端的执行路径（在我们的示例中为拥有客户端执行路径）不是一个好的做法，因为已经为我们实现了一个在该端执行的本地事件。在我们的例子中，有 `APawn::ReceiveControllerChanged()` 和 `APawn::ReceiveRestarted()` BIE（ [蓝图可实现事件](https://docs.unrealengine.com/en-US/ProgrammingAndScripting/GameplayArchitecture/Functions/Specifiers/) ），或者它们的本地调用版本 `APawn::NotifyControllerChanged()` 和 `APawn::NotifyRestarted()`，它们发生在拥有时，并在服务器和拥有客户端上调用。
+
+### 8.3 **丢失的 RPC** \[#83-丢失的-rpc]
+
+让我们看看以下可能出现在自定义 **GameState** 类中的常见问题：
+
+![Lost RPC](https://wizardcell.com//assets/blog/tips-and-tricks/lost-rpc.png)
+
+**注意：** 上面的代码仅用于演示目的，你几乎不需要在同时触发服务器和客户端的事件（在我们的例子中是 `BeginPlay`）上使用 RPC。 [过滤客户端-服务器执行路径](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#5-filter-client-server-execution-paths) 可以节省我们调用那些 [无意义](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#10-dont-call-meaningless-rpcs) 、 [不必要的](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#9-dont-call-unnecessary-rpcs) RPC。
+
+在运行有一个已连接客户端的专用服务器时，`输出日志`中会打印出以下字符串：
+
+```
+LogBlueprintUserMessages: [BP_GameState_C_0] Server: Welcome!
+```
+
+如你所料，客户端没有被欢迎，因为在 **多播 RPC** 发生时它根本不在那里。请注意，即使 RPC 被标记为 `Reliable` ，RPC 也丢失了，这是因为 RPC 的一般有损性质，因为它们根本不计入挂起的 **NetConnection** 。
+
+有多种选项可以考虑，但我将引导您使用可以重写和利用的本地方法：
+
+GameModeBase.h
+
+```cpp
+/**
+ * 允许游戏发送网络信息，通过 NMT_GameSpecific 向加入游戏的客户端提供更多信息。
+ * 例如所需的 DLC
+ * 如果只需要一个简单的 URL，则内置并自动发送输出字符串 RedirectURL。
+ */
+virtual void GameWelcomePlayer(UNetConnection* Connection, FString& RedirectURL);
+```
+
+### 8.4 好消息 \[#84-好消息]
+
+从 UE 5.1 开始，添加了一种更直观、更灵活的复制子对象的方法。其中添加的方法之一如下：
+
+ActorComponent.h
+
+```cpp
+/**
+ * ReadyForReplication 在复制组件的所属角色正式准备好进行复制时被调用。
+ * 在 InitializeComponent 之后、BeginPlay 之前调用。只有在组件被销毁时，它才会被设置为 false。
+ * 如果你已经拥有了一些复制的子对象，就可以在这里注册。
+ * 如果在一个 tick 中或在 BeginPlay() 中调用了一个 RPC，那么组件可以在 HasBegunPlay() 为 true 之前被复制。
+ * 需要对组件进行注册、初始化和复制设置。
+ */
+virtual void ReadyForReplication();
+
+```
+
+正如其名称和文档所暗示的，这个方便的函数在 **ActorComponent** 准备开始复制属性并通过其所有者的 [**ActorChannel**](https://docs.unrealengine.com/en-US/API/Runtime/Engine/Engine/UActorChannel/) 调用 RPC 时被调用。另外，此函数在调用 `UActorComponent::BeginPlay()` 之前被调用，并且当拥有者 **Actor** 准备进行复制时也会被调用，这使我们得出以下结论：
+
+> 具有**NetConnection**的 **Actors** 将能够在调用 `AActor::BeginPlay()` 之前有意义地触发 RPC，从而解决了与 [**错误时机**](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#812-bad-timing-actor-has-no-netconnection-yet) 相关的常见问题。
+
+目前这个结论并不完全正确，因为它涉及到新的 [**Iris**](https://docs.unrealengine.com/en-US/introduction-to-iris-in-unreal-engine/) 复制系统，该系统默认情况下并未启用（尽管已编译），更不用说它仍然处于实验状态。
+
+## 9. 不要调用 **不必要的 RPC** \[#9-不要调用-不必要的-rpc]
+
+在之前的技巧中，我们已经遇到了几个不必要的 RPC，但这个术语从未被定义。**不必要的 RPC 实际上是不需要的 RPC，本可以节省**。例如，如果可以保证一个非复制的函数只会在服务器上执行，那么服务器端逻辑不一定必须包含在 **服务器 RPC** 中。
+
+不必要的 RPC 实际上源于对 [游戏框架多玩家方面](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#1-get-to-know-the-game-framework-objects-online-wise) 的知识不足这一悲伤但真实的事实。
+
+* 基于之前的例子，以下是客户端如何在蓝图本地通知拥有权，而无需使用任何不必要的 RPC：
+
+![Fix Unnecessary RPC](https://wizardcell.com//assets/blog/tips-and-tricks/fix-unnecessary-rpc.png)
+
+我们主要根据 `APawn::IsLocallyControlled()` 过滤，因为我们关心拥有客户端，它本质上存在于本地的 **Controller** 层级。
+
+**注意：** 对于监听服务器玩家，本地控制器存在于服务器上，而对于其他客户端玩家，它存在于客户端。
+
+## 10. 不要调用 **无意义的 RPC** \[#10-不要调用-无意义的-rpc]
+
+我经常看到的一个坏习惯是使用 **无意义的 RPC**。这里我指的是 **没有达到其真正目的的 RPC**，本应在其他远程端执行，但它们却只在本地执行，如下所示：
+
+* **服务器 RPC** 从服务器调用。
+* **客户端 RPC** 从服务器在服务器拥有的/非拥有的 **Actor** 上调用。
+* **网络多播 RPC** 从客户端调用。
+* **客户端 RPC** 从客户端调用。
+
+或者甚至被丢弃：
+
+* **服务器 RPC** 从服务器拥有的/无拥有的 **Actor** 上由客户端调用。
+
+当你不知道的情况下执行无意义的 RPC，这会变得很棘手，调试起来也很困难。我们之前已经 [见过这样的例子](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#812-bad-timing-actor-has-no-netconnection-yet) ，这可能是由于 RPC 调用时机不当造成的。
+
+## 11. 避免重写 RPC \[#11-避免重写-rpc]
+
+我对这一点不是很严格，但重写 RPC 是会被枪毙的理由。依我之见，将网络代码与游戏特定代码抽象化有助于培养一个日常编码的必备习惯： **调试** 。
+
+另一个简单的理由是 **一致性** 。你应该记住，在子类中覆盖 `MyFuncRPC_Implementation()`，而不是 `MyFuncRPC()`，如果你想要调用父类实现，那么你应该调用 `Super::MyFuncRPC_Implementation()` ，而不是 `Super::MyFuncRPC()`，否则你会陷入无限循环：
+
+```
+MyFuncRPC() → MyFuncRPC_Implementation() → Super::MyFuncRPC() → MyFuncRPC_Implementation() → Super::MyFuncRPC() → ...
+```
+
+你现在可能已经自己理解了调用链，但 RPC 的工作方式是，`MyFuncRPC()` 内部调用 `MyFuncRPC_Implementation()`，就像你在上面的调用链中看到的那样。无论你想要在哪里调用 RPC，你都应该调用常规版本，而不是带有 `_Implementation()` 的 RPC 版本，否则 RPC 会被本地调用。
+
+最后，你不能通过在 RPC 宏 `UFUNCTION()` 中添加 `BlueprintImplementableEvent` 或 `BlueprintNativeEvent` 来覆盖 RPC，因为 [UHT](https://docs.unrealengine.com/en-US/unreal-header-tool-for-unreal-engine/)（Unreal Header Tool）会禁止你这样做，更不用说你不能将这些标签添加到虚拟函数中。
+
+### 11.1 正确重写 RPC 的方法 \[#111-正确重写-rpc-的方法]
+
+这就是你应该在 C++中“重写”RPC 的方式：
+
+MyExampleClass.h
+
+```cpp
+/** 这个函数包含了 RPC 的实现，并且可以在 C++ 中被重写 */
+UFUNCTION()
+virtual void MyFunc();
+
+/** 从定义上来说，这才是真正的 RPC 函数，它在内部只是调用了 MyFunc() */
+UFUNCTION(Client, Unreliable)
+void MyFuncRPC();
+
+```
+
+## 12. 区分 **可靠的** 和 **不可靠的** RPC \[#12-区分-可靠的-和-不可靠的-rpc]
+
+任何复制的事件，可以是 **可靠的** 或 **不可靠的** 。默认情况下，RPC 是不可靠的。
+
+### 12.1 **可靠的** RPC \[#121-可靠的-rpc]
+
+**可靠的** 事件保证按发送顺序到达目的地（假设遵循 [所有权规则](https://docs.unrealengine.com/4.27/en-US/InteractiveExperiences/Networking/Blueprints/#ownership) ），只要它们在同一个转换单元中（由同一个 **ActorChannel** 处理），因为它们将被重新发送，直到它们被确认。然而，为了满足这个保证，它们会引入更多的带宽，以及潜在的延迟。尽量减少发送可靠事件，例如在每帧时，因为引擎内部可靠事件的缓冲区可能会溢出，从而导致相关玩家断开连接！
+
+使用 **可靠的** RPCs 来处理不应错过的事件，这些事件通常是玩家输入，不会在 tick 上发生，以及最好是迟到也不要错过，可能会影响游戏状态的游戏关键事件。
+
+**警告：** 永远不要在 tick 上使用可靠的 RPC。同时，在将可靠的 RPC 绑定到玩家输入时要小心。玩家可以非常快速地重复按按钮，这会导致可靠的 RPC 队列溢出。你应该限制玩家激活这些事件频率的方法。
+
+### 12.2 **不可靠** RPC \[#122-不可靠-rpc]
+
+**不可靠** 事件的工作方式正如其名——它们可能无法到达目的地，或者在 RPC 调用中存在间隔（即使它们仍然会按顺序处理），在网络发生数据包丢失或引擎确定需要发送大量高优先级流量时，这意味着如果它们丢失，将不会重新发送。因此，不可靠事件使用的带宽比可靠事件少，并且可以更安全地更频繁地调用。
+
+使用 **不可靠** 如果 RPC 被频繁调用，例如在 tick 时，或者当你调用一个对游戏玩法不至关重要的外观事件时，例如生成视觉和声音效果。
+
+## 13. 区分 **Replicated属性** 和 **RPC** \[#13-区分-replicated属性-和-rpc]
+
+**Replicated属性** 和 **RPC** 是两个非常强大的工具，几乎每个多人游戏都会不可避免地利用它们。
+
+### 13.1 多人游戏黄金法则 \[#131-多人游戏黄金法则]
+
+这是一个非常重要的规则，它分为三个黄金子规则，即多人游戏中的三大法则，你应该遵循：
+
+1. 使用 **Replicated属性** 来复制 **有状态事件** 。
+2. 使用 **多播/客户端 RPC** 来复制 **瞬态（非状态）或仅用于外观的事件** 。
+3. 使用 **服务器 RPC** 使 **客户端与服务器通信** （基本上是唯一的方法），并在需要时 [验证传递的数据](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#14-almost-always-validate-data) 。
+
+### 13.2 多人游戏黄金法则例外 \[#132-多人游戏黄金法则例外]
+
+值得注意的是，上面的黄金法则并非一成不变，总有例外：
+
+1. 有时，即使是对于状态复制，使用 **RPCs** 也可能相当不错，例如当超过最大数据包大小（65535B=64KB）时，此时将数据分块成可靠的 RPCs，同时避免超出可靠缓冲区大小（`RELIABLE_BUFFER` 默认为 256，这是最大可靠未确认数据包数加上任何给定时间的当前传出数据包）可能是一种有用的模式，尽管这必须非常小心地进行，否则客户端可能会开始断开连接！这里有一篇令人惊叹的 [文章](https://vorixo.github.io/devtricks/data-stream/) 更深入地介绍了如何做到这一点。
+2. 有时候，按照同样的类比，你也可以使用 **Replicated属性** 来处理瞬态/有损事件。这里有一篇精彩的 [文章](https://jambax.co.uk/better-burst-counters/) 展示了这一点。
+
+### 13.3 性能比较 \[#133-性能比较]
+
+经常有人基于性能比较 Replicated属性 和 RPC，以考虑使用哪一个。这种比较基本上源于他们并不真正理解它们是不同的工具，服务于相当不同的目的，使得这种比较大部分情况下都是不恰当的。
+
+一般而言，RPC 最终会调用比 Replicated属性 更多的虚函数调用和查找，并且这些调用需要在每次调用 RPC 时发生。此外，这些调用将在调用 RPC 的帧中发生，而不是像 Replicated属性 那样在帧结束时批处理，因此对于单次 RPC 来说，缓存未命中更为常见。
+
+Replicated属性 实际上使用*更多*内存，因为服务器和客户端会存储每个属性的影子状态，以便知道何时发生变化。
+
+所有属性和 RPC 都至少包含 2 字节的属性头，用于标识它是哪个属性/RPC。嵌入在 **结构体** 和 **子对象** 中的属性将具有更大的标头。但这通常不足以改变代码的设计，除非在非常极端的情况下。
+
+要进行更深入的比较，请查看[这篇文章](https://forums.unrealengine.com/t/replicated-properties-vs-rpcs/264973) 。
+
+## 14. 在需要的地方验证数据 \[#14-在需要的地方验证数据]
+
+此时，你应该已经理解，你在虚幻中将数据从客户端传递到服务器的唯一方法是通过 **服务器 RPC**。
+
+很常见看到人们从客户端到服务器随意传递数据，对客户端的数据不进行验证就信任它。这就是为什么在许多游戏中会出现以下情况：
+
+* 作弊者拥有无限的生命值
+* 作弊者拥有无限货币
+* 作弊者能穿墙射击
+
+你应该做的是使用现在大多数游戏都使用的技巧，遵循 **“信任并验证”** 的原则，我们信任客户端向服务器传递的数据（以提高响应速度），然后在服务器上验证它。在服务器上进行的 **“验证”** 可以通过以下方式完成：
+
+* [RPC 验证函数](https://docs.unrealengine.com/5.1/en-US/rpcs-in-unreal-engine/#validation) ：通常它除了返回 true 之外什么也不做。这样做的原因是，你不想仅仅因为存在客户端-服务器不一致就踢出玩家，因为在任何现实世界的网络游戏中，这种情况都可能频繁发生。
+* 服务器驱动数据
+* 外部后端数据库配置
+
+[这里](https://vorixo.github.io/devtricks/shootergame-vulnerability/)有一个有趣的漏洞故事 [射击游戏](https://docs.unrealengine.com/4.27/en-US/Resources/SampleGames/ShooterGame/)有，这个漏洞已经传播到许多游戏中。
+
+## 15. 了解复制保证 \[#15-了解复制保证]
+
+在属性和 RPC 复制方面，了解什么是保证的以及什么不是保证的非常重要，以及应该采取哪些步骤来在您的游戏代码中考虑这一点。这个技巧建立在 [Epic 的文章](https://forums.unrealengine.com/t/replication-ordering-guarantees/264974)的基础上。
+
+### 15.1 重复性可靠性保证 \[#151-重复性可靠性保证]
+
+#### 15.1.1 属性重复性可靠性保证 \[#1511-属性重复性可靠性保证]
+
+**属性复制** 保证可靠性。这意味着客户端版本 **Actor** 的属性最终将反映服务器上的值，但客户端不一定会收到服务器上属性每个单独变化的通知。这是因为 **Actor** 不一定每帧都进行复制，并且数据包可能会丢失，这意味着服务器上所做的每个更新不一定都会被客户端接收。\
+如果您需要客户端频繁接收更改，您可能需要增加 **NetUpdateFrequency** 的 **Actor**，以确保它每帧都进行复制。然而，即使更新频率很高，也不能保证每个更改都会被接收，因为数据包丢失可能导致更改丢失。您如何处理这取决于您游戏的具体情况，但在许多情况下，在接收到的值之间进行平滑处理可以帮助减轻更新未接收的问题。
+
+#### 15.1.2 RPC 可靠性保证 \[#1512-rpc-可靠性保证]
+
+**可靠的** RPC 发送几乎总是可以保证被接收和处理，因为它们会在被确认之前重发。如果它们从未到达目标客户端，这种情况很少发生（几秒钟内的大量数据包丢失），那么受影响的客户端将被踢出。另一方面， **不可靠的** RPC 如果丢失则不会重发，也不会触发断开客户端的连接。
+
+然而，RPC 对于尚未加入的客户端不适用，这意味着如果客户端在 RPC 最初发送时不在那里，它们将不会重新发送到该客户端。这就是为什么在最后的分析中，属性复制在更广泛的场景中被认为是更可靠的，其中最著名的是同步游戏状态数据，用于已加入但正在进行的客户端，也称为 JIP（正在加入）客户端。
+
+### 15.2 复制时机和顺序保证 \[#152-复制时机和顺序保证]
+
+### 15.2.1 属性复制时间保证 \[#1521-属性复制时间保证]
+
+正如我们之前[提到](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#1-get-to-know-the-game-framework-objects-online-wise)的，每个**Actor**都有自己的`网络更新频率` ，这决定了它将被考虑复制的频率。
+
+一旦一个 **Actor** 被考虑进行复制 **在某一帧上** ，所有应该复制的（以前称为 [POD](https://www.educative.io/answers/what-are-plain-old-data-pod-types-in-cpp) 类型）的简单属性将一次性发送，客户端应在单个帧内接收并应用这些更改。另一方面，正如你所预期的，未映射的属性（未硬编码的 **FNames** 和 **UObject**\*) 不在这样保证的范围内。它们被称为未映射的，因为它们的 **NetworkGUID**（一个全局唯一的标识符，用于网络相关用途，与要复制的 **Object** 一起序列化）尚未映射到它，因此 **Object** 的值为 null，但一旦 **Object** 进行复制（在客户端加载），并且 **NetworkGUID** 被解析为它，那么它们将变为已映射属性。为了能够知道 **NetworkGUID** 何时被解析到复制的 **Object**，我们使用称为 **OnReps** 的复制回调函数：
+
+MyObject.h
+
+```cpp
+/** 当 MyObject 在客户端上变为已映射/有效时调用的复制回调 */ 
+UFUNCTION() // 它必须被标记为 UFUNCTION，以便能通过名称找到
+void OnRep_MyReplicatedObject();
+
+/** 指向复制对象的指针。注意这仅仅是复制对该对象的引用（也就是说，对象本身必须首先被标记/设置为复制） */ UPROPERTY(ReplicatedUsing=OnRep_MyReplicatedObject) UObject_ MyReplicatedObject;
+```
+
+**注意：** 上面的意图是指从 **UObject** 衍生出来的任何内容，因此同样适用于 **AActor**\* 的常见用法。
+
+实际上，复制 POD 比复制 **Object** 花费的时间更少。当在服务器上生成复制的 **Actor**（不在地图中放置）时，只要它们是在生成 **Actor** 的同一帧中设置的（即不迟于调用 `BeginPlay`），其所有复制的 POD 属性都保证在例如客户端调用 `BeginPlay` 时已复制到客户端。原因是，在客户端上，从复制生成的复制 **Actor** 的 `BeginPlay`（不是从地图加载）总是在调用 `PostNetInit` 之后调用：
+
+Actor.h
+
+```cpp
+/** 总是在生成并读取Replicated属性后立即调用 */
+virtual void PostNetInit();
+
+```
+
+Actor.cpp
+
+```cpp
+void AActor::PostNetInit()
+{
+    if(RemoteRole != ROLE_Authority)
+    {
+        UE_LOG(LogActor, Warning, TEXT("AActor::PostNetInit %s Remoterole: %d"), *GetName(), (int)RemoteRole);
+    }
+
+    if (!HasActorBegunPlay())
+    {
+        const UWorld* MyWorld = GetWorld();
+        if (MyWorld && MyWorld->HasBegunPlay())
+        {
+            SCOPE_CYCLE_COUNTER(STAT_ActorBeginPlay);
+            DispatchBeginPlay();
+        }
+    }
+}
+
+```
+
+**注意：** 如果 **World** 在调用 `PostNetInit` 之前还没有在客户端BeginPlay，那么由 [已复制的 **GameState** 来触发 `BeginPlay`](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#1522-gamestate-replication-timing-guarantee)。放置在地图中的 [**Actors**](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#27-be-aware-of-placed-in-map-actors-subtleties) 不会为它们调用 `PostNetInit`，并且也会从复制的 **GameState** 触发 `BeginPlay`。
+
+然而，再次强调，未在 `UnrealNames.inl` 中硬编码的 **Names** 以及指向其他 **Objects** （尤其是动态对象 - 在运行时生成）在此点可能无法保证有效，理想情况下应依赖于 `OnRep` 复制回调来确定何时进行复制。
+
+对于在**多个帧**中对多个属性进行的更改，通常应按进行更改的顺序接收这些更改。但是，不理想的网络条件可能导致这些更改被丢弃和重新发送，因此它们可能会稍后收到。例如：
+
+服务器有三个复制的布尔值，分别在三轮网络更新中改变。服务器的状态如下所示，对于三个属性：
+
+0,0,0 → 1,0,0（第一个属性的改变已发送）→ **1,1,0**（第二个属性的改变已发送）→ 1,1,1（第三个属性的改变已发送）。
+
+在发送第三个改变之后，服务器检测到第二个改变丢失，因此重新发送。客户端接收到了第一个改变，但由于第二个改变丢失并重新发送，第三个改变在第二个改变之前被接收。客户端的状态如下所示：0,0,0 → 1,0,0 → **1,0,1** → 1,1,1。
+
+再次强调，客户端状态最终会反映服务器状态这一保证得到维护，但在那之前，客户端的属性可能处于一个在服务器上从未存在过的 **状态（1,0,1）**。这是因为 **Objects** 或甚至 **结构体** 并不是原子性地（一次性）复制的，这意味着只有从 **Actor** 的阴影状态（用于比较属性是否不同，因此需要复制）中更改的属性才会被发送。我不相信 **Objects** 可以原生地支持 [原子复制](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#16-use-atomic-replication) ，但 **结构体** 一定可以。
+
+在此顺便提一下，在服务器端动态（在运行时）将一个 **Actor组件** 附加到刚刚复制的 **Actor** 上，只要你在生成它的同一帧内完成（不超过 `AActor::BeginPlay()` 被调用），就保证会与 **Actor** 发送的同一初始数据包到达。
+
+在这个阶段，你应该明白术语 [**帧**](https://en.wikipedia.org/wiki/Frame_\(networking\)) 在这个上下文中非常重要，简单的理由是 **Actor** 和它们所拥有的属性在每一帧结束时都有可能被收集用于复制。
+
+### 15.2.2 **GameState** 复制时间保证 \[#1522-gamestate-复制时间保证]
+
+**GameState** 在客户端上的任何 **Actor** 调用 `BeginPlay` 时都有保证是有效的。
+
+让我们看看以下代码，以了解这种保证是如何合法的：
+
+GameModeBase.h
+
+```cpp
+/** actors 调用 BeginPlay 的过渡. */
+UFUNCTION(BlueprintCallable, Category=Game)
+virtual void StartPlay();
+```
+
+GameModeBase.cpp
+
+```cpp
+void AGameModeBase::StartPlay()
+{
+    GameState->HandleBeginPlay();
+}
+
+```
+
+GameStateBase.h
+
+```cpp
+/** 由游戏模式调用，以设置BeginPlay bool */
+virtual void HandleBeginPlay();
+
+/** 默认情况下调用 BeginPlay 和 StartMatch */
+UFUNCTION()
+virtual void OnRep_ReplicatedHasBegunPlay();
+
+/** 在调用 GameModeBase::StartPlay 时复制，以便客户端也能开始游戏 */
+UPROPERTY(Transient, ReplicatedUsing = OnRep_ReplicatedHasBegunPlay)
+bool bReplicatedHasBegunPlay;
+
+```
+
+GameStateBase.cpp
+
+```cpp
+void AGameStateBase::HandleBeginPlay()
+{
+    bReplicatedHasBegunPlay = true;
+
+    GetWorldSettings()->NotifyBeginPlay();
+    GetWorldSettings()->NotifyMatchStarted();
+}
+
+void AGameStateBase::OnRep_ReplicatedHasBegunPlay()
+{
+    if (bReplicatedHasBegunPlay && GetLocalRole() != ROLE_Authority)
+    {
+        GetWorldSettings()->NotifyBeginPlay();
+        GetWorldSettings()->NotifyMatchStarted();
+    }
+}
+
+```
+
+WorldSettings.h
+
+```cpp
+void AWorldSettings::NotifyBeginPlay()
+{
+    UWorld* World = GetWorld();
+    if (!World->bBegunPlay)
+    {
+        for (FActorIterator It(World); It; ++It)
+        {
+            SCOPE_CYCLE_COUNTER(STAT_ActorBeginPlay);
+            const bool bFromLevelLoad = true;
+            It->DispatchBeginPlay(bFromLevelLoad);
+        }
+
+        World->bBegunPlay = true;
+    }
+}
+
+```
+
+WorldSettings.cpp
+
+```cpp
+void AWorldSettings::NotifyBeginPlay()
+{
+    UWorld* World = GetWorld();
+    if (!World->bBegunPlay)
+    {
+        for (FActorIterator It(World); It; ++It)
+        {
+            SCOPE_CYCLE_COUNTER(STAT_ActorBeginPlay);
+            const bool bFromLevelLoad = true;
+            It->DispatchBeginPlay(bFromLevelLoad);
+        }
+
+        World->bBegunPlay = true;
+    }
+}
+
+```
+
+现在如果您熟悉[传统游戏流程](https://docs.unrealengine.com/4.27/Images/InteractiveExperiences/Framework/GameFlow/GameFlowChart.png) ，并且已经阅读了上面的代码，您就会明白首先在服务器上调用 `UWorld::BeginPlay()`，然后调用 `AGameModeBase::StartPlay()`，它又调用 `AGameStateBase::HandleBeginPlay()` ，然后 `AGameStateBase.bReplicatedHasBegunPlay` （标记为复制）被设置为 `true`，同时也调用 `AWorldSettings::NotifyBeginPlay()` ，它调用服务器上此时可用的所有 **Actors** 的 `BeginPlay`。当之前设置的布尔值复制时，其复制回调 `GameStateBase::OnRep_ReplicatedHasBegunPlay()` 会自动调用，它调用 `AWorldSettings::NotifyBeginPlay()` ，然后调用客户端此时可用的所有 **Actors** 的 `BeginPlay`。`bReplicatedHasBegunPlay` 复制简单地说就是相关的 **GameState** 也被复制。这保证了在调用任何客户端此时存在的 **Actor** 的 `BeginPlay` 之前，我们有一个有效的 **GameState**。任何可能在稍后时刻在客户端存在的 **Actors**，其 `BeginPlay` 将被调用，要么来自：
+
+1. **`AActor::PostNetInit()`**：这些是动态 **Actors**，在客户端通过复制隐式生成，通常在游戏初始阶段之后，或者具有比 **GameState**（例如 **PlayerState**）更低的 `NetUpdateFrequency`。
+2. **`AActor::PostActorConstruction()`** ：这些是在客户端显式生成（不是通过复制）的 **Actors**，通常在游戏初始阶段之后。
+
+为了使 `BeginPlay` 在这两种情况下都能被调用，客户端的 **World** 必须有 `bBegunPlay`，这在此刻已经发生，并保证客户端有一个有效的 **GameState**。
+
+话虽如此，这引出了我们的特殊保证：
+
+> > 当客户端上的任何 **Actor** 调用 `BeginPlay` 时，**GameState** 都保证有效。
+
+### 15.2.3 属性复制顺序保证 \[#1523-属性复制顺序保证]
+
+没有关于属性接收顺序或 `OnReps` 被调用的顺序的保证。任何顺序都应被视为实现细节，不应依赖。如果 **Actor** 的属性复制顺序对您的游戏很重要，您可能需要实现 `OnReps` 来跟踪哪些属性在一帧内已被更新。在复制值接收并调用其 `OnReps` 之后，您可以在 `PostRepNotifies` 函数中处理这些更改。您可能还需要在某些 `OnReps` 中保存某些接收到的值，直到它们准备好使用。
+
+也很重要的是要知道，**Actors** 之间复制的顺序无法保证。如果两个 **Actors** 在同一帧上更改了属性，由于多种因素，如不同的更新频率、相关性/优先级差异或数据包丢失，它们可能不会在同一帧上复制或接收。如果你有一个依赖于另一个 **Actor** 进行复制的 **Actor**，例例如依赖于玩家 **Character** 的库存 **Actor**，则使用 `OnReps` 来跟踪状态并确定 **Actor** 何时可用，再次是处理此类情况的有用策略。此外， [**复制图**](https://www.unrealengine.com/en-US/tech-blog/replication-graph-overview-and-proper-replication-methods) 也提供了构建和处理这些依赖的支持。
+
+### 15.2.4 RPC 排序保证 \[#1524-rpc-排序保证]
+
+任何可靠的 RPC 发送都保证能够被接收并按发送顺序处理，因为它们会在未被确认前重发。然而，无论可靠性如何，不同之间的顺序仍然无法保证，并且无法保证在同一帧上调用的 RPC 会在同一帧上到达。
+
+在理想的世界中，在最佳网络条件下，不可靠的 RPC 没有任何不同，但是一旦出现数据包丢失，不可靠的批处理中就会出现间隙，因为它们不会在丢失时重新发送。
+
+## 16. 使用原子复制 \[#16-使用原子复制]
+
+对象的原子复制意味着每次对象复制时，无论其属性是否改变，都会在同一数据包中复制该对象内的所有属性。默认情况下， 和不会原子复制，这意味着只有改变的部分会被发送，因此它们会进行差分网络序列化。
+
+**注意：** **Objects**或**结构体**将在同一帧中原子性地复制（一次性发送所有更改的属性），然而它们本身并不是真正的原子复制，所以要注意“原子性”的语境！
+
+原子复制在客户端必须永远避免出现服务器端可能从未存在过的状态的情况下至关重要。这种情况发生在你复制多个相互关联的属性，并且你在多个不同的帧中更改它们时，由于数据包丢失，中间的一些更改可能不会立即发送到客户端，导致客户端状态与服务器端从未存在过的状态不一致，从而引起意外的错误行为。
+
+为了解决这个问题，我们将需要的属性打包，以便在 **结构体** 中实现“始终在一起”的复制，然后为它实现 `NetSerialize` 函数（我们也可以用它来压缩属性值，从而实现带宽/CPU 优化），通过将这些属性序列化到存档中，以便它们可以在客户端始终反序列化为在服务器上序列化时的状态。 [这里](https://vorixo.github.io/devtricks/atomicity/) 可以找到一个实际示例。然而请注意，一些打包在一起的属性在您收到数据包时可能无效（例如，如果它们是 **Object** 的引用），正如之前所说的 [那样](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#1521-property-replication-timing-guarantees) 。
+
+**警告：** 在不适当的位置使用原子复制可能会对带宽造成负担，因为所有属性都会始终用于复制。
+
+虽然原生 **结构体** 如 **FLinearColor** 没有实现 `NetSerialize` 函数，但其他结构体实现了它，例如你可以作为例子：**FVector**（你将找到的是 **TVector**），**FRepMovement** 和 **FHitResult**。
+
+有时候你可能想更进一步，确保整个 **Object** 原子性地复制，出于某种原因。我最近在工作中不得不这样做的原因是，我需要所有属性在原子操作（一次性的操作，需要当它执行时所有这些属性都有效）时都有效。这不是你经常想做的事情，而只是在必要时才这样做。
+
+在我的情况下， **Object** 定义了 **Character** 的自定义设置。我最终编写的代码大致如下：
+
+MyCharacterComponent.h
+
+```cpp
+// 在一次原子操作中为我们的角色应用所有自定义设置
+void ApplyCustomizationSettings();
+
+// 在服务器上序列化已应用的自定义设置，以便在客户端上进行反序列化
+void SerializeCustomizationSettings();
+
+// 反序列化客户端上的自定义设置，以便为客户端应用这些设置
+void DeserializeCustomizationSettings(const TArray<uint8>& customizationSettingsData);
+
+/** 序列化自定义设置的回调字节数据 */
+UFUNCTION()
+void OnRep_CustomizationSettingsData();
+
+// 在原子操作中应用于客户端实例的服务器序列化自定义设置字节数据
+UPROPERTY(ReplicatedUsing=OnRep_CustomizationSettingsData)
+TArray<uint8> CustomizationSettingsData;
+
+```
+
+MyCharacterComponent.cpp
+
+```cpp
+void UMyCharacterComponent::ApplyCustomizationSettings()
+{
+    // 在此处应用自定义设置
+
+    SerializeCustomizationSettings();
+}
+
+void UMyCharacterComponent::SerializeCustomizationSettings()
+{
+    if (GetOwnerRole() == ROLE_Authority && GetCustomizationSettings())
+    {
+        // 在服务器上序列化自定义设置
+        TArray<uint8> customizationSettingsData;
+        FMemoryWriter memoryWriter(customizationSettingsData);
+        FObjectAndNameAsStringProxyArchive Ar(memoryWriter, false);
+        CustomizationSettings->Serialize(Ar);
+
+        CustomizationSettingsData = customizationSettingsData;
+    }
+}
+
+void UMyCharacterComponent::OnRep_CustomizationSettingsData()
+{
+    DeserializeCustomizationSettings(CustomizationSettingsData);
+}
+
+void UMyCharacterComponent::DeserializeCustomizationSettings(const TArray<uint8>& customizationSettingsData)
+{
+    if (customizationSettingsData.IsEmpty())
+    {
+        return;
+    }
+
+    // 在客户端上反序列化自定义设置
+    UCustomizationSettings* customizationSettingsData = GetCustomizationSettings();
+    FMemoryReader memoryReader(customizationSettingsData);
+    FObjectAndNameAsStringProxyArchive Ar(memoryReader, true);
+    customizationSettingsData->Serialize(Ar);
+
+    ApplyCustomizationSettings();
+}
+
+```
+
+说到这里，你应该非常小心地做类似的事情。在我的情况下，我只需要在客户端加入游戏会话时做这件事，并且在某些我不能透露的条件下，这样它不会频繁发生以消耗大量带宽。值得注意的是，这种自定义网络序列化的方法有一些限制，但这超出了文章的范围。最后，除非你了解了原因，否则你应该始终考虑其他方案，但在我这个案例中，这是一个坚实的考虑，幸亏我的[领导](https://www.linkedin.com/in/dawid-romanowski-9913b5a2/?originalSubdomain=pl)引导我这样做了。
+
+## 17. 避免使用 **GameMode** 的坏习惯 \[#17-避免使用-gamemode-的坏习惯]
+
+当运行服务器-客户端模型时， **GameMode** 只会存在于服务器上。以下是一些涉及这个 **Actor** 的错误习惯：
+
+* 在客户端尝试检索它却得到空值。相反，你只能在服务器上检索到它。
+* [过滤客户端-服务器执行路径](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#5-filter-client-server-execution-paths) ，当它只有一个执行服务器路径时，使得过滤变得毫无意义。
+* 在它上面调用 RPC，这最终会变得[毫无意义](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#10-dont-call-meaningless-rpcs) ，以至于它们将在本地服务器上运行，考虑到 **GameMode** 不是一个[已复制的](https://docs.unrealengine.com/en-US/InteractiveExperiences/Networking/Actors/RPCs/#requirementsandcaveats)**Actor** ，实际上只存在于服务器上。
+
+## 18. 谨防 **组播** RPC 误区 \[#18-谨防-组播-rpc-误区]
+
+目前，几乎所有关于虚幻引擎多人游戏知识的来源都会告诉你以下关于 **组播 RPC** 的信息：
+
+> **组播 RPC** 在服务器上调用并在服务器上执行，以及 **所有已连接的客户端** 。
+
+任何阅读这条信息的人都会被这样一个神话所吸引，即调用在服务器上复制的 **Actor** 上的 **组播 RPC**，将在其所有实例（其服务器实例以及所有客户端上的实例）上执行，而不考虑例如 [**相关性**](https://docs.unrealengine.com/en-US/InteractiveExperiences/Networking/Actors/Relevancy/) ，这是完全 **错误的** 。
+
+这加上他们不了解 [**多人游戏的金科玉律**](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#131-multiplayer-golden-rule) ，会导致他们在不适当的地方使用这种类型的 RPC。
+
+但**正确的**信息是：
+
+> **组播 RPC** 在服务器上调用并在与 **Actor** 相关的所有已连接客户端上执行。
+
+您必须意识到 **组播 RPC** 不会涉及以下两点：
+
+1. 正在加入的客户端：延迟加入者将首先没有[生成](https://www.google.com/search?q=https://wizardcell.com/unreal/multiplayer-tips-and-tricks/%2383-lost-rpc)相关的 **Actor**，以便 RPC 在其上执行。
+2. **与 Actor 无关的客户端** ：想象一个游戏场景，两个玩家 A 和 B 相距很远，以至于他们之间的距离大于网络剔除距离（`AActor.NetCullDistanceSquared` 的平方根）。在服务器端调用 **A 的 Pawn** 上的 **组播 RPC** 将在服务器上的 **A 的 Pawn** 上以及本地控制 **A 的 Pawn** 的客户端上（具有 `ROLE_AutonomousProxy` 的 `LocalRole`）执行 RPC。但是，RPC 不会在本地控制 **B 的 Pawn** 的实例上的 **A 的 Pawn** 上执行（**A 的 Pawn** 将不会被本地控制，并且具有`Role_SimulatedProxy` 的 `LocalRole`）。
+3. **回放录制/快进** ：这可以用来实现例如[击杀镜头 。](https://vorixo.github.io/devtricks/killcam/)
+
+处理这些场景，你需要进行[有状态的复制 。](https://vorixo.github.io/devtricks/stateful-events-multiplayer/)
+
+## 19. 正确复制**骨骼网格体**分配 \[#19-正确复制骨骼网格体分配]
+
+在多人游戏中，初学者经常会遇到一个非常常见的问题：“你如何将 **SkeletalMesh** 的分配/更改复制到其他客户端？”
+
+显然，**SkeletalMeshComponent**（继承自 **SkinnedMeshComponent**）以及它的 **SkeletalMesh** 都不会复制：
+
+SkinnedMeshComponent.h
+
+```cpp
+/** 该组件使用的骨架网格. */
+UPROPERTY(EditAnywhere, BlueprintReadOnly, Category="Mesh", meta = (DisallowedClasses = "DestructibleMesh"))
+TObjectPtr<class USkeletalMesh> SkeletalMesh;
+
+```
+
+初学者通常尝试以下方法来解决此问题，但这些尝试最终都会失败：
+
+1. **复制骨骼网格组件** ：考虑到内部的 `骨骼网格` 没有复制，这不会产生任何好的效果。这还可能破坏 **角色移动组件** 的网络。
+2. **组播更改** ：这显然是错误的，因为它 [不是状态性的](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#131-multiplayer-golden-rule) ，并且在 [许多场景](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#18-beware-of-netmulticast-rpc-myth) 中都会失败。
+
+你应该做的是复制驱动更改的“动作”或“状态”。这可以简单到是一个复制的布尔变量 `bSkeletalMeshAssigned`，它与一个复制回调 `OnRep_SkeletalMeshAssigned()` 相关联，将 `SkeletalMesh` 分配给你的 **Character** 。除了布尔值，你甚至可以复制一个指向资产本身的指针 `Mesh` 变量：
+
+MyCharacter.h
+
+```cpp
+UPROPERTY(ReplicatedUsing=OnRep_Mesh)
+USkeletalMesh* Mesh;
+
+UFUNCTION()
+void OnRep_Mesh();
+
+```
+
+MyCharacter.cpp
+
+```cpp
+void AMyCharacter::SetMesh(USkeletalMesh* NewMesh)
+{
+    Mesh = NewMesh;
+
+     // 如果要支持监听服务器，这一点至关重要。
+     // 如前所述，服务器不会像客户端那样自动调用 OnReps，
+	 // 因此我们需要手动调用。这也被认为是一种很好的做法（在复制属性的 Setter 中调用 OnReps，
+	 // 这样你就不需要在代码中所有设置属性的地方调用它，甚至可能忘记调用）
+	 // 这也有助于预测，你可以在客户端设置属性，在这种情况下，OnRep 不会被自动调用。
+    OnRep_Mesh();
+}
+
+void AMyCharacter::OnRep_Mesh()
+{
+    GetMesh()->SetSkeletalMesh(Mesh);
+}
+
+```
+
+[这里](https://vorixo.github.io/devtricks/stateful-events-multiplayer/#the-problem)您可以找到一个类似的问题，该问题展示了**组播 RPC** 的误用，然后像我们上面所做的那样正确地解决了这个问题。
+
+## 20. 解决原生复制属性缺少复制回调的问题 \[#20-解决原生复制属性缺少复制回调的问题]
+
+最近我在工作中遇到了以下问题：
+
+> 这有一个原生的复制属性，我正在使用它，它太神奇了，但是突然我想知道它何时以一种优雅的方式进行复制，但遗憾的是它是 `Replicated` 而不是 `ReplicatedUsing`！
+
+为了能够知道一个属性以干净、最优的方式复制，你应该将该属性标记为 `UPROPERTY(ReplicatedUsing=OnRep_MyProperty)` ，这并不总是适用于由引擎提供的原生属性，在我的情况下就是：
+
+PlayerState.h
+
+```cpp
+/** 该玩家当前是否为观察者 */
+UE_DEPRECATED(4.25, "This member will be made private. Use IsSpectator or SetIsSpectator instead.")
+UPROPERTY(Replicated, BlueprintReadOnly, Category=PlayerState)
+uint8 bIsSpectator:1;
+
+```
+
+当我们开始观看时，该变量被设置为 `true`，但我们想能够“监听”它何时复制，以便我们可以做出响应。有些人可能会想知道为什么我没有简单地使用本地的函数 [`APlayerController::BeginSpectatingState()`](https://wizardcell.com/unreal/spectating-system/#how-does-spectatorpawn-spawn-after-all) ，原因是我们想避免调用 [`APlayerController::ChangeState()`](https://wizardcell.com/unreal/spectating-system/#gameplay-states) ，这将使 **PlayerController** 失去对 **Pawn** 的控制，并创建一个无法执行游戏功能的场景，这可能会破坏我们的一项独家游戏功能。
+
+在这个时候，我的聪明领导建议我使用以下技巧：
+
+MyPlayerState.h
+
+```cpp
+/** 总是在从远程接收到属性后立即调用. */
+virtual void PostNetReceive() override;
+
+// 我方玩家在上一次网络更新中是否为观察者
+// 作为一道闸门 - 我们在广播 `SpectatingStartDelegate` 后关闭这道闸门，并在广播 `SpectatingEndDelegate` 时重新打开它
+bool bStartedSpectating = false;
+
+// 用于客户端进入/退出观察者模式的委托，并且 bIsSpectator 属性会复制到该委托
+FShouldBeSpectatingDelegate ShouldBeSpectatingDelegate;
+
+```
+
+MyPlayerState.cpp
+
+```cpp
+void AMyPlayerState::PostNetReceive()
+{
+    Super::PostNetReceive();
+
+    // 这是一个临时的复制回调，用于检查 bIsSpectator 是否已复制到我们这里，并且与我们的本地值不同
+    // 这样我们就可以可靠地控制客户端何时进入观察者模式
+
+    if (IsSpectator())
+    {
+        if (!bStartedSpectating)
+        {
+            bStartedSpectating = true;
+            ShouldBeSpectatingDelegate.Broadcast(bStartedSpectating);
+        }
+    }
+    else
+    {
+        if (bStartedSpectating)
+        {
+            bStartedSpectating = false;
+            ShouldBeSpectatingDelegate.Broadcast(bStartedSpectating);
+        }
+    }
+}
+
+```
+
+为了解释，`PostNetReceive` 是我使用的一个本地函数，作为“全局复制回调”的一种形式，同时在其中实现了一个闸门，以便我们决定接收到的潜在新值是否真的是新的，然后广播适当的委托。正如你所看到的，这比如果我们能够直接利用的复制回调要复杂得多，但它工作得很好。
+
+## 21. 了解何时可以网络引用 **Objects** \[#21-了解何时可以网络引用-objects]
+
+人们通常认为，为了能够在网络上引用一个 **Object** ，它必须被 **复制** ，但这并不完全正确。这是因为他们没有意识到一个 [稳定命名的](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#211-stably-named-objects)**Object** 是一个东西，我们将在稍后讨论。
+
+通常，在UE的多人游戏框架中， **Object** 引用是自动处理的。这意味着，如果你有一个 **Object** 属性被复制，那么对该 **Object** 的引用将通过网络发送为一个由服务器分配的特殊 ID。这个特殊 ID 是一个 [**网络 GUID**](https://docs.unrealengine.com/en-US/API/Runtime/Core/Misc/FNetworkGUID/)。服务器负责分配此 ID，然后通知所有连接的客户端此分配。
+
+下面是如何复制一个 **Object** 引用的方法：
+
+MyOtherObject.cpp
+
+```cpp
+UPROPERTY(Replicated)
+UMyObject* MyObject;
+```
+
+ \
+在这种情况下，`MyObject` 属性将是对此属性所引用的 **Object** 的复制引用。\
+​\
+要使一个 **Object** 能够在网络中合法引用，它必须支持网络功能。要检查这一点，您可以调用 `UObject::IsSupportedForNetworking()` 。这通常被认为是一个低级函数，因此通常不需要在游戏代码中检查这一点。\
+​\
+通常，这些是可网络引用的 **Object** ：\
+​
+
+* **任何已复制的对象** ：这些可以是 **Actors**，或者 **子对象** ([**ActorComponents**](https://docs.unrealengine.com/4.27/en-US/InteractiveExperiences/Networking/Actors/Components/) 和 [**UObjects**](https://docs.unrealengine.com/en-US/replicated-subobjects-in-unreal-engine/))。
+* **任何具有稳定名称的对象** ：这些通常是未复制的 **Actors**，或者 **子对象** 。\
+  ​
+
+### 21.1 稳定命名的 **Object** \[#211-稳定命名的-object]
+
+​\
+稳定命名的 **Object** 简单来说就是存在于服务器和客户端上的 **Object** ，并且具有完全相同的 **名称** 。最初，它们通过网络名称进行引用，直到被分配的 **NetworkGUID** 替换。\
+​\
+如果 **Actors** 是以下情况，则它们是稳定命名的：\
+​
+
+* 直接从包中加载\
+     \* 放置在地图中的 **Actors**
+* 表现得像直接从包中加载\
+     \* 这些是动态生成的 **Actor** ，它们会让引擎误认为它们是放置在地图中的网络启动 **Actors**（分配了静态 **NetworkGUIDs**，因此当它们与客户端无关时，它们不会在客户端上被销毁）。这是通过将 `AActor.bNetStartupActor` 和 `AActor.bNetLoadOnClient` 设置为 `true`，并且它们被确定性地命名（服务器和客户端上的名称相同）来实现的。
+* 标记为可通过名称寻址（通过 `AActor::SetNetAddressable()`）
+     \* 这些是动态 [延迟生成](https://docs.unrealengine.com/en-US/unreal-engine-actor-lifecycle/#deferredspawn)**Actor** ，在调用 `AActor::FinishSpawning()` 之前被标记为网络可访问，并且被确定性地命名（服务器和客户端上的名称相同）。\
+  ​\
+  **注意：** Epic 对在调用 `AActor::SetNetAddressable()` 之前调用 `AActor::FinishSpawning()` 非常严格。然而，根据我的经验，它可以在任何时间点调用。\
+  ​\
+  如果 **ActorComponents** 是以下情况，则它们是稳定命名的：
+  ​
+* 默认子对象\
+     \* 在 C++ 构造函数中创建，因此它们是 CDO - **类默认对象** 的一部分。
+* 直接从包中加载\
+     \* 添加到地图中放置的 **Actor** 。
+* 标记为可通过名称寻址（通过 `UActorComponent::SetNetAddressable()` ）访问。\
+     \* 自动（由本地代码完成）。\
+         \* 通过**简单构造脚本** （从在蓝图 `组件` 部分定义的模板创建）。\
+         \* **时间轴组件** （在幕后通过 **用户构造脚本**添加）。\
+     \* 手动标记为可通过名称寻址（由您完成）\
+         \* 命名具有确定性（服务器和客户端上的名称相同）。这些通常是动态生成的，但例如，也可以是通过 UCS 添加的 **样条网格组件** 。\
+  ​\
+  如果所有其他 **UObjects**（非 **Actors** 和非 **ActorComponents**）是以下情况，则它们是稳定命名的：
+  ​
+* 默认子对象\
+     \* 在 C++ 构造函数中创建，因此它们是 CDO 的一部分。
+* 直接从包中加载。
+* 确定性命名（服务器和客户端上的名称相同），其中 `UObject::IsNameStableForNetworking()` 返回 `true`。这些通常是动态生成的。\
+  ​\
+  **注意：** 无论 **Objects** 是否已复制或稳定命名，最终它们都将通过它们的 **NetworkGUID** 来引用，然而当稳定命名时，它们的名称只会发送一次，然后被 **NetworkGUID** 替换。\
+   \
+  **小心：** 在实际复制之前将复制的 **Actor** 标记为可通过名称寻址，不会使其复制，它只会存在于服务器上！
+  ​
+
+## 23. 注意运行 RPC 之前 **Objects** 的先决条件 \[#23-注意运行-rpc-之前-objects-的先决条件]
+
+​\
+我决定将其作为一个提示，因为我看到了太多错误信息，无论是官方的还是非官方的。\
+​\
+**Actor** 如果有复制的，则可能能够运行 RPC。\
+​\
+**Actor组件** 如果有，则可能能够运行 RPC：\
+​
+
+* 由复制（在服务器端生成并复制）创建，并且它们拥有的/外部的 **Actor** 被复制。
+* [稳定命名](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/%23211-stably-named-objects)（在两端（服务器/客户端）加载/生成，并具有与其拥有/外部 **Actor** 相关的相同名称），并且它们的拥有/外部 **Actor** 被复制。
+* 既没有复制，也没有稳定命名，并且 RPC 是 **可靠的组播/客户端**。但是，这将会在客户端上生成一个 **ActorComponent**，并通过分配的 **NetworkGUID** 将其与其服务器版本链接起来，但是引擎似乎不太喜欢它，你最终会崩溃（我还没有找到一种不崩溃的方法）。\
+  ​\
+  所有其他 **UObjects**（非 **Actors** 或非 **ActorComponents**）如果它们有相关的 [代码](https://www.thegames.dev/?p=45) ，并且它们的 `Outer`**Actor** 被复制，并且它们：\
+  ​
+* 由复制（在服务器端生成并复制）创建，以及它们的 [`外部`](https://docs.unrealengine.com/en-US/API/Runtime/CoreUObject/UObject/UObjectBase/GetOuter/)**Actor** 已复制。
+* **完全**稳定命名（在两端（服务器/客户端）加载/生成，并具有相同的完整路径名称，因此它们的名称和它们的 `Outer` **Object** 名称都相同 - 请参阅 `UObject::IsFullNameStableForNetworking()` 以获取参考），并且它们的拥有 **Actor** 被复制。我发现你可以绕过稳定命名 `Outer`，如果它被复制了，然后简单地覆盖 `UObject::IsFullNameStableForNetworking()` 以返回 `true`。
+* 既没有复制，也没有稳定命名，并且 RPC 是 \*\*可靠的组播/客户端。但是，这将会在客户端上生成一个 **UObject**，并通过分配的 **NetworkGUID** 将其与其服务器版本链接起来，但是引擎似乎不太喜欢它，你最终会崩溃（我还没有找到一种不崩溃的方法）。
+
+## 24. 遵循 RPC 命名约定 \[#24-遵循-rpc-命名约定]
+
+​\
+当涉及到为不同类型的 RPC 命名时，一个非常好的实践和也是一种[约定](https://docs.unrealengine.com/en-US/rpcs-in-unreal-engine/#quicktips) ，就是在 RPC 函数的名称前加上其类型名称：\
+​
+
+* **客户端 RPC**: `ClientMyFunctionRPC()`
+* **服务器 RPC**: `ServerMyFunctionRPC()`
+* **网络组播 RPC**: `MulticastMyFunctionRPC()`\
+  ​\
+  这对于一眼就能确定在多人游戏中此功能可能会在哪些机器上执行非常有用。\
+  ​
+
+## 25. 了解为什么 RPC 没有返回值 \[#25-了解为什么-rpc-没有返回值]
+
+​\
+[RPCs](https://docs.unrealengine.com/en-US/InteractiveExperiences/Networking/Actors/RPCs/) 是单向调用，这就是为什么它们简单地没有返回值。\
+​\
+如果你想模拟返回值，你必须 ping-pong 你的 RPC。这意味着一个 RPC 被发送出去，获取一些数据，然后将这些数据作为 RPC 参数传递给另一个 RPC，该 RPC 再以相反的方式发送回来。\
+​
+
+## 26. 避免使用 [关卡蓝图](https://docs.unrealengine.com/en-US/ProgrammingAndScripting/Blueprints/UserGuide/Types/LevelBlueprint/) \[#26-避免使用-关卡蓝图]
+
+​\
+**关卡蓝图** 并不是你在单人游戏中经常使用的 **Actor** ，因此在多人游戏中也是如此。然而，它们非常适合一次性原型和熟悉蓝图系统，但它们是特定于所使用的关卡。这也意味着 **关卡蓝图** 可以是设置关卡特定功能或其中 **Actor** 的绝佳位置。一些例子包括在某个触发器被触摸时启动一段电影，或者在杀死所有敌人后打开特定的门。\
+​\
+让我们看看我偶尔在 **关卡蓝图** 中看到的以下代码片段：\
+​\
+![Level Blueprint](https://wizardcell.com//assets/blog/tips-and-tricks/level-blueprint.png)\
+​\
+作为回报，会生成以下类似错误的提示：
+
+```
+PIE：错误：蓝图运行时错误：“尝试读取属性 CallFunc\_GetPlayerController\_ReturnValue 时访问了 None”。 
+```
+
+这是一个可以采用多种形式但有一个很大的警告的代码：当涉及到 **关卡蓝图** 时，**时机** 不利于你！
+​\
+**PlayerController** 可能会在 **LevelScriptActor**（**关卡蓝图** 的另一种说法，因为它是其原生父类）之后生成，这意味着在调用 `BeginPlay` 时它不存在，从而导致我们上面看到的错误，并且 `ViewTarget` 是被控制的 **Pawn**（如果存在）。
+​\
+此外，请注意，此代码还使用了[**不祥的 `GetPlayerController(0)`**](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#2-beware-of-getplayerxxx0-static-functions)！\
+​
+
+## 27. 注意地图中放置的Actor的细微差别 \[#27-注意地图中放置的actor的细微差别]
+
+​\
+**放置在地图中的（静态）复制Actor**在网络游戏中与**运行时生成的（动态）复制Actor**相比，会有很大的不同：\
+​
+
+* 当网络剪枝时，它们不会被销毁，这意味着当一个放置在地图中的**Actor**超出连接的相关范围时，它不会被销毁。
+* 它们不会被调用 [**`AActor::PostNetInit()`**](https://docs.unrealengine.com/en-US/API/Runtime/Engine/GameFramework/AActor/PostNetInit/)。
+* 它们是从地图中加载的，而不是从复制中生成。
+* 它们的复制回调函数，也称为 `OnRep` 函数，不一定在 `BeginPlay` 之前被调用，就像在动态复制的Actor中对于 POD 类型是 [**有保证的**](https://wizardcell.com/unreal/multiplayer-tips-and-tricks/#1521-property-replication-timing-guarantees) ，甚至通常会在调用 `BeginPlay` 之后调用它们。

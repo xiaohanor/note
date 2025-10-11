@@ -1,0 +1,94 @@
+---
+title: TArray 容器的底层实现
+---
+`TArray` 是 Unreal Engine 中最核心和最常用的容器之一，可以理解为UE版本的动态数组，类似于 C++ 标准库中的 `std::vector`。它的底层实现经过了高度优化，以适应游戏开发中对性能、内存和效率的严苛要求。
+
+总的来说，`TArray` 的底层核心是一个**连续的、动态分配的内存块**。
+
+下面我们从几个关键方面来剖析其底层机制：
+
+### 1. 核心数据结构 \[#1-核心数据结构]
+
+`TArray` 的底层实现主要围绕一个名为 `FArrayData` 的结构体（或类似的实现方式）。这个结构体通常包含以下几个关键成员变量：
+
+* **`Data` 指针 (`ElementType*`)**: 这是一个指向堆（Heap）上分配的连续内存块的指针。所有 `TArray` 的元素都紧密地存储在这块内存中。`ElementType` 是你在创建 `TArray` 时指定的类型，例如 `TArray<FString>` 中的 `FString`。
+
+* **`ArrayNum` (int32)**: 这个变量记录了当前数组中实际存储的元素数量。它类似于 `std::vector` 的 `size()`。
+
+* **`ArrayMax` (int32)**: 这个变量记录了当前分配的内存块总共可以容纳多少个元素。它代表了数组的“容量”，类似于 `std::vector` 的 `capacity()`。
+
+所以，一个 `TArray` 对象在内存中的基本布局就是这三个核心成员。
+
+```cpp
+// 这是一个简化的概念性代码，不完全等同于源码，但有助于理解
+template<typename InElementType>
+class TArray
+{
+    // ...
+protected:
+    InElementType* Data;
+    int32 ArrayNum;
+    int32 ArrayMax;
+    // ...
+};
+```
+
+### 2. 内存管理与动态扩容 \[#2-内存管理与动态扩容]
+
+这是 `TArray` 最关键的特性之一。当你向数组中添加元素（例如使用 `Add()` 或 `Emplace()` 方法）时，会发生以下情况：
+
+* **容量检查**: 首先，`TArray` 会检查 `ArrayNum` 是否小于 `ArrayMax`。
+
+  * **如果容量足够 (`ArrayNum < ArrayMax`)**: 新元素会直接在 `Data` 指向的内存块的末尾（即 `Data[ArrayNum]` 的位置）被构造，然后 `ArrayNum` 加一。这个操作非常快，通常是 O(1) 的时间复杂度。
+
+  * **如果容量不足 (`ArrayNum == ArrayMax`)**: 这时就需要进行**重新分配（Reallocation）**，也就是扩容。
+
+* **扩容机制**:
+
+  1. `TArray` 会根据一个内部的增长策略（Growth Strategy）计算出一个新的、更大的容量 (`NewArrayMax`)。这个策略并非简单地加一，而是通常会按当前容量的一定倍数（例如1.5倍或2倍）增长，以减少频繁重新分配的次数。这种“摊销”策略使得连续添加大量元素的平均时间复杂度接近 O(1)。
+
+  2. 它会在堆上分配一块大小为 `NewArrayMax * sizeof(ElementType)` 的新内存。
+
+  3. 然后，`TArray` 会将旧内存块中的所有元素 **移动Move** 或 **拷贝Copy** 到新的内存块中。对于支持移动语义（Move Semantics）的类型，会优先使用 `Move`，这比 `Copy` 高效得多，避免了深拷贝的开销。对于基础类型（POD, Plain Old Data）或不支持移动的类型，则会执行拷贝操作。
+
+  4. 释放（Deallocate）旧的内存块。
+
+  5. 最后，更新 `Data` 指针指向新的内存地址，并更新 `ArrayMax` 的值为 `NewArrayMax`。
+
+  6. 在新内存的末尾构造新元素，并增加 `ArrayNum`。
+
+### 3. 内存分配器 (Allocator) \[#3-内存分配器-allocator]
+
+`TArray` 的设计是高度可定制的。它实际上是一个模板类，除了元素类型 `ElementType` 之外，还可以接受一个可选的**分配器类型Allocator**作为模板参数。
+
+```cpp
+template<typename InElementType, typename InAllocator = FDefaultAllocator>
+class TArray;
+```
+
+* **`FDefaultAllocator`**: 这是默认的分配器。它使用 Unreal Engine 底层的标准内存分配函数（如 `FMemory::Malloc` 和 `FMemory::Free`）在堆上进行内存操作。
+
+* **其他分配器**: 你可以提供自定义的分配器来改变 `TArray` 的内存行为。例如：
+
+  * **`FInlineAllocator<N>`**: 内联分配器。它会在 `TArray` 对象自身内部预留一块可以容纳 `N` 个元素的空间。只要元素数量不超过 `N`，就不会有任何堆分配发生，极大地提高了性能。只有当元素数量超过 `N` 时，它才会回退到像 `FDefaultAllocator` 一样的堆分配行为。这对于存储少量元素的小数组非常有用。
+
+  * **`FHeapAllocator`**: 明确指定使用堆分配。
+
+  * **`FStackAllocator`**: 在栈上进行分配（需谨慎使用）。
+
+### 4. 与 `std::vector` 的对比 \[#4-与-stdvector-的对比]
+
+| 特性       | `TArray` (Unreal Engine)                                     | `std::vector` (C++ Standard Library)     |
+| -------- | ------------------------------------------------------------ | ---------------------------------------- |
+| **底层结构** | 连续动态内存块 (指针 + 数量 + 容量)                                       | 连续动态内存块 (指针 + 数量 + 容量)                   |
+| **内存管理** | 自动扩容，通常按倍数增长。                                                | 自动扩容，通常按倍数增长（具体实现由编译器库决定）。               |
+| **内存分配** | 可通过模板参数定制分配器 (`FDefaultAllocator`, `FInlineAllocator` 等)。    | 可通过模板参数定制分配器 (`std::allocator` 或自定义分配器)。 |
+| **类型要求** | 对元素类型要求宽松，不强制要求有默认构造函数。可以使用 `Emplace` 等方法。                   | 早期版本对类型有较多要求，现代C++已非常灵活。                 |
+| **集成度**  | 与UE的反射系统 (`UCLASS`, `UPROPERTY`) 深度集成，可被序列化、垃圾回收和在蓝图中使用。     | 纯C++标准库组件，与特定框架无关。                       |
+| **安全性**  | 提供了 `IsValidIndex()` 检查，部分构建配置下有边界检查。                        | 访问（如 `at()`）提供边界检查，但 `operator[]` 通常不提供。 |
+| **API**  | 提供了大量游戏开发特化的辅助函数，如 `AddUnique`, `FindByKey`, `RemoveSwap` 等。 | 提供了一套通用且强大的API。                          |
+| **移动语义** | 广泛使用移动语义来优化元素转移。                                             | C++11后广泛使用移动语义。                          |
+
+### 总结 \[#总结]
+
+`TArray` 的底层是一个由**指针、当前元素数量和最大容量**这三个核心变量管理的**连续动态内存数组**。它通过高效的**自动扩容机制**和**可定制的分配器**，为游戏开发提供了极高的性能和灵活性。其与Unreal Engine生态系统的深度集成（特别是反射和垃圾回收），是它相较于 `std::vector` 在UE项目中的最大优势。

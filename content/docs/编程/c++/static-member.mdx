@@ -1,0 +1,56 @@
+---
+title: Static member
+---
+## 静态成员函数 \[#静态成员函数]
+
+静态成员函数是属于类而不是类的实例的函数。这意味着它们可以直接通过类名调用，而不需要创建类的实例。静态成员函数通常用于执行与类本身相关的任务，而不涉及特定的实例数据。
+
+在C++中，静态成员函数使用`static`关键字进行声明。下面是一个简单的示例，演示了如何在C++中定义和使用静态成员函数：
+
+```cpp
+#include <iostream>
+
+class MyClass {
+public:
+    static void staticFunction() {
+        std::cout << "This is a static member function" << std::endl;
+    }
+};
+
+int main() {
+    // 调用静态成员函数，无需创建类的实例
+    MyClass::staticFunction();
+    return 0;
+}
+```
+
+在这个例子中，`staticFunction`是`MyClass`的静态成员函数。在`main`函数中，我们直接使用`MyClass::staticFunction()`调用了这个静态成员函数，而不需要创建`MyClass`的实例。
+
+静态成员函数通常用于执行与类本身相关的任务，例如实用函数或工具函数，这些函数不需要访问特定的实例数据。
+
+## 静态数据成员 \[#静态数据成员]
+
+```cpp
+#include <iostream>
+
+using namespace std;
+class Point {
+public:
+  ...
+private:
+  int X, Y;
+  //静态数据成员，必须在外部定义和初始化，内部不能直接初始化！
+  static int countP;
+};
+Point::Point(Point &p) {
+  X = p.X;
+  Y = p.Y;
+  countP++;
+}
+//必须在类外定义和初始化，用(::)来指明所属的类。
+int Point::countP = 0;
+
+int main() {
+...
+}
+```

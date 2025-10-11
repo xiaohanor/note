@@ -1,0 +1,119 @@
+---
+title: 3D数学
+---
+# 虚幻引擎（UE4/UE5）3D 数学速查表 \[#虚幻引擎ue4ue53d-数学速查表]
+
+> 面向实战，覆盖常用概念、公式与 UE API（C++/蓝图）。默认单位：厘米(cm)。
+
+## 基础与坐标系 \[#基础与坐标系]
+
+* 轴向：X 向前(Forward)，Y 向右(Right)，Z 向上(Up)
+* 角度单位：FRotator 使用度；三角函数与多数低层数学使用弧度
+  * C++：FMath::DegreesToRadians / RadiansToDegrees
+* 常用获取方向：
+  * C++：FRotator::Vector() 得到前向；FRotator::GetForwardVector / GetRightVector / GetUpVector
+  * C++：FTransform::GetUnitAxis(EAxis::X|Y|Z)
+  * 蓝图：Get Forward/Right/Up Vector（Rotator/Transform）
+
+## 向量 Vector（FVector） \[#向量-vectorfvector]
+
+* 点乘：a·b = |a||b|cosθ
+  * C++：FVector::DotProduct(A,B)
+* 叉乘：a×b，结果垂直于平面，右手法则
+  * C++：FVector::CrossProduct(A,B)
+* 长度：|v| = sqrt(v·v)
+  * C++：V.Size() / SizeSquared()；FVector::Dist(A,B) / DistSquared(A,B)
+* 归一化：v̂ = v/|v|
+  * C++：V.GetSafeNormal() / V.Normalize()
+* 投影到轴：proj = v 投影到 n（单位）：v\_proj = (v·n)n
+  * C++：V.ProjectOnTo(Axis) / ProjectOnToNormal(Normal)
+* 反射（镜像）：r = v − 2(v·n)n（n 为单位法线）
+  * C++：V.MirrorByVector(Normal)；蓝图：Mirror Vector By Normal
+* 向量夹角（度）：θ = acos( clamp(Dot, -1, 1) ) → 转度
+  * C++：float Deg = FMath::RadiansToDegrees(FMath::Acos(FVector::DotProduct(Â,B̂)))
+* 最近点
+  * 线段：C++：FMath::ClosestPointOnSegment(Point, A, B)
+  * 直线：蓝图：Find Closest Point On Line（Kismet Math Library）
+
+## 旋转 Rotation（FRotator / FQuat） \[#旋转-rotationfrotator--fquat]
+
+* FRotator（欧拉角，度）：Yaw(绕Z) / Pitch(绕Y) / Roll(绕X)
+* 四元数 FQuat：避免万向节锁，适合插值与组合
+  * 构造（轴-角，角度用弧度）：C++：FQuat(AxisUnit, AngleRad)
+  * 转换：Rot.Quaternion()；Quat.Rotator()
+  * 旋转向量：Quat.RotateVector(V)
+  * 球面插值：FQuat::Slerp(Q1, Q2, Alpha)
+* 朝向旋转（LookAt）：
+  * C++：UKismetMathLibrary::FindLookAtRotation(From, To)
+  * 方向向量转旋转：Dir.Rotation()
+* 角度差/最短路径：
+  * 标量角差（度）：FMath::FindDeltaAngleDegrees(A, B)
+  * Rotator 差：(B - A).GetNormalized()
+  * Rotator 插值：FMath::RLerp(A, B, Alpha, /*bShortestPath=*/true)
+  * 帧率平滑插值：FMath::RInterpTo(Current, Target, DeltaSeconds, Speed)
+
+## 变换 Transform（FTransform） \[#变换-transformftransform]
+
+* 组成：Translation / Rotation(FQuat) / Scale3D
+* 位置/方向变换：
+  * 点：T.TransformPosition(P)；T.InverseTransformPosition(P)
+  * 向量：T.TransformVector(V)（不含平移）
+  * 旋转：T.TransformRotation(Q)
+* 组件与 Actor：GetComponentTransform() / SetWorldTransform()
+* 插值：
+  * 位置：FMath::VInterpTo(Current, Target, DeltaSeconds, Speed)
+  * 标量：FMath::FInterpTo(Current, Target, DeltaSeconds, Speed)
+
+## 矩阵 Matrix（FMatrix） \[#矩阵-matrixfmatrix]
+
+* 常用构造与转换：
+  * FRotationMatrix::MakeFromX/Y/Z/XY
+  * FTransform::ToMatrixWithScale()
+* 提取 Rotator：FMatrix(Rotation).Rotator()
+
+## 平面/直线/相交 \[#平面直线相交]
+
+* 平面表示：FPlane(N, D) 或由点与法线：FPlane(Point, Normal)
+  * 有向距离：Plane.PlaneDot(P)（>0 在法线一侧）
+* 线与平面交点：
+  * C++：FMath::LinePlaneIntersection(Start, End, Plane)；分段：FMath::SegmentPlaneIntersection(Start, End, Plane, OutHit)
+* 点到平面距离：dist = N·P + D（N 为单位法线）
+
+## 屏幕/世界投影 \[#屏幕世界投影]
+
+* 世界→屏幕：APlayerController::ProjectWorldLocationToScreen(WorldPos, OutScreen)
+* 屏幕→世界射线：APlayerController::DeprojectScreenPositionToWorld(ScreenX, ScreenY, OutWorldOrigin, OutWorldDir)
+
+## 插值/缓动与数值工具 \[#插值缓动与数值工具]
+
+* 线性插值：FMath::Lerp(A, B, Alpha)；夹取：FMath::Clamp(Value, Min, Max)
+* Easing（蓝图/Kismet）：Ease(Float/Vector/Rotator) In/Out/InOut
+* 随机：FMath::FRandRange(Min, Max)；FMath::RandRange(Min, Max)；FMath::VRand()（单位随机方向）
+* 近似比较：FMath::IsNearlyEqual(A, B, Tol)；向量：V.Equals(Other, Tol)
+
+## 常见配方 Recipes（C++/蓝图） \[#常见配方-recipesc蓝图]
+
+* 从 Transform 获取三轴方向：
+  * C++：
+    * const FVector Fwd = T.GetUnitAxis(EAxis::X);
+    * const FVector Right = T.GetUnitAxis(EAxis::Y);
+    * const FVector Up = T.GetUnitAxis(EAxis::Z);
+* 计算朝向并旋转角色朝向目标：
+  * Rotator LookAt = UKismetMathLibrary::FindLookAtRotation(SelfLoc, TargetLoc);
+  * NewRot = FMath::RInterpTo(CurrentRot, LookAt, DeltaSeconds, Speed);
+* 将速度向目标方向分解（前/侧）：
+  * float ForwardSpd = FVector::DotProduct(Vel, Fwd);
+  * float RightSpd = FVector::DotProduct(Vel, Right);
+* 反弹方向（入射 I，法线 N 单位）：Reflect = I - 2\*Dot(I,N)\*N（蓝图：Mirror Vector By Normal）
+* 角速度限制（度/秒）：
+  * float TargetYaw = LookAt.Yaw; float NewYaw = CurrentYaw + FMath::Clamp(FMath::FindDeltaAngleDegrees(CurrentYaw, TargetYaw), -MaxDegPerSec*dt, MaxDegPerSec*dt);
+* 最近点到线段与距离：
+  * Closest = FMath::ClosestPointOnSegment(P, A, B);
+  * Dist = FVector::Dist(P, Closest);
+
+## 易错点与提示 \[#易错点与提示]
+
+* UE 中 FRotator 为度，FQuat 多数构造/三角函数为弧度；混用需转换
+* 归一化前先检查零向量：GetSafeNormal() 优于手动除零
+* 插值旋转尽量使用四元数或 RLerp(bShortestPath=true)，避免跨 180°抖动
+* Transform/旋转组合顺序会影响结果，调试时优先使用已有 API（TransformPosition/RotateVector 等）减少手写矩阵/乘序错误

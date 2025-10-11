@@ -1,0 +1,38 @@
+---
+title: 修复 Git 引发的编译错误
+---
+疑似自适应非统一构建导致编译错误
+
+将下面代码复制到项目的 `Save` 文件夹下的 `UnrealBuildTool` 文件夹中的 `BuildConfiguration.xml`
+
+```xml
+<SourceFileWorkingSet>
+
+         <Provider>None</Provider>
+
+         <RepositoryPath></RepositoryPath>
+
+         <GitPath></GitPath>
+
+     </SourceFileWorkingSet>
+```
+
+完整 `BuildConfiguration.xml` 如下
+
+```xml
+<?xml version="1.0" encoding="utf-8" ?>
+
+<Configuration xmlns="https://www.unrealengine.com/BuildConfiguration">
+
+<SourceFileWorkingSet>
+
+         <Provider>None</Provider>
+
+         <RepositoryPath></RepositoryPath>
+
+         <GitPath></GitPath>
+
+     </SourceFileWorkingSet>
+
+</Configuration>
+```
