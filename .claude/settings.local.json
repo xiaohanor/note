@@ -2,7 +2,8 @@
   "permissions": {
     "allow": [
       "Bash(bun run build)",
-      "Bash(mv:*)"
+      "Bash(mv:*)",
+      "Bash(bun next build:*)"
     ],
     "deny": [],
     "ask": []
