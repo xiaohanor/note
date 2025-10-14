@@ -1,4 +1,4 @@
-import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
+import type { BaseLayoutProps } from "fumadocs-ui/layouts/shared";
 
 /**
  * Shared layout configurations
@@ -9,6 +9,7 @@ import type { BaseLayoutProps } from 'fumadocs-ui/layouts/shared';
  */
 export function baseOptions(): BaseLayoutProps {
   return {
+    githubUrl: "https://github.com/xiaohanor/note",
     nav: {
       title: (
         <>
