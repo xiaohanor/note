@@ -1,0 +1,36 @@
+---
+title: 定位系统
+---
+
+在游戏开发中常见的一种需求是：在玩家周围一定范围内选出目标，并对这些目标进行排序与筛选。传统做法通常需要手动搭建一套碰撞检测，并维护大量参数，但在 UE5 中已有现成方案可以大幅简化这一流程——Targeting System 插件。通过配置数据资产（Data Asset），我们可以更便捷、高效地实现定位功能。
+
+步骤概览
+1. 启用插件
+   - 在编辑器中启用 Targeting System 插件。
+   ![[Pasted image 20251020144256.png]](/附件/pasted-image-20251020144256.png)
+
+2. 创建目标预设（Targeting Preset）
+   - 新建数据资产，选择类：TargetingPreset。
+   ![[Pasted image 20251020144346.png]](/附件/pasted-image-20251020144346.png)
+
+3. 添加定位任务（Selection / Sorting / Filtering）
+   - 在预设中添加所需任务，常见分为：选择任务、排序任务和过滤任务。
+   ![[Pasted image 20251020144427.png]](/附件/pasted-image-20251020144427.png)
+
+   目标选择任务（Target Selection）通常包含以下配置：
+   - 碰撞数据（Collision Data）：可选射线、盒体、球体等检测类型；配置碰撞通道或碰撞预设。
+   - 扫描数据（Scan Data）：基于上述碰撞类型设置检测范围和相关参数。
+   - 追踪数据（Tracking Data）：常见选项例如忽略源 Actor（Ignore Source Actor）。
+
+   常用的过滤与排序任务示例：
+   - Actor 类过滤（Actor Class Filter）：支持“必须包含”与“忽略”两种过滤选项。
+   - 按距离排序（Sort By Distance）：根据与搜索源的距离对目标进行排序。
+
+4. 在蓝图中执行定位
+   - 使用 Targeting Subsystem 和 Perform Targeting Async Action 等节点来触发定位流程。
+   - 将刚才创建的 TargetingPreset 传入节点，执行后通过 Get Targeting Results 遍历命中结果并处理。
+   ![[Pasted image 20251020144515.png]]
+
+完成以上步骤后，你即可通过数据驱动的方式快速实现目标搜索、筛选与排序逻辑，避免手动管理大量碰撞检测细节。
+
+Tips: 在控制台使用 `ts.debug.EnableTargetingDebugging true` 可视化检测线框。
