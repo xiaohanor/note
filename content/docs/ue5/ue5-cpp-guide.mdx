@@ -6,17 +6,21 @@ title: UE5 C++ 指南
 
 *在这个仓库中，我们将指导你开始使用 Unreal Engine 和 C++的基础知识。我们将涵盖 C++编程的基础，例如数据类型和指针，并展示如何在 Unreal Engine 的游戏开发中使用这些概念。我们还将向你介绍 Unreal Engine 模块系统，这是将你的游戏代码组织成更小、更易于管理部分的重要方面。*
 
-> \[!IMPORTANT\] 如果你想在 Unreal Engine 中使用其他语言，比如 C#，那么强烈推荐你查看 Oscar Olsson 的这个仓库。
+<Callout type="warn">
+  如果你想在 Unreal Engine 中使用其他语言，比如 C#，那么强烈推荐你查看 [Oscar Olsson](https://github.com/UnrealSharp/UnrealSharp) 的这个仓库。
+</Callout>
 
-<Callout> 这个仓库是和 ChatGPT 一起创建的，用于协助写作和构思每一句话。虽然它提供了有价值的信息，但可能并不完全准确。如果你发现任何错误或虚假陈述，请随时创建一个新问题来报告它们，以便进一步改进和澄清。</Callout>
+<Callout>
+  这个仓库是和 ChatGPT 一起创建的，用于协助写作和构思每一句话。虽然它提供了有价值的信息，但可能并不完全准确。如果你发现任何错误或虚假陈述，请随时创建一个新问题来报告它们，以便进一步改进和澄清。你也可以发送一个新的 pull request 来对代码库进行正确的修改。**我们非常感谢你的贡献和反馈！**
+</Callout>
 
-> 你也可以发送一个新的 pull request 来对代码库进行正确的修改。
->
-> **我们非常感谢你的贡献和反馈！**
+<Callout>
+  示例和文档旨在适用于 UE 5.0 版本及更高版本。部分代码可能在旧版本上无法工作！
+</Callout>
 
-> \[!NOTE\] 示例和文档旨在适用于 UE 5.0 版本及更高版本。部分代码可能在旧版本上无法工作！
-
-> \[!IMPORTANT\] 如果你想查看最新的更改，可以检出 dev 分支。但是要注意实验性更改和进行中文字样。
+<Callout type="warn">
+  如果你想查看最新的更改，可以检出 dev 分支。但是要注意实验性更改和进行中文字样。
+</Callout>
 
 ## 👑 快捷指南
 
@@ -32,97 +36,95 @@ title: UE5 C++ 指南
 
 ## 🎩 插件
 
-点击展开
-
 这些年，我发现了一些很棒且实用的插件，用于扩展和提高我的生产力。
 
 我推荐最多的插件有：Advanced Renamer、Game Input、Common Maps、Quick Actions、ActorLocker、FlatNodes、CrystalNodes、ALS 和 Audio Meters。
 
 这是我到目前为止发现的插件完整列表：
 
-### Marketplace Plugins
+### 市场插件
 
-*   成就系统（轻松在任何 UE4 项目中定义和管理成就）。
-*   动画（使用矢量曲线动画化任何事物）。
-*   附件同步（使任何武器都能拥有附件）。
-*   音频计量轻量版（让你分析和计量子混音）。
-*   自动大小评论（使评论框自动调整大小以适应内部节点）。
-*   可蓝图化开发者设置（通过蓝图和编辑器访问配置文件，类似于 `UDeveloperSettings` ）。
-*   常用地图（通过将它们存储在列表中，允许您快速切换到您正在处理的项目中经常使用的地图）。
-*   自定义详细信息部分（通过将您的变量分组到自定义部分来组织详细信息面板）。
-*   DzX 径向菜单（径向菜单插件为饼图样式的组件设计提供了完全的自由度）。
-*   增强输入序列（允许您处理输入动作及其序列）。
-*   扩展调试库（扩展了部分原生调试功能，暴露了更多功能）。
-*   文件系统库（在平静中打开、保存、复制、移动和删除文件和目录）。
-*   游戏流程（允许用户创建状态机并配置它们用于各种目的）。
-*   渐变生成器（帮助您创建复杂的渐变）。
-*   实时蓝图调试器（将蓝图调试器的变量窗口直接集成到关卡编辑器的详细信息面板中，用于任何选定的蓝图类实例）。
-*   大纲快捷方式（允许将快捷方式绑定到一些基本的世界大纲功能）。
-*   项目声学（用于为您的 3D 环境添加精确声学的音频波形声学引擎）。
-*   项目清理器（删除项目中的未使用资源和空文件夹）。
-*   任务编辑器插件（管理和创建 NPC 的任务和对话，具有非常动态和可定制的功能）。
-*   快速操作（在 Unreal 中快速查找任何内容）。
-*   正则表达式在蓝图（蓝图可用正则表达式）。
-*   重启虚幻编辑器（点击或使用快捷键重启虚幻编辑器的工具）。
-*   屏幕淡入淡出库（插件，使在蓝图和 C++中实现屏幕淡入淡出变得简单）。
-*   SweejTech 音频检查器（允许你在紧凑的编辑器选项卡窗口中查看游戏中所有活动声音的详细有用信息）。
-*   时间时钟（轻松追踪你在项目中需要工作多长时间，并使用闹钟管理你的时间）。
-*   通用相机（为你的游戏设计的灵活相机）。
+-   [成就系统](https://www.unrealengine.com/marketplace/en-US/product/achievement-system-blueprint-compatible) (轻松定义和管理任何 UE4 项目中的成就)。
+-   [动画](https://www.unrealengine.com/marketplace/en-US/product/animate-curve-driven-animations) (使用矢量曲线为任何事物制作动画)。
+-   [附件同步](https://www.unrealengine.com/marketplace/en-US/product/attachment-sync) (为任何武器添加附件功能)。
+-   [音频计量精简版](https://www.unrealengine.com/marketplace/en-US/product/audio-metering-lite) (让您分析和计量子混音)。
+-   [自动调整注释大小](https://www.unrealengine.com/marketplace/en-US/product/auto-size-comments) (使注释框自动调整大小以适应内部的节点)。
+-   [蓝图化开发者设置](https://www.unrealengine.com/marketplace/en-US/product/blueprintable-developer-settings) (通过蓝图和编辑器访问和操作配置文件，就像 `UDeveloperSettings` 一样)。
+-   [常用地图](https://www.unrealengine.com/marketplace/en-US/product/common-maps) (通过将您在项目中频繁使用的地图存储在列表中，让您能够快速切换)。
+-   [自定义详细信息面板](https://www.unrealengine.com/marketplace/en-US/product/custom-details-sections) (通过将您的变量分组到自定义部分来组织详细信息面板)。
+-   [DzX 径向菜单](https://www.unrealengine.com/marketplace/en-US/product/dzx-radial-menu-umg/questions) (径向菜单插件为饼图状的小部件设计提供了完全的自由)。
+-   [增强输入序列](https://www.unrealengine.com/marketplace/en-US/product/enhanced-input-sequence) (允许您处理输入动作及其序列)。
+-   [扩展调试库](https://www.unrealengine.com/marketplace/en-US/product/extended-debug-library) (扩展了一些原生调试功能，暴露了更多功能)。
+-   [文件系统库](https://www.unrealengine.com/marketplace/en-US/product/file-system-library) (轻松地打开、保存、复制、移动和删除文件及目录)。
+-   [游戏流程](https://www.unrealengine.com/marketplace/en-US/product/game-flow) (允许用户创建状态机并为各种原因进行配置)。
+-   [渐变生成器](https://www.unrealengine.com/marketplace/en-US/product/gradient-generator) (帮助您创建复杂的渐变)。
+-   [实时蓝图调试器](https://www.unrealengine.com/marketplace/en-US/product/live-blueprint-debugger) (将蓝图调试器的变量窗口直接集成到任何选定的、蓝图类实例的 Actor 的关卡编辑器详细信息面板中)。
+-   [大纲视图快捷键](https://www.unrealengine.com/marketplace/en-US/product/outliner-shortcuts) (允许将快捷键绑定到一些基本的世界大纲视图功能)。
+-   [项目声学](https://www.unrealengine.com/marketplace/en-US/product/project-acoustics-for-unreal-audio) (用于为您的 3D 环境添加精确声学的音频波声学引擎)。
+-   [项目清理器](https://www.unrealengine.com/marketplace/en-US/product/projectcleaner) (删除项目中未使用的资源和空文件夹)。
+-   [任务编辑器插件](https://www.unrealengine.com/marketplace/en-US/product/quest-editor-plugin) (管理和创建 NPC 的任务和对话，具有非常动态和可自定义的功能)。
+-   [快速操作](https://www.unrealengine.com/marketplace/en-US/product/quick-actions) (快速在 Unreal 中找到任何内容)。
+-   [蓝图中的正则表达式](https://www.unrealengine.com/marketplace/en-US/product/regex-in-blueprints) (为蓝图提供正则表达式功能)。
+-   [重启虚幻编辑器](https://www.unrealengine.com/marketplace/en-US/product/restart-editor-01) (一键或通过快捷键重启 Unreal 编辑器的实用工具)。
+-   [屏幕淡入淡出库](https://www.unrealengine.com/marketplace/en-US/product/screen-fade-library) (一个可以在蓝图和 C++ 中轻松实现屏幕淡入淡出的插件)。
+-   [SweejTech 音频检查器](https://www.unrealengine.com/marketplace/en-US/product/sweejtech-audio-inspector) (让您在一个紧凑的编辑器选项卡窗口中看到游戏中所有活动声音的详细、有用的信息)。
+-   [时钟](https://www.unrealengine.com/marketplace/en-US/product/time-clock) (轻松追踪您在项目中的工作时间，并通过闹钟管理您的时间)。
+-   [通用相机](https://www.unrealengine.com/marketplace/en-US/product/universal-camera) (为您游戏提供的一款灵活的相机)。
 
-### Github 插件
+### GitHub 插件
 
-*   角色锁定器（在编辑关卡时可以锁定角色）。
-*   高级运动系统重构（C++版本）。
-*   Agora 静态网格缩略图渲染器（在内容浏览器中提供一些关于静态网格的信息）。
-*   Aliaser（允许在内容浏览器中显示别名）。
-*   ALS-Refactored XT（扩展 ALS 重构，包含扩展的角色状态、改进的足迹系统、滑行、跳跃和攀墙功能）。
-*   AsyncLoadingScreen (能够添加自定义加载屏幕)。
-*   Audio Analysis Tools (提供多种分析音频数据的功能。与 Runtime Audio Importer 插件协同工作)。
-*   Audio Meters for Unreal Engine 5.1 (能够监控您的音频电平)。
-*   Batch Rename Tool (使用命名规则快速重命名多个资源)。
-*   BlueprintUE C++ (允许您将蓝图发送到关联到您的账户)。
-*   BUI Cheat Manager (作弊管理器，提供定义作弊快捷方式的方法)。
-*   循环依赖检测器。
-*   CrystalNodes (美化虚幻编辑器图节点)。
-*   CsToCpp (C#到 UE C++编译器)。
-*   CustomShapeButton (允许在 UE5.3 中制作任意形状的按钮)。
-*   Elementus Inventory (数据驱动型库存与物品系统)。
-*   ExtendedUnreal (为蓝图提供实用函数)。
-*   FlatNodes (Unreal Engine 图节点的一种极简风格)。
-*   FlowGraph (为游戏流程设计的无设计依赖节点系统)。
-*   Function Picker (允许在 UE5.3 中的任何蓝图属性中直接选择函数)。
-*   Hotbar and Inventory System (易于使用的 Hotbar 和背包系统)。
-*   MDMetaDataEditor (能够编辑蓝图属性、函数以及函数和事件参数的元数据)。
-*   Neat Metadata (允许在蓝图中使用各种元数据，这些元数据通常仅在 C++中可用)。
-*   ObjectPool (通过从固定池中重复使用对象而不是单独分配和释放它们来提高性能和内存使用)。
-*   PBCharacterMovement (C++中的 HL2 风格经典 FPS 移动，适用于 UE)。
-*   池管理器（帮助在 UE5.3 中重用对象）。
-*   刷新所有节点（能够在单个蓝图实例中刷新所有节点。当蓝图版本未更新到其对应的 C++版本时很有用）。
-*   串行通信（串行通信端口库）。
-*   设置小部件构造器（从 UE5.3 中的数据表自动生成游戏设置 UI）。
-*   子系统浏览器插件（添加子系统浏览器面板，用于探索运行中的子系统并编辑其属性）。
-*   标签恢复（恢复已关闭的标签）。
-*   UE4/UMG 的 UI 缓动库。
-*   虚幻引擎蓝图 CSV 解析。
-*   UnrealImGui (将 Dear ImGui 框架集成到 Unreal Engine 中)。
-*   VoxelCore (在 UE 中使用体素)。
+-   [ActorLocker](https://github.com/Gradess2019/ActorLocker) (在编辑关卡时锁定 Actor 的能力)。
+-   [高级移动系统重构版](https://github.com/Sixze/ALS-Refactored) (C++ 版本)。
+-   [Agora 静态网格缩略图渲染器](https://github.com/ryanjon2040/AgoraStaticMeshThumbnailRenderer) (在内容浏览器中提供有关静态网格的一些信息)。
+-   [别名器](https://github.com/AyeTSG/Aliaser) (允许在内容浏览器中显示别名)。
+-   [ALS-Refactored XT](https://github.com/Voidware-Prohibited/ALSXT) (通过扩展的角色状态、改进的脚印系统、滑铲、攀爬和跑墙功能来扩展 ALS Refactored)。
+-   [异步加载屏幕](https://github.com/truong-bui/AsyncLoadingScreen) (添加自定义加载屏幕的能力)。
+-   [音频分析工具](https://github.com/gtreshchev/AudioAnalysisTools) (提供多种用于分析音频数据的函数。与运行时音频导入器插件协同工作)。
+-   [虚幻引擎 5.1 音频计量](https://michaelgarydean.itch.io/audio-metering-editor-utility-widget) (监控您的音频电平的能力)。
+-   [批量重命名工具](https://github.com/FrozenStormInteractive/Unreal-Batch-Rename-Tool) (使用一套命名规则快速重命名多个资源)。
+-   [BlueprintUE C++](https://github.com/blueprintue/blueprintue-cpp-plugin) (允许您将您的蓝图发送到与您的帐户关联的 [](https://blueprintUE.com))。
+-   [BUI 作弊管理器](https://github.com/benui-dev/UE-BUICheatManager/) (作弊管理器，提供定义作弊快捷方式的方法)。
+-   [循环依赖检测器](https://github.com/bstt/CircularDependenciesDetector/)。
+-   [CrystalNodes](https://github.com/SkylakeOfficial/CrystalNodes) (美化虚幻编辑器图节点)。
+-   [CsToCpp](https://github.com/CSharpForUnrealEngine5/CsToCpp) (C# 到 UE C++ 编译器)。
+-   [自定义形状按钮](https://github.com/JanSeliv/CustomShapeButton) (允许在 UE5.3 中制作任何形状的按钮)。
+-   [Elementus 库存系统](https://github.com/lucoiso/UEElementusInventory) (数据驱动的库存与物品系统)。
+-   [ExtendedUnreal](https://github.com/BenVlodgi/UE-ExtendedUnreal) (向蓝图公开有用的函数)。
+-   [平铺节点](https://github.com/brumenn/FlatNodes) (虚幻引擎图节点的一种极简风格)。
+-   [流程图](https://github.com/MothCocoon/FlowGraph) (用于设计游戏流程的、与设计无关的节点系统)。
+-   [函数选择器](https://github.com/JanSeliv/FunctionPicker) (允许在 UE5.3 的属性中直接从任何蓝图中选择一个函数)。
+-   [快捷栏和库存系统](https://github.com/finalstack/InventorySystem) (易于使用的快捷栏和库存系统)。
+-   [MD 元数据编辑器](https://github.com/DoubleDeez/MDMetaDataEditor) (编辑蓝图属性、函数以及函数和事件参数的元数据的能力)。
+-   [整洁元数据](https://github.com/pramberg/NeatMetadata) (允许在蓝图中使用通常仅在 C++ 中可用的各种元数据)。
+-   [对象池](https://github.com/dslabkowski/ObjectPool/) (通过从固定池中重用对象而不是单独分配和释放它们来提高性能和内存使用)。
+-   [PB 角色移动](https://github.com/ProjectBorealis/PBCharacterMovement) (用于 UE 的 HL2 风格、经典 FPS 移动，使用 C++ 编写)。
+-   [池管理器](https://github.com/JanSeliv/PoolManager) (帮助在 UE5.3 中重用对象)。
+-   [刷新所有节点](https://github.com/nachomonkey/RefreshAllNodes) (刷新单个蓝图实例中所有节点的能力。当蓝图版本尚未更新为其 C++ 对应版本时很有帮助)。
+-   [串行通信](https://github.com/videofeedback/Unreal_Engine_SerialCOM_Plugin) (串行通信端口库)。
+-   [设置小部件构造器](https://github.com/JanSeliv/SettingsWidgetConstructor) (根据数据表自动生成游戏设置的 UI，用于 UE5.3)。
+-   [子系统浏览器插件](https://github.com/aquanox/SubsystemBrowserPlugin/) (添加一个子系统浏览器面板，用于浏览正在运行的子系统并编辑其属性)。
+-   [标签页恢复](https://github.com/Theliraan/TabRestore) (恢复关闭的标签页)。
+-   [用于 UE4/UMG 的 UI 补间库](https://github.com/benui-dev/UE-BUITween)。
+-   [虚幻蓝图 CSV 解析](https://github.com/IncantaGames/unreal-bp-csv-parsing)。
+-   [UnrealImGui](https://github.com/benui-dev/UnrealImGui) (将 [Dear ImGui](https://github.com/ocornut/imgui) 框架集成到虚幻引擎中)。
+-   [VoxelCore](https://github.com/VoxelPlugin/VoxelCore) (在 UE 中使用体素)。
 
 ### Epic Games 插件
 
-*   由 Epic Games 制作的 Advanced Renamer。
-*   游戏输入由 Epic Games 制作。
-*   混沌载具由 Epic Games 制作（载具系统）。
-*   通用 UI 由 Epic Games 制作。
-*   增强输入由 Epic Games 制作。
-*   由 Epic Games 制作的太阳位置计算器（实时天空）。
+-   [高级重命名器](https://dev.epicgames.com/documentation/en-us/unreal-engine) 由 Epic Games 制作。
+-   [游戏输入](https://dev.epicgames.com/documentation/en-us/unreal-engine) 由 Epic Games 制作。
+-   [混沌车辆](https://dev.epicgames.com/documentation/en-us/unreal-engine/vehicles-in-unreal-engine) 由 Epic Games 制作 (车辆系统)。
+-   [通用 UI](https://dev.epicgames.com/documentation/en-us/unreal-engine/common-ui-plugin-for-advanced-user-interfaces-in-unreal-engine) 由 Epic Games 制作。
+-   [增强输入](https://dev.epicgames.com/documentation/en-us/unreal-engine/enhanced-input-in-unreal-engine) 由 Epic Games 制作。
+-   [太阳位置计算器](hhttps://dev.epicgames.com/documentation/en-us/unreal-engine/geographically-accurate-sun-positioning-tool-in-unreal-engine) 由 Epic Games 制作 (实时天空)。
 
 ### MrRobinOfficial 的插件
 
-*   通用时间（提供编辑 DateTime 和 Timespan 值的编辑器视图）。
-*   通用车辆（扩展 Chaos 车辆系统）。
-*   IniParser (导入/导出 .ini 文件).
+-   [通用时间](https://github.com/MrRobinOfficial/Unreal-CommonTime) (提供用于编辑 DateTime 和 Timespan 值的编辑器视图)。
+-   [通用车辆](https://github.com/MrRobinOfficial/Unreal-CommonVehicle) (扩展混沌车辆系统)。
+-   [Ini 解析器](https://github.com/MrRobinOfficial/Unreal-IniParser) (导入/导出 .ini 文件)。
 
-我计划制作更多插件，你可以在 Github 上找到我。
+我正在计划制作更多插件，您可以在 [Github](https://github.com/MrRobinOfficial) 上找到我。
 
 ## 📛 控制台命令
 
@@ -207,31 +209,31 @@ title: UE5 C++ 指南
 *   R : 缩放
 *   W : 平移
 *   E : 旋转
-*   Spacebar : 切换移动/旋转/缩放
+*   空格 : 切换移动/旋转/缩放
 
 * * *
 
 工具
 
-*   Ctrl + Shift + Comma : GPU 可视化
+*   Ctrl + Shift + 分号 : GPU 可视化
 
 ## ⌛ 开始学习 C++
 
 <table><tbody><tr><td>本节内容与 ChatGPT 共同编写。</td></tr></tbody></table>
 
-强烈建议参加一个原版 C++的短期课程。这里有一个来自 Mosh 的~1 小时长的视频教程链接。
+强烈建议参加一个原版 C++的短期课程。这里有一个来自 [video tutorial from Mosh](https://www.youtube.com/watch?v=ZzaPdXTrSb8) 的~1 小时长的视频教程链接。
 
-你也可以观看 GGameDev 关于开始学习 Unreal Engine C++的播放列表。
+你也可以观看 [GGameDev](https://youtube.com/playlist?list=PLaaDnVlfJwc4Lncf4XTYaTRG_osOk-T0N) 关于开始学习 Unreal Engine C++的播放列表。
 
-C++是一种静态类型、编译型、通用的编程语言，它结合了高级和低级特性。它由 Bjarne Stroustrup 于 1979 年在贝尔实验室开发，作为 C 语言的增强版，最初名为 C with Classes，后于 1983 年更名为 C++。
+C++是一种静态类型、编译型、通用的编程语言，它结合了高级和低级特性。它由 [Bjarne Stroustrup](https://en.wikipedia.org/wiki/Bjarne_Stroustrup) 于 1979 年在贝尔实验室开发，作为 [C language](https://en.wikipedia.org/wiki/C_(programming_language)) 的增强版，最初名为 C with Classes，后于 1983 年更名为 [C++](https://en.wikipedia.org/wiki/C%2B%2B)。
 
-您可以在 Microsoft Learn 上阅读更多关于 C++语言参考的内容。
+您可以在 [C++ Language Reference from Microsoft Learn](https://learn.microsoft.com/en-us/cpp/cpp/cpp-language-reference?view=msvc-170) 上阅读更多关于 C++语言参考的内容。
 
 使用 C++与虚幻引擎结合，可以解锁引擎的全部功能集，使开发者能够利用高级图形渲染、物理模拟、网络和人工智能功能。C++提供了控制、定制和性能优化的级别，与可视化脚本相辅相成。
 
 在虚幻引擎中使用 C++进行开发，可以通过多线程和内存管理等技术实现更好的调试、性能分析和优化。它还促进了与第三方库的集成，扩展了开发者可用的功能范围和灵活性。
 
-你可以在他们的文档中了解更多信息。
+你可以在[他们的文档](https://docs.unrealengine.com/5.2/en-US/unreal-engine-programming-and-scripting/)中了解更多信息。
 
 要在虚幻引擎中有效使用 C++，掌握编程原理并理解虚幻引擎的架构和规范至关重要。利用虚幻引擎文档、社区论坛和其他开发者的协作，有助于获取知识和最佳实践。
 
@@ -245,11 +247,11 @@ C++是一种静态类型、编译型、通用的编程语言，它结合了高�
 
 在 Unreal Engine 和 C++开发中常用的 IDE 包括：
 
-*   Visual Studio：用于 Unreal Engine 开发的 Visual Studio IDE。它提供了一套强大的 C++工具，并与 Unreal Engine 无缝集成，提供了一个稳固的开发环境。 `Free` .
+*   [Visual Studio](https://visualstudio.microsoft.com/)：用于 Unreal Engine 开发的 Visual Studio IDE。它提供了一套强大的 C++工具，并与 Unreal Engine 无缝集成，提供了一个稳固的开发环境。 `免费` .
 
-*   Visual Studio Code (VSCode): Visual Studio Code 是一款轻量级、跨平台的代码编辑器，拥有丰富的扩展生态系统，包括用于 Unreal Engine 开发的扩展。 `Free` .
+*   [Visual Studio Code (VSCode)](https://code.visualstudio.com/): Visual Studio Code 是一款轻量级、跨平台的代码编辑器，拥有丰富的扩展生态系统，包括用于 Unreal Engine 开发的扩展。 `免费` .
 
-*   Rider: Rider 是由 JetBrains 开发的流行 IDE，专为游戏开发设计，并提供了与 Unreal Engine 项目的良好集成。 `Cost` .
+*   [Rider](https://www.jetbrains.com/rider/): Rider 是由 JetBrains 开发的流行 IDE，专为游戏开发设计，并提供了与 Unreal Engine 项目的良好集成。 `非商用免费` .
 
 
 ### ⛏️ 帮助你旅程的工具
@@ -258,9 +260,9 @@ C++是一种静态类型、编译型、通用的编程语言，它结合了高�
 
 这里有一些可以集成到你的 IDE 中，以提升性能、调试或编写良好代码实践的工具。
 
-*   Visual Assist：一款用于重构、阅读、编写、导航和生成 C/C++/C#代码的生产力工具。 `Cost` 和 `VS` 。
+*   [Visual Assist](https://www.wholetomato.com/)：一款用于重构、阅读、编写、导航和生成 C/C++/C#代码的生产力工具。 `收费` 在 `VS` 上。
 
-*   UnrealMacroGenerator：提供宏编辑器，用于 Unreal Engine 的 Unreal C++。您可以创建宏并编辑已编写的宏。 `Free` 和 `VS` 。
+*   [UnrealMacroGenerator](https://marketplace.visualstudio.com/items?itemName=Naotsun.Naotsun-UE-UMG)：提供宏编辑器，用于 Unreal Engine 的 Unreal C++。您可以创建宏并编辑已编写的宏。 `免费` 在 `VS` 上。
 
 
 ### 🟢 使用 Unreal Engine 进行 C++开发的优势
@@ -273,7 +275,7 @@ C++是一种静态类型、编译型、通用的编程语言，它结合了高�
 
 *   低级功能的访问：与其他编程语言相比，C++为你提供了更底层的功能访问，这在游戏开发中特别有用，因为对内存、数据结构和算法进行细粒度控制往往是必要的。
 
-*   垃圾回收和内存管理：虽然 C++要求手动内存管理，但 Unreal Engine 提供了一个垃圾回收器，可以高效地从内存中清除 `UObject` 类。通过手动内存处理的控制，你可以精确地指定何时分配和释放内存。
+*   垃圾回收和内存管理：虽然 C++要求手动内存管理，但 Unreal Engine 提供了一个[垃圾回收器](https://en.wikipedia.org/wiki/Garbage_collection_(computer_science))，可以高效地从内存中清除 `UObject` 类。通过手动内存处理的控制，你可以精确地指定何时分配和释放内存。
 
 
 ### 🔴 使用 C++与虚幻引擎的缺点
@@ -291,7 +293,7 @@ C++是一种静态类型、编译型、通用的编程语言，它结合了高�
 
 ## 🌍 C++和编程世界的总结
 
-如果你希望扩展你对 C++和一般编程原则及理念的了解，我强烈推荐你阅读这一部分。
+如果你希望扩展你对 C++和一般编程原则及理念的了解，我强烈推荐你阅读这一部分[section](https://github.com/MrRobinOfficial/Guide-UnrealEngine/blob/dev/README_CPP.md)。
 
 ## 🚧 蓝图与 C++
 
@@ -307,85 +309,6 @@ C++是一种静态类型、编译型、通用的编程语言，它结合了高�
 
 <table><tbody><tr><td>本节并非与 ChatGPT 一同编写。</td></tr></tbody></table>
 
-```mermaid
-graph TD;
-    UObjectBase-->UObjectBaseUtility;
-    UObjectBaseUtility-->UObject;
-    UObject-->USubsystem;
-    USubsystem-->UDynamicSubsystem;
-    USubsystem-->UGameInstanceSubsystem;
-    USubsystem-->ULocalPlayerSubsystem;
-    USubsystem-->UWorldSubsystem;
-    UObject-->UBlueprintFunctionLibrary;
-    UObject-->UEngine;
-    UEngine-->UEditorEngine;
-    UEngine-->UGameEngine;
-    UObject-->UPlayer;
-    UPlayer-->ULocalPlayer;
-    UPlayer-->UNetConnection;
-    UObject-->UScriptViewportClient;
-    UScriptViewportClient-->UGameViewportClient;
-    UObject-->UGameInstance;
-    UGameInstance-->UPlatformGameInstance;
-    UObject-->UWorld;
-    UObject-->UPackage;
-    UObject-->ULevel;
-    UObject-->UInterface;
-    UObject-->USoundBase;
-    USoundBase-->USoundCue;
-    USoundBase-->USoundWave;
-    UObject-->UFXSystemAsset;
-    UFXSystemAsset-->UParticleSystem;
-    UObject-->UAnimationAsset;
-    UAnimationAsset-->UAnimSequenceBase;
-    UAnimSequenceBase-->UAnimSequence;
-    UObject-->UTexture;
-    UTexture-->UTexture2D;
-    UTexture-->UMediaTexture;
-    UObject-->UMaterial;
-    UObject-->UVisual;
-    UVisual-->UWidget;
-    UWidget-->UUserWidget;
-    UUserWidget-->UEditorUtilityWidget;
-    UObject-->UDataAsset;
-    UDataAsset-->UPrimaryDataAsset;
-    UObject-->AActor;
-    AActor-->AInfo;
-    AInfo-->AGameSession;
-    AInfo-->AGameModeBase;
-    AGameModeBase-->AGameMode;
-    AInfo-->AGameStateBase;
-    AGameStateBase-->AGameState;
-    AInfo-->AGameNetworkManager;
-    AInfo-->AWorldSettings;
-    AInfo-->APlayerState;
-    AActor-->ALevelScriptActor;
-    AActor-->AHUD;
-    AActor-->APlayerCameraManager;
-    AActor-->AController;
-    AController-->AAIController;
-    AController-->APlayerController;
-    AActor-->APawn;
-    APawn-->ADefaultPawn;
-    APawn-->ACharacter;
-    UObject-->UActorComponent;
-    UActorComponent-->UMovementComponent;
-    UActorComponent-->USceneComponent;
-    USceneComponent-->UAudioComponnent;
-    USceneComponent-->UCameraComponent;
-    USceneComponent-->ULightComponentBase;
-    USceneComponent-->UPrimitiveComponent;
-    UPrimitiveComponent-->UMeshComponent;
-    UMeshComponent-->UStaticMeshComponent;
-    UMeshComponent-->USkinnedMeshComponent;
-    USkinnedMeshComponent-->USkeletalMeshComponent;
-    UMeshComponent-->UWidgetComponent;
-    UPrimitiveComponent-->UShapeComponent;
-    UShapeComponent-->UBoxComponent;
-    UShapeComponent-->UCapsuleComponent;
-    UShapeComponent-->USphereComponent;
-```
-
 刚开始接触虚幻引擎及其工作流程时，对于初学者来说可能会感到令人望而生畏，因为其中包含许多具有不同目的的组件。然而，我认为学习虚幻引擎的架构也有助于提升你的技能和经验。
 
 你不仅能够了解虚幻引擎，还能了解游戏引擎在底层是如何工作的。与 Unity（一个闭源引擎）相比，其“架构”的解释空间相当大。
@@ -396,7 +319,6 @@ graph TD;
 
 虚幻引擎包含太多类，逐一解释每个类将需要非常长的时间。不过，有一些重要的类我必须提一下：
 
-点击展开
 
 *   UClass 继承 `UStruct`
 
@@ -422,7 +344,7 @@ graph TD;
         *   `void Destroy(bool bNetForce, bool bShouldModifyLevel)` - 销毁角色。
         *   `void SetActorTickEnabled(bool bEnabled)` - 设置此角色的 tick 函数为启用或禁用。
         *   `void SetActorTickInterval(float TickInterval)` - 设置此角色的主要 tick 函数的 tick 间隔。
-*   棋子继承 `AActor`
+*   APawn 继承 `AActor`
 
     *   棋子是所有可以被玩家或 AI 控制的角色的基类。它们是关卡中玩家和生物的物理表现。
     *   `APawn` 提供了基本的控制机制和输入处理支持，以及碰撞检测和物理模拟。
@@ -436,7 +358,7 @@ graph TD;
 
     *   HUD 的基类。HUD 向玩家显示重要信息，例如生命值和弹药量，并提供游戏事件（如伤害或拾取能力提升）的视觉反馈。
     *   它有一个画布和一个调试画布，可以在上面绘制基本图形。它还包含一个简单的碰撞框列表，可用于简单的物品点击检测。它还包含一种渲染调试文本的方法。提供了一些用于渲染文本、纹理、矩形和材质的简单方法，这些方法也可以从蓝图访问。
-*   A 角色继承 `APawn`
+*   ACharacter 继承 `APawn`
 
     *   角色是具有网格、碰撞和内置移动逻辑的棋子（ `APawn` ）。
     *   它们负责玩家或 AI 与世界之间的所有物理交互，并实现基本网络和输入模型。它们是为垂直方向的玩家表示设计的，可以使用 `UCharacterMovementComponent` 在世界中行走、跳跃、飞行和游泳。
@@ -569,19 +491,19 @@ graph TD;
 
     *   表示可以在引擎中用于各种目的（如材质或用户界面元素）的 2D 图像或纹理。
 
-你可以在他们的文档中了解更多关于虚幻架构的信息。
+你可以在[他们的文档](https://docs.unrealengine.com/4.27/en-US/ProgrammingAndScripting/ProgrammingWithCPP/UnrealArchitecture/)中了解更多关于虚幻架构的信息。
 
-关于虚幻架构的更多信息，我强烈推荐你可以观看关于虚幻引擎架构的视频。
+关于虚幻架构的更多信息，我强烈推荐你可以观看关于[虚幻引擎架构的视频](https://www.youtube.com/watch?v=QcXHEsR0xHI)。
 
-你也可以观看 Kekdot 关于虚幻引擎多人框架的视频讨论。
+你也可以观看 [Kekdot 关于虚幻引擎多人框架的视频讨论](https://www.youtube.com/watch?v=Hsr6mbNKBLU)。
 
-> \[!NOTE\] 这个架构基于多人游戏设置。但是，如果你在制作单人游戏，那么你可以忽略一些类。主要是 `APlayerState` 和 `AGameState` （以及它们的基类）。
+<Callout> 这个架构基于多人游戏设置。但是，如果你在制作单人游戏，那么你可以忽略一些类。主要是 `APlayerState` 和 `AGameState` （以及它们的基类）。 </Callout>
 
-你也可以观看 Alex Forsythe 的《虚幻引擎游戏框架：从 int main()到 BeginPlay》，他讲述了虚幻引擎如何从源代码启动你的游戏/编辑器，以及这些类如何相互协作。
+你也可以观看 Alex Forsythe 的[《虚幻引擎游戏框架：从 int main()到 BeginPlay》](https://www.youtube.com/watch?v=IaU2Hue-ApI)，他讲述了虚幻引擎如何从源代码启动你的游戏/编辑器，以及这些类如何相互协作。
 
 ## ⚓ 指南
 
-你可以找到更多关于虚幻引擎指南的信息，包括在编辑器内部（资源创建），以及它们的编码标准。
+你可以找到更多关于虚幻引擎指南的信息[inside the editor](https://dev.epicgames.com/documentation/en-us/unreal-engine/recommended-asset-naming-conventions-in-unreal-engine-projects) ，包括在编辑器内部（资源创建），以及它们的编码标准。
 
 ### 🎳 命名规范
 
@@ -589,7 +511,7 @@ graph TD;
 
 ![Naming Conventions](/static-img/Naming_conventions.png)
 
-有一个 GitHub 仓库，讨论了虚幻引擎的命名规范。该仓库非常详细，解释了应该如何命名你的资源以及代码。仓库名为 Michael Allar 的《虚幻引擎风格指南》。
+有一个 GitHub 仓库，讨论了虚幻引擎的命名规范。该仓库非常详细，解释了应该如何命名你的资源以及代码。仓库名为 Michael Allar 的[《虚幻引擎风格指南》](https://dev.epicgames.com/documentation/en-us/unreal-engine/epic-cplusplus-coding-standard-for-unreal-engine)。
 
 虚幻引擎遵循特定的命名规范，有助于保持代码库的一致性和可读性。在使用命名规范时，所有代码和注释应使用美式英语的拼写和语法。
 
@@ -640,7 +562,154 @@ bool IsTeaFresh(FTea Tea);
 
 <table><tbody><tr><td>本节内容由 ChatGPT 共同编写。</td></tr></tbody></table>
 
-<table><tbody><tr><td>通用语言特性 arg - 参数 arr - 数组 async - 异步 attr - 属性 auth - 认证 btn - 按钮 buff - 缓冲区 ctx - 上下文 const - 常量 db - 数据库 dest - 目的地 desc - 描述 doc 或 docs - 文档 dir - 方向或目录（视上下文而定） elem - 元素 err - 错误 e 或 evt - 事件 exe - 执行 expr - 表达式 ext - 扩展 func - 功能 fmt - 格式 gen - 生成 hex - 十六进制 impl - 实现 imp - 导入 i 或 idx - 索引 info - 信息 init - 初始化 it 或 iter - 迭代器 ident - 标识符 lang - 语言 len - 长度 lvl - 等级 lib - 图书馆 loc - 位置 msg - 消息 num - 数字 obj - 对象 opt - 选项 out - 输出 pkg - 包 param - 参数 px - 像素 pos - 位置 prev - 上一个 priv - 私有的 pub - 公共 q - 查询 rand - 随机 rng - 范围 ref - 参考 rm 或 rmv - 移除 req - 请求 res - 结果或响应（视上下文而定） ret - 返回 sel - 选择 sep - 分隔符 sec - 序列 sol - 求解器 src - 源 spec - 指定符或规范（视上下文而定） std - 标准 stdio - 标准输入输出 stmt - 声明 stat - 统计 str - 字符串 sync - 同步 tmp - 温度 temp - 暂时 util - 实用 val - 值 var - 变量 ws - 空格 win - Windows wiz - 巫师 虚幻引擎特性 PC - 表示一个变量是 PlayerController LP - 表示一个变量是 LocalPlayer Char - 表示该变量是一个字符（不要与 char 数据类型混淆） Comp - 表示该变量是一个组件 Ptr - 表示该变量是指向一个对象的指针。 Ref - 表示该变量是指向一个对象的引用。 dt - Delta Time Networking OAuth or Open Authentication – 一个开放标准，用于认证应用程序或网站访问内容。 TCP or Transmission Control Protocol – 一个标准，定义了系统之间如何交换消息。 UDP 或用户数据报协议——定义系统间交换消息的标准。 工具/框架 IDE 或集成开发环境——为程序员提供软件开发功能的软件应用程序。 JSON 或 JavaScript 对象表示法——一种使用 JavaScript 2 记法编写的文件格式，广泛用于网络数据传输。 XML 或可扩展标记语言——一种主要用于存储和传输数据的标记语言。 SQL 或结构化查询语言——一种用于数据存储、检索和修改的查询语言。 CSV 或逗号分隔值——CSV 文件是一种使用逗号分隔值的分隔文本文件。 数学 add - 加法 sub - 减法 mul - 乘法 div - 除法 abs - 绝对 sin - 正弦 cos - 余弦 tan - 正切 rad - 弧度 r - 半径 frac - 分数 freq - 频率 long - 经度或纵坐标（视上下文而定） lat - 纬度或横坐标（视上下文而定） sqrt - 平方根 mod - 模数 min - 最小值 max - 最大值 lerp - 线性插值 杂项 API 或应用程序编程接口——用于连接多个隔离组件的接口。 SDK 或软件开发工具包——一组通常在特定平台上开发时所需的软件。 TDD 或测试驱动开发——TDD 是一种基于短开发周期重复的软件开发过程：需求被转化为具体的测试用例，然后修复代码以确保测试通过。 UUID 或通用唯一识别码——UUID 是一种 128 位的数字，用于在计算机系统中识别信息。 GUI 或图形用户界面 - 图形用户界面（GUI）是一种允许用户通过图形界面与电子设备交互的用户界面形式。 misc - 其他 os - 操作系统 org - 组织 pwr - 电源 pref - 偏好 repo - 仓库</td></tr></tbody></table>
+常用语言特性
+
+-   `arg` - 参数
+-   `arr` - 数组
+-   `async` - 异步
+-   `attr` - 属性
+-   `auth` - 身份验证
+-   `btn` - 按钮
+-   `buff` - 缓冲区
+-   `ctx` - 上下文
+-   `const` - 常量
+-   `db` - 数据库
+-   `dest` - 目标
+-   `desc` - 描述
+-   `doc` 或 `docs` - 文档
+-   `dir` - 方向或目录 (根据上下文)
+-   `elem` - 元素
+-   `err` - 错误
+-   `e` 或 `evt` - 事件
+-   `exe` - 执行
+-   `expr` - 表达式
+-   `ext` - 扩展
+-   `func` - 函数
+-   `fmt` - 格式
+-   `gen` - 生成
+-   `hex` - 十六进制
+-   `impl` - 实现
+-   `imp` - 导入
+-   `i` 或 `idx` - 索引
+-   `info` - 信息
+-   `init` - 初始化
+-   `it` 或 `iter` - 迭代器
+-   `ident` - 标识符
+-   `lang` - 语言
+-   `len` - 长度
+-   `lvl` - 级别
+-   `lib` - 库
+-   `loc` - 位置
+-   `msg` - 消息
+-   `num` - 数字
+-   `obj` - 对象
+-   `opt` - 选项
+-   `out` - 输出
+-   `pkg` - 包
+-   `param` - 参数
+-   `px` - 像素
+-   `pos` - 位置
+-   `prev` - 上一个
+-   `priv` - 私有
+-   `pub` - 公有
+-   `q` - 查询
+-   `rand` - 随机
+-   `rng` - 范围
+-   `ref` - 引用
+-   `rm` 或 `rmv` - 移除
+-   `req` - 请求
+-   `res` - 结果或响应 (根据上下文)
+-   `ret` - 返回
+-   `sel` - 选择
+-   `sep` - 分隔符
+-   `sec` - 序列
+-   `sol` - 求解器
+-   `src` - 源
+-   `spec` - 说明符或规范 (根据上下文)
+-   `std` - 标准
+-   `stdio` - 标准输入输出
+-   `stmt` - 语句
+-   `stat` - 统计
+-   `str` - 字符串
+-   `sync` - 同步
+-   `tmp` - 温度
+-   `temp` - 临时
+-   `util` - 工具
+-   `val` - 值
+-   `var` - 变量
+-   `ws` - 空白
+-   `win` - 窗口
+-   `wiz` - 向导
+
+---
+
+Unreal Engine 特性
+
+-   `PC` - 表示变量是 **PlayerController**
+-   `LP` - 表示变量是 **LocalPlayer**
+-   `Char` - 表示变量是 **Character** (不要与 `char` 数据类型混淆)
+-   `Comp` - 表示变量是一个 **组件**
+-   `Ptr` - 表示变量是一个指向对象的 **指针**。
+-   `Ref` - 表示变量是一个对象的 **引用**。
+-   `dt` - 增量时间
+
+---
+
+网络
+
+-   `OAuth` 或 Open Authentication – 一种开放标准，用于认证应用程序或网站以访问内容。
+-   `TCP` 或 Transmission Control Protocol – 一种标准，用于定义系统间如何交换消息。
+-   `UDP` 或 User Datagram Protocol – 一种标准，用于定义系统间如何交换消息。
+
+---
+
+工具/框架
+
+-   `IDE` 或 Integrated Development Environment - 一种为程序员提供软件开发便利的软件应用程序。
+-   `JSON` 或 Javascript Object Notation – 一种文件格式，使用 JavaScript[^14] 编写，广泛用于通过网络传输数据。
+-   `XML` 或 Extensible Markup Language – 一种主要用于存储和传输数据的标记语言。
+-   `SQL` 或 Structured Query Language – 一种用于存储、检索和修改数据的查询语言。
+-   `CSV` 或 Comma-separated values - CSV 文件是一种使用逗号分隔值的分隔文本文件。
+
+---
+
+数学
+
+-   `add` - 加法
+-   `sub` - 减法
+-   `mul` - 乘法
+-   `div` - 除法
+-   `abs` - 绝对值
+-   `sin` - 正弦
+-   `cos` - 余弦
+-   `tan` - 正切
+-   `rad` - 弧度
+-   `r` - 半径
+-   `frac` - 分数
+-   `freq` - 频率
+-   `long` - 经度或纵向 (根据上下文)
+-   `lat` - 纬度或横向 (根据上下文)
+-   `sqrt` - 平方根
+-   `mod` - 取模
+-   `min` - 最小值
+-   `max` - 最大值
+-   `lerp` - 线性插值
+
+---
+
+杂项
+
+-   `API` 或 Application Programming Interface – 一种用于连接多个隔离组件的接口。
+-   `SDK` 或 Software Development Kit – 一套软件，通常用于在特定平台进行开发。
+-   `TDD` 或 Test-driven development - TDD 是一种软件开发生命周期，基于短开发周期的重复：将需求转化为特定的测试用例，然后修改代码以使测试通过。
+-   `UUID` 或 Universally unique identifier - UUID 是一个用于在计算机系统中识别信息的 128 位数字。
+-   `GUI` 或 Graphic User Interface - GUI 或图形用户界面是一种用户界面形式，允许用户通过图形界面与电子设备交互。
+-   `misc` - 杂项
+-   `os` - 操作系统
+-   `org` - 组织
+-   `pwr` - 电源
+-   `pref` - 首选项
+-   `repo` - 仓库
 
 #### 前缀
 
@@ -654,7 +723,7 @@ bool IsTeaFresh(FTea Tea);
 | T | 模板 | TSubclassOf, TArray, TSet, TMap, TMultiMap |
 | G | 全局类 | GEngine, GConfig, GWorld, GEngineLoop, GIsEditor |
 
-> \[!TIP\] 你知道吗， `F` 前缀实际上代表 `Float` （浮点数）。但它意外地被广泛传播，并失去了原本的含义。
+<Callout> 你知道吗， `F` 前缀实际上代表 `Float` （浮点数）。但它意外地被广泛传播，并失去了原本的含义。</Callout>
 
 ### 编码规范
 
@@ -845,7 +914,7 @@ UPROPERTY(EditAnywhere, meta=(Units="times"))
 float Deliciousness;
 ```
 
-你可以通过 BenUi 了解更多关于 UPROPERTY 的信息。
+你可以通过 [UPROPERTY by BenUi](https://benui.ca/unreal/uproperty/) 了解更多关于 UPROPERTY 的信息。
 
 ### UFUNCTION
 
@@ -904,7 +973,7 @@ UFUNCTION(BlueprintCallable, Category = "Doggy Daycare", meta=(ReturnDisplayName
 bool TryPetDog(const FName Name);
 ```
 
-您可以阅读更多关于 UPROPERTY 的信息，由 BenUi 提供。
+您可以阅读更多关于 UFUNCTION 的信息，由 [UFUNCTION by BenUi](https://benui.ca/unreal/ufunction/) 提供。
 
 ### UCLASS
 
@@ -963,7 +1032,7 @@ public:
 };
 ```
 
-你可以通过 BenUi 了解更多关于 UCLASS 的信息。
+你可以通过 [UCLASS by BenUi](https://benui.ca/unreal/uclass/) 了解更多关于 UCLASS 的信息。
 
 ### USTRUCT
 
@@ -1003,7 +1072,7 @@ struct FMyStruct
 };
 ```
 
-你可以通过 BenUi 了解更多关于 USTRUCT 的信息。
+你可以通过 [USTRUCT by BenUi](https://benui.ca/unreal/ustruct/) 了解更多关于 USTRUCT 的信息。
 
 ### UENUM
 
@@ -1042,7 +1111,7 @@ enum class EWeaponType
 };
 ```
 
-您可以阅读更多关于 UEUM 的信息，由 BenUi 提供。
+您可以阅读更多关于 [UENUM by BenUi](https://benui.ca/unreal/uenum/) 的信息，由 BenUi 提供。
 
 ### UPARAM
 
@@ -1109,7 +1178,7 @@ enum class EMyEnum
 };
 ```
 
-你可以通过 BenUi 了解更多关于 UMETA 的信息。
+你可以通过 [UPARAM by BenUi](https://benui.ca/unreal/uparam/) 了解更多关于 UMETA 的信息。
 
 ## 🧱 数据类型
 
@@ -1186,7 +1255,7 @@ bool bIsDigit = FChar::IsDigit(MyChar); // false
 bool bIsDigit = FChar::IsAlpha(MyChar); // true
 ```
 
-你可以在 Unreal 的文档中了解更多关于 TCHAR 的信息。
+你可以在 [TCHAR on Unreal's docs](https://docs.unrealengine.com/5.3/en-US/API/Runtime/Core/Misc/TChar/)了解更多关于 TCHAR 的信息。
 
 ### 布尔值
 
@@ -1254,9 +1323,15 @@ C++实现可以定义数据类型的大小（以字节为单位）（ `sizeof(ty
 
 因此，汇总数据大小将是：
 
-<table><tbody><tr><td>char ， signed char 和 unsigned char 至少为 8 位 signed short ， unsigned short ， signed int 和 unsigned int 至少为 16 位 signed long 和 unsigned long 至少为 32 位 signed long long 和 unsigned long long 至少为 64 位</td></tr></tbody></table>
+* `char`, `signed char` and `unsigned char` are at least 8 bits
 
-你可以在 Stack Overflow 上从 Alex 那里了解更多详细信息。
+* `signed short`, `unsigned short`, `signed int` and `unsigned int` are at least 16 bits
+
+* `signed long` and `unsigned long` are at least 32 bits
+
+* `signed long long` and `unsigned long long` are at least 64 bits
+
+你可以在 [Alex on Stack Overflow](https://stackoverflow.com/a/589684/17067030) 了解更多详细信息。
 
 * * *
 
@@ -1279,7 +1354,7 @@ C++实现可以定义数据类型的大小（以字节为单位）（ `sizeof(ty
 
 ### 🦺 Unreal Engine 类型定义
 
-在虚幻引擎中，您现在可以用 `int64` 代替 `signed long long` 来表示 64 位整数。这些别名称为 typedef，您可以在 C++文档中了解更多关于 typedef 关键字的信息。
+在虚幻引擎中，您现在可以用 `int64` 代替 `signed long long` 来表示 64 位整数。这些别名称为 typedef，您可以在 [typedef keyword in C++ docs](https://en.cppreference.com/w/cpp/language/typedef)了解更多关于 typedef 关键字的信息。
 
 您可以在本节中了解更多关于 C++ typedef 的信息。
 
@@ -1337,7 +1412,7 @@ typedef FPlatformTypes::TYPE_OF_NULL	TYPE_OF_NULL;
 typedef FPlatformTypes::TYPE_OF_NULLPTR	TYPE_OF_NULLPTR;
 ```
 
-> \[!WARNING\] `uint16` 、 `uint32` 、 `uint64` 、 `int8` 、 `int16` 和 `double` 在 UHT [3](#user-content-fn-2) 中不受支持。这意味着无法将其暴露给蓝图。
+<Callout type="warn"> `uint16` 、 `uint32` 、 `uint64` 、 `int8` 、 `int16` 和 `double` 在 UHT [3](#user-content-fn-2) 中不受支持。这意味着无法将其暴露给蓝图。</Callout>
 
 ### 📖 字符串数据类型
 
@@ -1345,11 +1420,15 @@ typedef FPlatformTypes::TYPE_OF_NULLPTR	TYPE_OF_NULLPTR;
 
 在虚幻引擎中，字符串在处理游戏或应用程序中的文本信息方面起着至关重要的作用。虚幻引擎提供了多个与字符串相关的类，以满足不同的使用场景和需求。
 
-您可以查阅文档了解更多关于字符串处理的信息。
+您可以查阅文档[string handling from the docs](https://docs.unrealengine.com/4.26/en-US/ProgrammingAndScripting/ProgrammingWithCPP/UnrealArchitecture/StringHandling/)了解更多关于字符串处理的信息。
 
 ### 文本宏
 
-<table><tbody><tr><td>TEXT - 此宏用于指定宽字符（UTF-16）编码。这使得字符串字面量与平台无关。如果没有此宏，你将使用 ANSI 编码（这可能导致在其他机器上出现问题）。 INVTEXT - 此宏调用 FText::AsCultureInvariant(TEXT(InTextLiteral))，并将 InTextLiteral 作为参数。有助于从给定的字符串字面量创建文化不变的 FText。 LOCTEXT - 此宏用于为本地化创建 FText 字面量。它接受一个命名空间和一个键来标识本地化字符串。</td></tr></tbody></table>
+* `TEXT` - This macro is used for specifying wide-character (UTF-16) encoding. This makes the string literal platform independent. Without this macro, you are using ANSI encoding (which can cause issues on other machines).
+
+* `INVTEXT` - This macro is calling FText::AsCultureInvariant(TEXT(InTextLiteral)) with InTextLiteral as parameter. Helpful creating culture invariant FText from the given string literal.
+
+* `LOCTEXT` - This macro is used to create `FText` literals specifically for localization. It takes a namespace and a key to identify the localized string.
 
 #### FName
 
@@ -1377,7 +1456,7 @@ FName MyName = FName(TEXT("PlayerName"));
 
 `FText` 是一个专为虚幻引擎本地化支持设计的特殊字符串类。正因如此， `FText` 是不可变字符串类。FText 提供了在不同语言和文化中表示文本的能力，使其成为构建多语言游戏或应用程序的关键组件。
 
-您可以在虚幻引擎的文档中了解更多信息。
+您可以在[Unreal's docs](https://docs.unrealengine.com/5.3/en-US/ftext-in-unreal-engine/)了解更多信息。
 
 **这是一个示例：**
 
@@ -1479,7 +1558,7 @@ FText NumberText = FText::AsNumber(Health, &NumberFormat);
 NumberText = FText::AsCultureInvariant(NumberText); // Disable the culture formatting
 ```
 
-> \[!NOTE\] 默认情况下，Unreal 在执行此格式化时会使用本地文化。如果你希望禁用文化格式化，请使用 `FText::AsCultureInvariant` 函数。
+<Callout> 默认情况下，Unreal 在执行此格式化时会使用本地文化。如果你希望禁用文化格式化，请使用 `FText::AsCultureInvariant` 函数。</Callout>
 
 #### FString
 
@@ -1525,7 +1604,9 @@ Text.ReverseString(); // Output: "edcba"
 
 ### 🚀 数学数据类型
 
-> \[!NOTE\] 在虚幻引擎 5.0 及以上版本中，默认情况下所有与数学相关的数据类型都使用 `double` 作为后端数据类型。这使虚幻引擎能够支持大型世界坐标（LWC）。
+<Callout>
+ 在虚幻引擎 5.0 及以上版本中，默认情况下所有与数学相关的数据类型都使用 `double` 作为后端数据类型。这使虚幻引擎能够支持[大型世界坐标（LWC）](https://docs.unrealengine.com/5.3/en-US/large-world-coordinates-in-unreal-engine-5/)。
+</Callout>
 
 #### Vector4
 
@@ -1544,7 +1625,7 @@ FVector4 OldLocation = FVector4::ZeroVector; // (0, 0, 0)
 FVector4 NewLocation = FVector4::OneVector; // (1, 1, 1)
 ```
 
-> \[!NOTE\] 使用 `FVector4f` 代表 `float` ，使用 `FVector4d` 代表 `double` ，作为后端转换的明确数据类型。
+<Callout> 使用 `FVector4f` 代表 `float` ，使用 `FVector4d` 代表 `double` ，作为后端转换的明确数据类型。</Callout>
 
 * * *
 
@@ -1593,7 +1674,7 @@ double& Y = Vec[1];
 double& Z = Vec[2];
 ```
 
-> \[!NOTE\] 使用 `FVector3f` 作为 `float` ，使用 `FVector3d` 作为 `double` ，作为后端转换的显式数据类型。
+<Callout> 使用 `FVector3f` 作为 `float` ，使用 `FVector3d` 作为 `double` ，作为后端转换的显式数据类型。</Callout>
 
 * * *
 
@@ -1609,9 +1690,13 @@ double& Z = Vec[2];
 *   `FVector::DistSquared2D()` 或 `FVector::DistSquaredXY()` - 仅 XY 平面中两点之间的平方距离。
 *   `FVector::AllComponentsEqual()` - 检查该向量的所有分量是否相同，允许一定的误差。
 
-> \[!TIP\] 您可以使用 `|` 运算符来调用点积。
+<Callout type="success">
+ 您可以使用 `|` 运算符来调用点积。
+</Callout>
 
-> \[!TIP\] 您可以使用 `^` 运算符来调用叉积。
+<Callout type="success">
+ 您可以使用 `^` 运算符来调用叉积。
+</Callout>
 
 常用的本地函数：
 
@@ -1681,7 +1766,7 @@ FVector2D OldLocation = FVector2D::ZeroVector; // (0, 0, 0)
 FVector2D NewLocation = FVector2D::OneVector; // (1, 1, 1)
 ```
 
-> \[!NOTE\] 使用 `FVector2f` 表示 `float` ，使用 `FVector2d` 表示 `double` ，作为后端转换的显式数据类型。
+<Callout> 使用 `FVector2f` 表示 `float` ，使用 `FVector2d` 表示 `double` ，作为后端转换的显式数据类型。 </Callout>
 
 * * *
 
@@ -1715,7 +1800,7 @@ FUIntPoint UnsignedMinPoint = FUIntPoint(0, 0);
 FUIntPoint UnsignedMaxPoint = FUIntPoint(255, 255);
 ```
 
-> \[!NOTE\] 使用 `FInt32Point` 代表 `int32` ， `FUint32Point` 代表 `uint32` ， `FInt64Point` 代表 `int64` ，以及 `FUint64Point` 代表 `uint64` ，作为后端转换的明确数据类型。
+<Callout> 使用 `FInt32Point` 代表 `int32` ， `FUint32Point` 代表 `uint32` ， `FInt64Point` 代表 `int64` ，以及 `FUint64Point` 代表 `uint64` ，作为后端转换的明确数据类型。</Callout>
 
 #### IntRect
 
@@ -1737,7 +1822,7 @@ FUIntPoint UnsignedMaxPoint = FUIntPoint(255, 255);
 FUIntReact UnsignedRect = FIntRect(UnsignedMinPoint, UnsignedMaxPoint);
 ```
 
-> \[!NOTE\] 使用 `FInt32Rect` 表示 `int32` ， `FUint32Rect` 表示 `uint32` ， `FInt64Rect` 表示 `int64` ，以及 `FUint64Rect` 表示 `uint64` ，作为后端转换的显式数据类型。
+<Callout> 使用 `FInt32Rect` 表示 `int32` ， `FUint32Rect` 表示 `uint32` ， `FInt64Rect` 表示 `int64` ，以及 `FUint64Rect` 表示 `uint64` ，作为后端转换的显式数据类型。</Callout>
 
 #### 旋转器
 
@@ -1755,7 +1840,7 @@ FRotator MyRotator = FRotator(0.0f, 90.0f, 0.0f);
 FRotator MyRotator = FRotator::ZeroRotator; // (0, 0, 0)
 ```
 
-> \[!NOTE\] 使用 `FRotator3f` 表示 `float` ，使用 `FRotator3d` 表示 `double` ，作为后端转换的明确数据类型。
+<Callout> 使用 `FRotator3f` 表示 `float` ，使用 `FRotator3d` 表示 `double` ，作为后端转换的明确数据类型。</Callout>
 
 * * *
 
@@ -1784,7 +1869,7 @@ FQuat MyQuaternion = FQuat(0.0f, 90.0f, 0.0f, 0.0f);
 FQuat MyQuaternion = FQuat::Identify; // (0, 0, 0, 0)
 ```
 
-> \[!NOTE\] 使用 `FQuat4f` 代替 `float` ，使用 `FQuat4d` 代替 `double` ，作为后端转换的明确数据类型。
+<Callout> 使用 `FQuat4f` 代替 `float` ，使用 `FQuat4d` 代替 `double` ，作为后端转换的明确数据类型。</Callout>
 
 #### 转换
 
@@ -1807,7 +1892,7 @@ FTransform MyTransform = FTransform(Rotation, Location, Scale);
 FTransform MyTransform = FTransform::Identify; // NaN
 ```
 
-> \[!NOTE\] 使用 `FTransform3f` 代表 `float` ，使用 `FTransform3d` 代表 `double` ，作为后端转换的明确数据类型。
+<Callout> 使用 `FTransform3f` 代表 `float` ，使用 `FTransform3d` 代表 `double` ，作为后端转换的明确数据类型。</Callout>
 
 #### 平面
 
@@ -1829,7 +1914,7 @@ FPlane Plane = FVector(X, Y, Z);
 FPlane Plane = FVector(FVector(0.0f, 0.0f, 0.0f));
 ```
 
-> \[!NOTE\] 将 `FPlane4f` 用于 `float` ，将 `FPlane4d` 用于 `double` ，作为后端转换的明确数据类型。
+<Callout> 将 `FPlane4f` 用于 `float` ，将 `FPlane4d` 用于 `double` ，作为后端转换的明确数据类型。</Callout>
 
 #### 矩阵
 
@@ -1864,7 +1949,7 @@ int32 ColumnIndex = 0;
 double Element = Matrix[RowIndex][ColumnIndex];
 ```
 
-> \[!NOTE\] 在后端转换时，使用 `FMatrix44f` 作为 `float` ，使用 `FMatrix44d` 作为 `double` ，作为显式的数据类型。
+<Callout> 在后端转换时，使用 `FMatrix44f` 作为 `float` ，使用 `FMatrix44d` 作为 `double` ，作为显式的数据类型。</Callout>
 
 #### 球体
 
@@ -1879,7 +1964,7 @@ float Radius = 500.0f;
 FSphere Sphere = FSphere(Center, Radius);
 ```
 
-> \[!NOTE\] 使用 `FSphere3f` 表示 `float` ，使用 `FSphere3d` 表示 `double` ，作为后端转换的明确数据类型。
+<Callout> 使用 `FSphere3f` 表示 `float` ，使用 `FSphere3d` 表示 `double` ，作为后端转换的明确数据类型。</Callout>
 
 #### Box
 
@@ -1894,7 +1979,7 @@ FVector MaxPoint = FVector(25.0f, 25.0f);
 FBox Box2D = FBox(MinPoint, MaxPoint);
 ```
 
-> \[!NOTE\] 使用 `FBox3f` 表示 `float` ，使用 `FBox3d` 表示 `double` ，作为后端转换的明确数据类型。
+<Callout>] 使用 `FBox3f` 表示 `float` ，使用 `FBox3d` 表示 `double` ，作为后端转换的明确数据类型。</Callout>
 
 #### Box2D
 
@@ -1909,7 +1994,7 @@ FVector2D MaxPoint = FVector2D(20, 20);
 FBox2D Box2D = FBox2D(MinPoint, MaxPoint);
 ```
 
-> \[!NOTE\] 使用 `FBox2f` 表示 `float` ，使用 `FBox2d` 表示 `double` ，作为后端转换的明确数据类型。
+<Callout> 使用 `FBox2f` 表示 `float` ，使用 `FBox2d` 表示 `double` ，作为后端转换的明确数据类型。</Callout>
 
 #### Ray
 
@@ -1939,7 +2024,7 @@ FVector PointAt = Ray.PointAt(ScalarDistance);
 double CalcScalarDistance = Ray.GetParameter(PointAt); // Will convert back to 'ScalarDistance'
 ```
 
-> \[!NOTE\] 将 `FRay3f` 用于 `float` ，将 `FRay3d` 用于 `double` ，作为后端转换的显式数据类型。
+<Callout> 将 `FRay3f` 用于 `float` ，将 `FRay3d` 用于 `double` ，作为后端转换的显式数据类型。</Callout>
 
 #### 颜色
 
@@ -2087,11 +2172,11 @@ StackArray.Add(4);
 StackArray.Add(5); // Will be allocated on the heap!
 ```
 
-> \[!WARNING\] 如果你试图使用 `TInlineAllocator` 在栈上分配堆对象，Unreal 会默认采用堆分配。
+<Callout type="warn"> 如果你试图使用 `TInlineAllocator` 在栈上分配堆对象，Unreal 会默认采用堆分配。</Callout>
 
-> \[!WARNING\] 如果你添加的元素数量超过已分配的容量，Unreal 会默认采用堆分配。
+<Callout type="warn"> 如果你添加的元素数量超过已分配的容量，Unreal 会默认采用堆分配。</Callout>
 
-> \[!NOTE\] Unreal 会将栈分配的数组视为不同的数据类型，与普通数组不同。为了适应这一点，请使用 `TArrayView` 。
+<Callout> Unreal 会将栈分配的数组视为不同的数据类型，与普通数组不同。为了适应这一点，请使用 `TArrayView` 。</Callout>
 
 如果你希望避免用堆分配填充剩余的元素，请使用 `TFixedAllocator` 。
 
@@ -2631,7 +2716,7 @@ MyMultiMap.RemoveSingle(TEXT("X"), 10.0f);
 
 你可以在 Unreal 的文档中了解更多信息。
 
-> \[!WARNING\] Unreal 不支持 `TMultiMap` 与 UHT [3](#user-content-fn-2) 。这意味着你不能将其暴露给蓝图。
+<Callout type="warn"> Unreal 不支持 `TMultiMap` 与 UHT [3](#user-content-fn-2) 。这意味着你不能将其暴露给蓝图。</Callout>
 
 #### TStaticArray
 
@@ -2690,7 +2775,7 @@ for (const FVector& Vec : StaticArray)
 
 你可以在 Unreal 的文档中了解更多信息。
 
-> \[!WARNING\] Unreal Engine 不支持 `TStaticArray` 与 UHT [3](#user-content-fn-2) 。这意味着你不能将其暴露给蓝图。要在蓝图中使用静态数组，请在 `TArray` 属性上使用 `FixedSized` 指定符。
+<Callout type="warn"> Unreal Engine 不支持 `TStaticArray` 与 UHT [3](#user-content-fn-2) 。这意味着你不能将其暴露给蓝图。要在蓝图中使用静态数组，请在 `TArray` 属性上使用 `FixedSized` 指定符。</Callout>
 
 #### FHashTable
 
@@ -2854,9 +2939,9 @@ while (CurrentNode != nullptr)
 }
 ```
 
-> \[!NOTE\] `TList` 不为每个节点提供插入或删除功能。如果您希望使用这些功能，请使用 `TLinkedList` 。
+<Callout> `TList` 不为每个节点提供插入或删除功能。如果您希望使用这些功能，请使用 `TLinkedList` 。</Callout>
 
-> \[!NOTE\] 一般来说，您几乎总是应该使用 `TArray` ，除非您有使用链表的具体原因。
+<Callout> 一般来说，您几乎总是应该使用 `TArray` ，除非您有使用链表的具体原因。</Callout>
 
 您可以在虚幻引擎的文档中了解更多信息。
 
@@ -3078,11 +3163,11 @@ UE_LOG(LogTemp, Log, TEXT("Sum=%i"), SumArray(StackAllocatedArray));
 UE_LOG(LogTemp, Log, TEXT("Sum=%i"), SumArray(CArray));
 ```
 
-> \[!WARNING\] `TArrayView` 是一个固定大小且独立的数组。这意味着它不会影响其原始分配，也不支持 Add()或 Remove()函数。
+<Callout type="warn"> `TArrayView` 是一个固定大小且独立的数组。这意味着它不会影响其原始分配，也不支持 Add()或 Remove()函数。</Callout>
 
-> \[!NOTE\] 仍然可以使用 Algo 库，它提供了用于 TArrayView 和 TArray 的函数，例如 Algo::Reverse() 和 Algo::ForEach()。
+<Callout> 仍然可以使用 Algo 库，它提供了用于 TArrayView 和 TArray 的函数，例如 Algo::Reverse() 和 Algo::ForEach()。</Callout>
 
-> \[!CAUTION\] 避免将 `TArrayView` 与临时数组变量一起使用。因为数组可能会超出作用域，这将使 `TArrayView` 变量无效并指向不同的内存块。这是因为视图依赖于数组的内存块。
+<Callout type="error"> 避免将 `TArrayView` 与临时数组变量一起使用。因为数组可能会超出作用域，这将使 `TArrayView` 变量无效并指向不同的内存块。这是因为视图依赖于数组的内存块。</Callout>
 
 ```cpp
 #include "Containers/ArrayView.h"
@@ -3233,7 +3318,7 @@ StringBuilder.Append(TEXT(" and welcome!"));
 // StringBuilder: { 'H', 'e', 'l', 'l', 'o', ',', ' ', 'W', 'o', 'r', 'l', 'd', ' ', 'a', 'n', 'd', ' ', 'w', 'e', 'l', 'c', 'o', 'm', 'e', '!' }
 ```
 
-> \[!WARNING\] 如果需要，字符串构建器将分配更多内存。
+<Callout type="warn"> 如果需要，字符串构建器将分配更多内存。</Callout>
 
 这里还有一个例子：
 
@@ -3291,7 +3376,7 @@ UE_LOG(LogTemp, Log, TEXT("Value of the: %i"), UEnum::GetValueAsName(Val));
 UE_LOG(LogTemp, Log, TEXT("Integer value of the: %i"), IntVal);
 ```
 
-> \[!NOTE\] `UPROPERTY` 支持常规枚举，并取代了使用 `TEnumAsByte` 的需求。
+<Callout> `UPROPERTY` 支持常规枚举，并取代了使用 `TEnumAsByte` 的需求。</Callout>
 
 你可以在虚幻引擎的文档中了解更多信息。
 
@@ -3418,7 +3503,7 @@ if (DamageHealth(PlayerHealth)) // Passing the `PlayerHealth` as a direct refere
 
 为了避免这种情况，在使用指针之前，你必须先检查它是否有效。
 
-> \[!警告\] 对原始指针使用名为 `IsValid()` 的函数，并对其进行任何操作。
+<Callout type="warn"> 对原始指针使用名为 `IsValid()` 的函数，并对其进行任何操作。</Callout>
 
 这里有一个示例：
 
@@ -3440,9 +3525,9 @@ void KillActor()
 }
 ```
 
-> \[!NOTE\] `ActorPtr` 使用 `UPROPERTY()` 标记，以通知 UHT [3](#user-content-fn-2) 该指针存在。当指针未被使用时，垃圾收集器会将其标记并删除其内存。请注意，此过程可能需要几个帧，并非即时完成。因此，请始终使用 `IsValid()` 函数，该函数还会检查指针是否已被标记用于垃圾收集。避免使用手动检查，例如 `PlayerCharacter != nullptr` （因为它与垃圾收集系统不兼容）。
+<Callout> `ActorPtr` 使用 `UPROPERTY()` 标记，以通知 UHT [3](#user-content-fn-2) 该指针存在。当指针未被使用时，垃圾收集器会将其标记并删除其内存。请注意，此过程可能需要几个帧，并非即时完成。因此，请始终使用 `IsValid()` 函数，该函数还会检查指针是否已被标记用于垃圾收集。避免使用手动检查，例如 `PlayerCharacter != nullptr` （因为它与垃圾收集系统不兼容）。</Callout>
 
-> \[!WARNING\] 如果其他内容正在引用 `ActorPtr` ，该指针将不会通过垃圾收集被销毁（除非它是弱指针）。
+<Callout type="warn"> 如果其他内容正在引用 `ActorPtr` ，该指针将不会通过垃圾收集被销毁（除非它是弱指针）。</Callout>
 
 从 Unreal Engine (5.0) 版本开始，推荐使用 `TObjectPtr` 而不是 `*` 来标记原始指针。 `TObjectPtr` 类包含一些针对编辑器的优化。
 
@@ -3584,7 +3669,7 @@ if (SoftPtr.IsValid())
 }
 ```
 
-> \[!WARNING\] 不要使用 `FSoftObjectPath` 或 `FSoftObjectPtr` 。用于内部用途。
+<Callout type="warn"> 不要使用 `FSoftObjectPath` 或 `FSoftObjectPtr` 。用于内部用途。</Callout>
 
 ##### TSoftClassPtr
 
@@ -3636,7 +3721,7 @@ if (SoftPtr.IsValid())
 }
 ```
 
-> \[!WARNING\] 不要使用 `FSoftClassPath` 。旧代码。
+<Callout type="warn"> 不要使用 `FSoftClassPath` 。旧代码。 </Callout>
 
 * * *
 
@@ -3698,7 +3783,7 @@ constexpr int getSizeOfAnArray()
 int array[getSizeOfAnArray()]; // array has 5 elements
 ```
 
-> \[!NOTE\] 如果你希望在编译时获得一个"真正"的常量值，并且不期望编译器有任何处理，你可以使用 `consteval` 关键字。这会强制编译器在编译时编译你的代码。
+<Callout> 如果你希望在编译时获得一个"真正"的常量值，并且不期望编译器有任何处理，你可以使用 `consteval` 关键字。这会强制编译器在编译时编译你的代码。</Callout>
 
 ```cpp
 consteval int getSizeOfAnArray()
@@ -3713,9 +3798,9 @@ int array[getSizeOfAnArray()]; // array has 10 elements
 constinit int sizeOfAnArray = getSizeOfAnArray();
 ```
 
-> \[!WARNING\] `consteval` 和 `constinit` 关键字仅在 C++ 20 版本中受支持。这意味着如果你的编译器不支持这些关键字，你将无法使用它们。
+<Callout type="warn"> `consteval` 和 `constinit` 关键字仅在 C++ 20 版本中受支持。这意味着如果你的编译器不支持这些关键字，你将无法使用它们。 </Callout>
 
-> \[!NOTE\] Unreal Engine 现在支持 C++ 版本 20。
+<Callout> Unreal Engine 现在支持 C++ 版本 20。</Callout>
 
 ```cpp
 // Example of using constinit keyword
@@ -3809,7 +3894,9 @@ std::cout << "Age: " << person->age << std::endl;
 delete person;
 ```
 
-> \[!警告\] 在 Unreal Engine 中，建议使用 `NewObject()` 和 `MakeShared()` 这类内置的内存管理函数来为对象分配内存，而不是使用 `new` 和 `delete` 。使用 `new` 和 `delete` 可能会干扰垃圾回收器，导致游戏出现内存泄漏或崩溃。
+<Callout type="warn">
+ 在 Unreal Engine 中，建议使用 `NewObject()` 和 `MakeShared()` 这类内置的内存管理函数来为对象分配内存，而不是使用 `new` 和 `delete` 。使用 `new` 和 `delete` 可能会干扰垃圾回收器，导致游戏出现内存泄漏或崩溃。
+</Callout>
 
 那么类和结构有什么区别呢？
 
@@ -3956,7 +4043,7 @@ Details details = VehicleBase::GetDetails();
 
 要强制使用内联函数，你必须使用 `force_inline` 关键字。
 
-> \[!NOTE\] 在虚幻引擎中，更常见的是使用名为 `FORCEINLINE` 的宏，它本质上扩展为 `force_inline` 关键字。
+<Callout> 在虚幻引擎中，更常见的是使用名为 `FORCEINLINE` 的宏，它本质上扩展为 `force_inline` 关键字。</Callout>
 
 ```cpp
 inline int CalcNewHealth(int Health)
@@ -4011,9 +4098,9 @@ int* ptr = new int(65);
 char* charPtr = reinterpret_cast<char*>(ptr); // Will be casted to char pointer, with the value of 'A'.
 ```
 
-> \[!CAUTION\] 不要在 Unreal Engine 项目中使用 C++版本的类型转换。相反，应使用引擎提供的 `Cast()` 。这种转换针对 UE 进行了优化。
+<Callout type="error"> 不要在 Unreal Engine 项目中使用 C++版本的类型转换。相反，应使用引擎提供的 `Cast()` 。这种转换针对 UE 进行了优化。</Callout>
 
-> \[!NOTE\] 如果您希望在 Unreal 中使用 `static_cast()` ，则应使用引擎提供的 `StaticCast()` 。这将生成相同的代码，但会修复 Visual Studio 中的一些问题。
+<Callout> 如果您希望在 Unreal 中使用 `static_cast()` ，则应使用引擎提供的 `StaticCast()` 。这将生成相同的代码，但会修复 Visual Studio 中的一些问题。</Callout>
 
 ```cpp
 ACharacter* MyCharacter = GetPlayerCharacter();
@@ -4239,9 +4326,13 @@ namespace MyNamespace
 }
 ```
 
-> \[!TIP\] 建议在单行中声明变量两次时使用 `auto` 关键字。例如，在强制类型转换操作期间。如果你在函数返回值上使用 `auto` 关键字，其他开发者将极难看出返回值的类型。
+<Callout type="success">
+  建议在单行中声明变量两次时使用 `auto` 关键字。例如，在强制类型转换操作期间。如果你在函数返回值上使用 `auto` 关键字，其他开发者将极难看出返回值的类型。
+</Callout>
 
-> \[!CAUTION\] UHT [3](#user-content-fn-2) 不支持 `operator` 或 `namespace` 关键字。这意味着你不能有一个带有命名空间的 C++ 类，也不能使用操作函数为蓝图。
+<Callout type="error">
+  UHT [3](#user-content-fn-2) 不支持 `operator` 或 `namespace` 关键字。这意味着你不能有一个带有命名空间的 C++ 类，也不能使用操作函数为蓝图。
+</Callout>
 
 ## 👷 构造函数、析构函数和初始化
 
@@ -4855,7 +4946,7 @@ public:
 };
 ```
 
-> \[!WARNING\] `BlueprintNativeEvent` 允许你在 C++ 或蓝图中对函数进行重写，但如果你使用 `BlueprintImplementableEvent` ，它只允许在蓝图中对函数进行重写。
+<Callout type="warn"> `BlueprintNativeEvent` 允许你在 C++ 或蓝图中对函数进行重写，但如果你使用 `BlueprintImplementableEvent` ，它只允许在蓝图中对函数进行重写。</Callout>
 
 ### 扩展接口函数：
 
@@ -4904,7 +4995,7 @@ void ACarPawn::Explode_Implementation(bool bForce)
 
 在 C++中调用接口函数时，必须使用 `Execute` 作为前缀调用该函数。如果不使用前缀，Unreal Engine 会发出警告。
 
-> \[!NOTE\] 你是从接口本身调用接口函数。也就是说，不能使用 `ACarPawn->Explode()` （接口函数），而必须使用 `IVehicle::Execute_Explode()` ，并将参数设置为接口函数要调用的对象。
+<Callout> 你是从接口本身调用接口函数。也就是说，不能使用 `ACarPawn->Explode()` （接口函数），而必须使用 `IVehicle::Execute_Explode()` ，并将参数设置为接口函数要调用的对象。</Callout>
 
 ```cpp
 UObject* CarObject = nullptr; // The UObject, that you wish to call the function on.
@@ -4940,7 +5031,9 @@ UObject* CarObject = nullptr; // The UObject, that you wish to call the function
 IVehicle* VehiclePtr = Cast<IVehicle>(CarObject);
 ```
 
-> \[!警告\] `Cast<>` 方法只有在接口在 C++类中实现时才有效。如果接口是在蓝图（Blueprint）中实现的，那么强制类型转换将返回 `nullptr` 。你可以使用 `TScriptInterface<>` 来安全地复制接口指针。或者，你可以使用弱接口指针（ `TWeakInterfacePtr` ）。
+<Callout type="warn">
+`Cast<>` 方法只有在接口在 C++类中实现时才有效。如果接口是在蓝图（Blueprint）中实现的，那么强制类型转换将返回 `nullptr` 。你可以使用 `TScriptInterface<>` 来安全地复制接口指针。或者，你可以使用弱接口指针（ `TWeakInterfacePtr` ）。
+</Callout>
 
 ### 引用一个接口对象
 
@@ -4978,7 +5071,9 @@ if (VehiclePtr.IsValid())
 
 关于弱指针的更多信息，你可以在 💾 Soft vs hard references 中阅读。
 
-> \[!TIP\] Blueprint 中的 `TScriptInterface` 比 C++版本看起来更美观。
+<Callout type="success">
+ Blueprint 中的 `TScriptInterface` 比 C++版本看起来更美观。
+</Callout>
 
 ## 🛸 反射系统
 
@@ -5026,7 +5121,7 @@ if (VehiclePtr.IsValid())
 
 > 垃圾回收器可能会删除你所指向的对象的所有者。
 
-> \[!WARNING\] 为了让垃圾回收器完成其工作（确定哪些对象可以安全删除，对于容器而言），它必须遍历每个对象的每个字段。虽然 Unreal 提供了多种类型的容器（ `TArray` ， `TMap` ， …），但垃圾回收器只考虑 `TArray` 中的指针。
+<Callout type="warn"> 为了让垃圾回收器完成其工作（确定哪些对象可以安全删除，对于容器而言），它必须遍历每个对象的每个字段。虽然 Unreal 提供了多种类型的容器（ `TArray` ， `TMap` ， …），但垃圾回收器只考虑 `TArray` 中的指针。</Callout>
 
 #### 示例
 
@@ -5051,7 +5146,7 @@ UObjects 不应该使用 `new` 创建，而只能使用默认的创建方法（ 
 
 对象的销毁不一定都在同一个帧中发生，当垃圾回收开始作用于它时，会首先调用 `BeginDestroy()` （不要自己调用这个），然后，在准备好时 `FinishDestroy()` 。
 
-> \[!NOTE\] 使用 `UPROPERTY` 声明的原始指针将被设置为 `nullptr`
+<Callout> 使用 `UPROPERTY` 声明的原始指针将被设置为 `nullptr`</Callout>
 
 ### 验证
 
@@ -5131,7 +5226,7 @@ UObjectBase::IsValidLowLevelFast();
 *   `StaticCast()` : 尝试在编译时进行转换。但是，某些代码可能仅在运行时才能工作，因此编译器将决定是否静态转换是“适当”的。
 
 
-> \[!NOTE\] `StaticCast()` 函数只是转发 C++中的内置转换操作，该操作称为 `static_cast()` 。这意味着在 Unreal Engine `UObject` 中没有安全性保证。
+<Callout> `StaticCast()` 函数只是转发 C++中的内置转换操作，该操作称为 `static_cast()` 。这意味着在 Unreal Engine `UObject` 中没有安全性保证。</Callout>
 
 ## 🏛️ 库
 
@@ -5368,7 +5463,9 @@ UE_LOG(LogTemp, Warning, TEXT("Hello"));
 UE_LOG(LogTemp, Warning, TEXT("The Actor's name is: %s"), *YourActor->GetName());
 ```
 
-> \[!TIP\] 您可以使用 `__func__` 、 `__FUNCTION__` 或 `__PRETTY_FUNCTION__` 获取函数名称，并在日志中打印出来。但是，要添加这个字符串，您必须将其转换为 TCHAR 指针。通过使用 `ANSI_TO_TCHAR()` 宏。
+<Callout type="success">
+  您可以使用 `__func__` 、 `__FUNCTION__` 或 `__PRETTY_FUNCTION__` 获取函数名称，并在日志中打印出来。但是，要添加这个字符串，您必须将其转换为 TCHAR 指针。通过使用 `ANSI_TO_TCHAR()` 宏。
+</Callout>
 
 不幸的是， `UE_LOG` 不支持 `bool` 数据类型。
 
@@ -5485,7 +5582,7 @@ UE_LOGFMT(LogCore, Warning, "Loading '{0}' failed with error {1}", Package->GetN
 UE_LOGFMT(LogCore, Warning, "Loading '{Name}' failed with error {Error}", ("Error", ErrorCode), ("Name", Package->GetName()), ("Flags", LoadFlags));
 ```
 
-> \[!NOTE\] FText 不支持 `UE_LOGFMT()` ，要使用 `FText` ，需要通过调用 `ToString()` 函数将其转换为 `FString` 。
+<Callout> FText 不支持 `UE_LOGFMT()` ，要使用 `FText` ，需要通过调用 `ToString()` 函数将其转换为 `FString` 。</Callout>
 
 ### 记录到游戏视图
 
@@ -5688,17 +5785,17 @@ void CleanupCharacters(int32 Count)
 |  | ensure 宏在 Debug 和 Release 构建中都保持激活状态，其行为可以在 Unreal Editor 项目设置中配置。 | \- 在发布构建中， ensure 可以设置为记录消息或执行安全失败操作，而不是停止程序的执行。 |
 |  | 如果 ensure 宏中指定的条件评估为 false，它可能会触发断言或根据项目设置执行替代操作。 |  |
 
-## 🔔 代表者
+## 🔔 委托
 
 <table><tbody><tr><td>本节并非与 ChatGPT 一同编写。</td></tr></tbody></table>
 
 ![Delegates](/static-img/Delegates.png)
 
-代表者本质上是一种类型安全的函数指针，可以用来将一个或多个函数绑定到事件上，然后在事件发生时触发这些函数。
+委托本质上是一种类型安全的函数指针，可以用来将一个或多个函数绑定到事件上，然后在事件发生时触发这些函数。
 
-在蓝图（Blueprint）中，你可能会遇到"事件调度器"，其底层实际上就是多播代表者。
+在蓝图（Blueprint）中，你可能会遇到"事件分发器"，其底层实际上就是多播委托。
 
-Unreal 使用三种类型的代表者：单播、多播和动态。
+Unreal 使用三种类型的委托：单播、多播和动态。
 
 动态或非动态基本手段，如果我们想通过反射系统 [8](#user-content-fn-1) 在蓝图内部支持绑定函数，这通常会导致性能变慢。而非动态仅支持在 C++代码内部绑定函数。
 
@@ -5840,11 +5937,13 @@ bool bIsBound = MyEvent.IsBound();
 
 委托可用于响应用户输入、游戏状态变化或其他类型的事件来触发事件，并可用于实现各种游戏功能和机制。
 
-> \[!TIP\] 这里是 BenUI 提供的在线工具，用于帮助您创建委托宏。
+<Callout type="success"> 这里是 BenUI 提供的在线工具，用于帮助您创建委托宏。</Callout>
 
-> \[!TIP\] 尽量在不需要计时的情况下使用委托。这有助于节省计时性能。
+<Callout type="success"> 尽量在不需要计时的情况下使用委托。这有助于节省计时性能。</Callout>
 
-> \[!CAUTION\] 如果您使用原始绑定绑定委托，并且在之后没有解除绑定，当 `UObject` 被销毁时。这将导致内存泄漏。因为，即使 `UObject` 不再活跃，绑定仍然存在。因此，建议直接绑定 `UObject` 或 `UFunction` 。
+<Callout type="error">
+如果您使用原始绑定绑定委托，并且在之后没有解除绑定，当 `UObject` 被销毁时。这将导致内存泄漏。因为，即使 `UObject` 不再活跃，绑定仍然存在。因此，建议直接绑定 `UObject` 或 `UFunction` 。
+</Callout>
 
 | 类型 | 绑定 C++函数 | 绑定 UFUNCTION |
 | --- | --- | --- |
@@ -5935,7 +6034,7 @@ UBUITween::Create( SomeWidget, 0.2f )
 
 例如，你可以创建一个名为 `Vehicle` 的模块来包含所有与车辆系统相关的代码。这将使你能够将车辆代码与其他游戏部分（如库存系统）隔离开来，并使维护和更新变得更加容易。
 
-> \[!NOTE\] Unreal Engine 模块与 C++ 20 模块无关。
+<Callout> Unreal Engine 模块与 C++ 20 模块无关。</Callout>
 
 您可以在此处了解更多关于 Unreal Engine 模块的信息！
 
@@ -6827,7 +6926,7 @@ exit 0
 
 计时器安排在延迟后或一段时间内执行操作。例如，你可能希望在玩家获得能量提升物品后使其无敌，然后在 10 秒后恢复易受伤害状态。或者你可能希望在玩家穿过充满有毒气体的房间时每秒造成一次伤害。这些操作可以通过使用计时器来实现。
 
-> \[!NOTE\] 如果计时器将要被调用的对象（例如 Actor）在时间结束前被销毁，计时器将自动取消。在这种情况下，计时器句柄将变得无效，函数将不会被调用。
+<Callout> 如果计时器将要被调用的对象（例如 Actor）在时间结束前被销毁，计时器将自动取消。在这种情况下，计时器句柄将变得无效，函数将不会被调用。</Callout>
 
 ```cpp
 // .h
@@ -6899,7 +6998,7 @@ GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
 ```
 
-> \[!TIP\] 使用小于或等于零的速率调用 `SetTimer()` 与调用 `ClearTimer()` 相同。
+<Callout type="success"> 使用小于或等于零的速率调用 `SetTimer()` 与调用 `ClearTimer()` 相同。</Callout>
 
 要暂停或恢复计时器，您可以调用 `PauseTimer()` 或 `UnPauseTimer()` 函数：
 
@@ -6944,7 +7043,9 @@ GetWorldTimerManager().GetTimerElapsed(this, &AUTWeapon::RefireCheckTimer);
 
 您可以在虚幻引擎的博客上了解更多关于 Gameplay 标签的信息。
 
-> \[!IMPORTANT\] 要在 C++中使用 Gameplay 标签，您必须在构建系统中包含该模块（ `GameplayTags` ）。
+<Callout type="warn">
+  要在 C++中使用 Gameplay 标签，您必须在构建系统中包含该模块（ `GameplayTags` ）。
+</Callout>
 
 您还可以观看 LeafBranchGames 制作的视频，以了解有关 Gameplay 标签的所有信息。
 
@@ -7012,7 +7113,7 @@ UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_AK47)
 UE_DEFINE_GAMEPLAY_TAG(TAG_AK47, "Weapon.Gun.Rifle.AK47");
 ```
 
-> \[!NOTE\] 为了避免同时使用 `UE_DECLARE_GAMEPLAY_TAG_EXTERN()` 和 `UE_DEFINE_GAMEPLAY_TAG` ，你可以改用 `UE_DEFINE_GAMEPLAY_TAG_STATIC()` 。但是，这个宏应该只在使用声明的实现文件中使用。
+<Callout> 为了避免同时使用 `UE_DECLARE_GAMEPLAY_TAG_EXTERN()` 和 `UE_DEFINE_GAMEPLAY_TAG` ，你可以改用 `UE_DEFINE_GAMEPLAY_TAG_STATIC()` 。但是，这个宏应该只在使用声明的实现文件中使用。</Callout>
 
 ```cpp
 // .cpp
@@ -7255,7 +7356,9 @@ Lorem Ipsum
 
 运行时错误可以通过崩溃报告器解决。而语义错误可以通过理解代码的逻辑推理来解决。
 
-> \[!TIP\] 如果你感到卡壳或思维混乱，不妨花几分钟甚至几小时做点别的事情。比如出去走走、玩电子游戏、听音乐或看电影或视频。这可以帮助你大脑重新思考并更快地解决问题。
+<Callout type="success">
+  如果你感到卡壳或思维混乱，不妨花几分钟甚至几小时做点别的事情。比如出去走走、玩电子游戏、听音乐或看电影或视频。这可以帮助你大脑重新思考并更快地解决问题。
+</Callout>
 
 你可以在微软网站上找到所有的编译器错误。
 
@@ -7367,7 +7470,9 @@ int main()
 
 如果你无法访问可视化调试器，那么最常见且痛苦的方法就是在代码周围添加打印消息。我不推荐这种方法，因为它需要更多时间来追踪函数或代码行，并添加大量打印语句。相反，我建议你使用崩溃报告器或可视化调试器。
 
-> \[!TIP\] 你也可以使用断言来测试代码的失败情况。但也要在失败时添加消息，这将供崩溃报告器捕获。这将增加崩溃发生时的可理解性。你可以在本节中了解更多关于断言的信息。
+<Callout type="success">
+  你也可以使用断言来测试代码的失败情况。但也要在失败时添加消息，这将供崩溃报告器捕获。这将增加崩溃发生时的可理解性。你可以在本节中了解更多关于断言的信息。
+</Callout>
 
 例如，如果你尝试访问数组的一个超出范围的索引，它将导致运行时错误，因为程序将尝试访问一个无效的内存位置。
 
@@ -7753,7 +7858,7 @@ NameToNumbersMap numbers;
 std::map<std::string, std::vector<int>> numbers;
 ```
 
-> \[!WARNING\] Typedefs 不适用于 UHT [8](#user-content-fn-1) 。这意味着你不能将其暴露给 Blueprint。
+<Callout type="warn"> Typedefs 不适用于 UHT [8](#user-content-fn-1) 。这意味着你不能将其暴露给 Blueprint。</Callout>
 
 #### 引入变量
 
@@ -7926,9 +8031,9 @@ void FMyTickableThing::Tick( float DeltaTime )
 }
 ```
 
-> \[!NOTE\] Tick 任何你想的对象， `UObject` 或不 Tick！
+<Callout> Tick 任何你想的对象， `UObject` 或不 Tick！</Callout>
 
-> \[!WARNING\] UHT [3](#user-content-fn-2) 不支持在 `USTRUCT` 内部暴露函数。然而，你仍然可以在 `USTRUCT` 内部有函数，但不仅暴露给蓝图。
+<Callout type="warn"> UHT [3](#user-content-fn-2) 不支持在 `USTRUCT` 内部暴露函数。然而，你仍然可以在 `USTRUCT` 内部有函数，但不仅暴露给蓝图。</Callout>
 
 ### 🔌 直接引用
 
@@ -8011,7 +8116,7 @@ void KillCharacter();
 $ ke * KillCharacter
 ```
 
-> \[!NOTE\] 在命令行界面（CLI）的上下文中，美元符号（ `$` ）通常被称为“提示符号”或简单地称为“提示”。它表示 CLI 已准备好接收用户的输入。提示的具体外观和行为可能会根据所使用的操作系统和外壳而有所不同。
+<Callout> 在命令行界面（CLI）的上下文中，美元符号（ `$` ）通常被称为“提示符号”或简单地称为“提示”。它表示 CLI 已准备好接收用户的输入。提示的具体外观和行为可能会根据所使用的操作系统和外壳而有所不同。</Callout>
 
 ### 重命名变量而不破坏引用
 
@@ -8144,7 +8249,7 @@ public:
 
 \`PropertyRedirects=(OldName="TestInt",NewName="TestInteger",MatchSubstring=true)\` 由于子字符串匹配，导致我们所有的四个属性迁移。
 
-> \[!NOTE\] 由于 `MatchSubtring` 需要更彻底地检查传入的资产，因此可能会影响启动时间。 `MatchSubstring` 旨在作为进行大规模更改时的临时修复。建议立即重新保存涉及这些更改的资产，并将任何相关的代码更改与项目源代码数据库一起检查入，并删除核心重定向而不将其提交到源代码控制。
+<Callout> 由于 `MatchSubtring` 需要更彻底地检查传入的资产，因此可能会影响启动时间。 `MatchSubstring` 旨在作为进行大规模更改时的临时修复。建议立即重新保存涉及这些更改的资产，并将任何相关的代码更改与项目源代码数据库一起检查入，并删除核心重定向而不将其提交到源代码控制。</Callout>
 
 ### 曲线采样
 
@@ -8309,7 +8414,9 @@ void YourClass::OnRequestCompleted(const FString& Result, bool bWasSuccessful)
 }
 ```
 
-> \[!TIP\] 你可以通过 Postman 使用 Star Wars API 示例来测试 HTTP 请求。
+<Callout type="success">
+  你可以通过 Postman 使用 Star Wars API 示例来测试 HTTP 请求。
+</Callout>
 
 你可以在 Unreal 的文档中了解更多关于 HTTP 模块的信息。
 
@@ -8375,16 +8482,16 @@ FString YourClass::DecryptToString(FString EncryptedValue, FString EncryptionKey
 
 | 作者 | 标题 | 长度 | 链接 |
 | --- | --- | --- | --- |
-| Mosh Hamedani | C++ 初学者教程 - 1 小时内学会 C++ | 01:22:55 | YouTube |
-| Alex Forsythe | 蓝图与 C++：它们如何协同工作以及为何你应该同时使用两者 | 47:13 | YouTube |
-| Alex Forsythe | 虚幻引擎游戏框架：从 int main()到 BeginPlay | 27:22 | YouTube |
-| Alex Forsythe | 虚幻引擎中的多人游戏：如何理解网络复制 | 22:07 | YouTube |
-| 亚历克斯·福赛斯 | 当虚幻编辑器崩溃时你该怎么办？ | 13:04 | YouTube |
-| 虚幻引擎 | UE5 中的遮罩和资产制作 | 34:07 | YouTube |
-| 虚幻引擎 | 在虚幻引擎 5 中构建开放世界 | 49:41 | YouTube |
-| 虚幻引擎 | 35 个你可能不知道的 UE5 功能 | 49:55 | YouTube |
-| 阿米尔·安萨里 | 虚幻引擎过载 - 软硬引用 | 01:13:35 | YouTube |
-| UNF 游戏 | 虚幻引擎 5 入门建模教程 - 学习在虚幻引擎中建模！ | 02:12:34 | YouTube |
+| Mosh Hamedani | C++ 初学者教程 - 1 小时内学会 C++ | 01:22:55 | [YouTube](https://www.youtube.com/watch?v=ZzaPdXTrSb8) |
+| Alex Forsythe | 蓝图与 C++：它们如何协同工作以及为何你应该同时使用两者 | 47:13 | [YouTube](https://www.youtube.com/watch?v=VMZftEVDuCE) |
+| Alex Forsythe | 虚幻引擎游戏框架：从 int main()到 BeginPlay | 27:22 | [YouTube](https://www.youtube.com/watch?v=IaU2Hue-ApI) |
+| Alex Forsythe | 虚幻引擎中的多人游戏：如何理解网络复制 | 22:07 | [YouTube](https://www.youtube.com/watch?v=JOJP0CvpB8w) |
+| 亚历克斯·福赛斯 | 当虚幻编辑器崩溃时你该怎么办？ | 13:04 | [YouTube](https://www.youtube.com/watch?v=TXZGIvpEhW8) |
+| 虚幻引擎 | UE5 中的遮罩和资产制作 | 34:07 | [YouTube](https://www.youtube.com/watch?v=R5TsbnW4fk8) |
+| 虚幻引擎 | 在虚幻引擎 5 中构建开放世界 | 49:41 | [YouTube](https://www.youtube.com/watch?v=EEf07ggFWRw) |
+| 虚幻引擎 | 35 个你可能不知道的 UE5 功能 | 49:55 | [YouTube](https://www.youtube.com/watch?v=k2IP5DYQ0-0) |
+| 阿米尔·安萨里 | 虚幻引擎过载 - 软硬引用 | 01:13:35 | [YouTube](https://www.youtube.com/watch?v=giDf4G6Ndk8) |
+| UNF 游戏 | 虚幻引擎 5 入门建模教程 - 学习在虚幻引擎中建模！ | 02:12:34 | [YouTube](https://www.youtube.com/watch?v=9InU0xbX7l0) |
 
 ### 文章
 
@@ -8400,22 +8507,21 @@ FString YourClass::DecryptToString(FString EncryptedValue, FString EncryptionKey
 
 | 作者 | 标题 | 描述 | 链接 |
 | --- | --- | --- | --- |
-| Naotsun | UnrealMacroGenerator |  | Visual Studio Marketplace |
-| Sébastien Rancoud | blueprintUE | 非官方工具，旨在帮助虚幻引擎开发者 | 蓝图 UE |
-| 马特·戈德博尔特 | 编译器探索器 | 从你的网络浏览器交互式运行编译器并与汇编交互 | 编译器探索器 |
-|  | 虚幻引擎 4 控制台变量和命令 | 所有 UE 命令列表 | UE 命令 |
+| Naotsun | UnrealMacroGenerator |  | [Visual Studio Marketplace](https://marketplace.visualstudio.com/items?itemName=Naotsun.Naotsun-UE-UMG) |
+| Sébastien Rancoud | blueprintUE | 非官方工具，旨在帮助虚幻引擎开发者 | [blueprintUE](https://blueprintue.com/) |
+| 马特·戈德博尔特 | 编译器探索器 | 从你的网络浏览器交互式运行编译器并与汇编交互 | [Compiler Explorer](https://godbolt.org/) |
+|  | 虚幻引擎 4 控制台变量和命令 | 所有 UE 命令列表 | [UE Commands](https://digilander.libero.it/ZioYuri78/) |
 
 ### 杂项
 
 | 作者 | 标题 | 描述 | 链接 |
 | --- | --- | --- | --- |
-| 托马斯·英格拉姆 | 开发者笔记 | 查看和发布开发者文档中的笔记。 | Chrome 网上应用店 |
+| 托马斯·英格拉姆 | 开发者笔记 | 查看和发布开发者文档中的笔记。 | [Chrome Web Store](https://chrome.google.com/webstore/detail/developer-notes/fchdfdnnpkphopmdaochdfnmcahndmnb) |
 
 ## 🆘 支持
 
-如果你有任何问题或问题，只需通过我的 YouTube 频道、电子邮件或 Twitter DM 写给我。
+If you have any questions or issue, just write either to my [YouTube channel](https://www.youtube.com/@mrrobinofficial), [Email](mailto:mrrobin123mail@gmail.com) or [Twitter DM](https://twitter.com/MrRobinOfficial).
 
-<table><tbody><tr><td>IS 14 PAGES LONG!</td></tr></tbody></table>
 
 ## 📍 脚注
 
