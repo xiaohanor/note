@@ -1,61 +1,38 @@
 ---
-title: UE5 C++ 入门
+title: UE5 C++ 指南
 ---
+
 **你对使用 C++在 Unreal Engine 中创建游戏感兴趣吗？**
 
 *在这个仓库中，我们将指导你开始使用 Unreal Engine 和 C++的基础知识。我们将涵盖 C++编程的基础，例如数据类型和指针，并展示如何在 Unreal Engine 的游戏开发中使用这些概念。我们还将向你介绍 Unreal Engine 模块系统，这是将你的游戏代码组织成更小、更易于管理部分的重要方面。*
 
-<ObsidianCallout type="IMPORTANT">
-  <ObsidianCalloutTitle>
-    如果你想在 Unreal Engine 中使用其他语言，比如 C#，那么强烈推荐你查看 Oscar Olsson 的这个仓库。
-  </ObsidianCalloutTitle>
+> \[!IMPORTANT\] 如果你想在 Unreal Engine 中使用其他语言，比如 C#，那么强烈推荐你查看 Oscar Olsson 的这个仓库。
 
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+<Callout> 这个仓库是和 ChatGPT 一起创建的，用于协助写作和构思每一句话。虽然它提供了有价值的信息，但可能并不完全准确。如果你发现任何错误或虚假陈述，请随时创建一个新问题来报告它们，以便进一步改进和澄清。</Callout>
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    这个仓库是和 ChatGPT 一起创建的，用于协助写作和构思每一句话。虽然它提供了有价值的信息，但可能并不完全准确。如果你发现任何错误或虚假陈述，请随时创建一个新问题来报告它们，以便进一步改进和澄清。
-  </ObsidianCalloutTitle>
+> 你也可以发送一个新的 pull request 来对代码库进行正确的修改。
+>
+> **我们非常感谢你的贡献和反馈！**
 
-  <ObsidianCalloutBody>
-    你也可以发送一个新的 pull request 来对代码库进行正确的修改。
+> \[!NOTE\] 示例和文档旨在适用于 UE 5.0 版本及更高版本。部分代码可能在旧版本上无法工作！
 
-    **我们非常感谢你的贡献和反馈！**
-  </ObsidianCalloutBody>
-</ObsidianCallout>
-
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    示例和文档旨在适用于 UE 5.0 版本及更高版本。部分代码可能在旧版本上无法工作！
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
-
-<ObsidianCallout type="IMPORTANT">
-  <ObsidianCalloutTitle>
-    如果你想查看最新的更改，可以检出 dev 分支。但是要注意实验性更改和进行中文字样。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!IMPORTANT\] 如果你想查看最新的更改，可以检出 dev 分支。但是要注意实验性更改和进行中文字样。
 
 ## 👑 快捷指南
 
-![jbtronics - CheatSheet Poster](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/CheatSheet_Poster-1.png)
-[jbtronics - 技巧海报](https://github.com/jbtronics/UE4-CheatSheet/blob/master/CheatSheet_Poster.pdf)
+![jbtronics - CheatSheet Poster](/static-img/CheatSheet_Poster-1.png)[jbtronics - 技巧海报](https://github.com/jbtronics/UE4-CheatSheet/blob/master/CheatSheet_Poster.pdf)
 
-![Winslow - Unreal Engine 5 Blueprint CheatSheet Dark Theme](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/unreal-engine-5-blueprint-cheat-sheet-dark-theme-1.png)
-[Winslow - Unreal Engine 5 蓝图技巧海报 暗色主题](https://uecasts.com/resources/unreal-engine-5-blueprint-cheat-sheet-dark-theme?utm_source=epicgames\&utm_campaign=cheat_sheet_ue5\&utm_content=blueprint_dark)
+![Winslow - Unreal Engine 5 Blueprint CheatSheet Dark Theme](/static-img/unreal-engine-5-blueprint-cheat-sheet-dark-theme-1.png)[Winslow - Unreal Engine 5 蓝图技巧海报 暗色主题](https://uecasts.com/resources/unreal-engine-5-blueprint-cheat-sheet-dark-theme?utm_source=epicgames&utm_campaign=cheat_sheet_ue5&utm_content=blueprint_dark)
 
-![Winslow - Unreal Engine 5 C++ CheatSheet Dark Theme](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/unreal-engine-5-c-plus-plus-cheat-sheet-dark-theme-1.png)[Winslow - Unreal Engine 5 C++ 技巧海报 暗色主题](https://uecasts.com/resources/unreal-engine-5-c-plus-plus-cheat-sheet-dark-theme?utm_source=epicgames\&utm_campaign=cheat_sheet_ue5\&utm_content=c_plus_plus_dark)
+![Winslow - Unreal Engine 5 C++ CheatSheet Dark Theme](/static-img/unreal-engine-5-c-plus-plus-cheat-sheet-dark-theme-1.png)[Winslow - Unreal Engine 5 C++ 技巧海报 暗色主题](https://uecasts.com/resources/unreal-engine-5-c-plus-plus-cheat-sheet-dark-theme?utm_source=epicgames&utm_campaign=cheat_sheet_ue5&utm_content=c_plus_plus_dark)
 
-![Winslow - Unreal Engine 5 Editor CheatSheet Dark Theme](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/unreal-engine-5-editor-cheat-sheet-dark-theme-1.png)[Winslow - Unreal Engine 5 编辑器暗黑主题作弊表](https://uecasts.com/resources/unreal-engine-5-editor-hotkeys-cheat-sheet-dark-theme?utm_source=epicgames\&utm_campaign=cheat_sheet_ue5\&utm_content=hotkeys_dark)
+![Winslow - Unreal Engine 5 Editor CheatSheet Dark Theme](/static-img/unreal-engine-5-editor-cheat-sheet-dark-theme-1.png)[Winslow - Unreal Engine 5 编辑器暗黑主题作弊表](https://uecasts.com/resources/unreal-engine-5-editor-hotkeys-cheat-sheet-dark-theme?utm_source=epicgames&utm_campaign=cheat_sheet_ue5&utm_content=hotkeys_dark)
 
-![VictoriaLyons - ProfilingCheatSheet](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/ProfilingCheatSheet-1.png)[VictoriaLyons - 性能分析作弊表](https://www.reddit.com/r/unrealengine/comments/gqi2xu/quick_performance_cheat_sheet/)
+![VictoriaLyons - ProfilingCheatSheet](/static-img/ProfilingCheatSheet-1.png)[VictoriaLyons - 性能分析作弊表](https://www.reddit.com/r/unrealengine/comments/gqi2xu/quick_performance_cheat_sheet/)
 
 ## 🎩 插件
+
+点击展开
 
 这些年，我发现了一些很棒且实用的插件，用于扩展和提高我的生产力。
 
@@ -65,85 +42,85 @@ title: UE5 C++ 入门
 
 ### Marketplace Plugins
 
-* 成就系统（轻松在任何 UE4 项目中定义和管理成就）。
-* 动画（使用矢量曲线动画化任何事物）。
-* 附件同步（使任何武器都能拥有附件）。
-* 音频计量轻量版（让你分析和计量子混音）。
-* 自动大小评论（使评论框自动调整大小以适应内部节点）。
-* 可蓝图化开发者设置（通过蓝图和编辑器访问配置文件，类似于 `UDeveloperSettings` ）。
-* 常用地图（通过将它们存储在列表中，允许您快速切换到您正在处理的项目中经常使用的地图）。
-* 自定义详细信息部分（通过将您的变量分组到自定义部分来组织详细信息面板）。
-* DzX 径向菜单（径向菜单插件为饼图样式的组件设计提供了完全的自由度）。
-* 增强输入序列（允许您处理输入动作及其序列）。
-* 扩展调试库（扩展了部分原生调试功能，暴露了更多功能）。
-* 文件系统库（在平静中打开、保存、复制、移动和删除文件和目录）。
-* 游戏流程（允许用户创建状态机并配置它们用于各种目的）。
-* 渐变生成器（帮助您创建复杂的渐变）。
-* 实时蓝图调试器（将蓝图调试器的变量窗口直接集成到关卡编辑器的详细信息面板中，用于任何选定的蓝图类实例）。
-* 大纲快捷方式（允许将快捷方式绑定到一些基本的世界大纲功能）。
-* 项目声学（用于为您的 3D 环境添加精确声学的音频波形声学引擎）。
-* 项目清理器（删除项目中的未使用资源和空文件夹）。
-* 任务编辑器插件（管理和创建 NPC 的任务和对话，具有非常动态和可定制的功能）。
-* 快速操作（在 Unreal 中快速查找任何内容）。
-* 正则表达式在蓝图（蓝图可用正则表达式）。
-* 重启虚幻编辑器（点击或使用快捷键重启虚幻编辑器的工具）。
-* 屏幕淡入淡出库（插件，使在蓝图和 C++中实现屏幕淡入淡出变得简单）。
-* SweejTech 音频检查器（允许你在紧凑的编辑器选项卡窗口中查看游戏中所有活动声音的详细有用信息）。
-* 时间时钟（轻松追踪你在项目中需要工作多长时间，并使用闹钟管理你的时间）。
-* 通用相机（为你的游戏设计的灵活相机）。
+*   成就系统（轻松在任何 UE4 项目中定义和管理成就）。
+*   动画（使用矢量曲线动画化任何事物）。
+*   附件同步（使任何武器都能拥有附件）。
+*   音频计量轻量版（让你分析和计量子混音）。
+*   自动大小评论（使评论框自动调整大小以适应内部节点）。
+*   可蓝图化开发者设置（通过蓝图和编辑器访问配置文件，类似于 `UDeveloperSettings` ）。
+*   常用地图（通过将它们存储在列表中，允许您快速切换到您正在处理的项目中经常使用的地图）。
+*   自定义详细信息部分（通过将您的变量分组到自定义部分来组织详细信息面板）。
+*   DzX 径向菜单（径向菜单插件为饼图样式的组件设计提供了完全的自由度）。
+*   增强输入序列（允许您处理输入动作及其序列）。
+*   扩展调试库（扩展了部分原生调试功能，暴露了更多功能）。
+*   文件系统库（在平静中打开、保存、复制、移动和删除文件和目录）。
+*   游戏流程（允许用户创建状态机并配置它们用于各种目的）。
+*   渐变生成器（帮助您创建复杂的渐变）。
+*   实时蓝图调试器（将蓝图调试器的变量窗口直接集成到关卡编辑器的详细信息面板中，用于任何选定的蓝图类实例）。
+*   大纲快捷方式（允许将快捷方式绑定到一些基本的世界大纲功能）。
+*   项目声学（用于为您的 3D 环境添加精确声学的音频波形声学引擎）。
+*   项目清理器（删除项目中的未使用资源和空文件夹）。
+*   任务编辑器插件（管理和创建 NPC 的任务和对话，具有非常动态和可定制的功能）。
+*   快速操作（在 Unreal 中快速查找任何内容）。
+*   正则表达式在蓝图（蓝图可用正则表达式）。
+*   重启虚幻编辑器（点击或使用快捷键重启虚幻编辑器的工具）。
+*   屏幕淡入淡出库（插件，使在蓝图和 C++中实现屏幕淡入淡出变得简单）。
+*   SweejTech 音频检查器（允许你在紧凑的编辑器选项卡窗口中查看游戏中所有活动声音的详细有用信息）。
+*   时间时钟（轻松追踪你在项目中需要工作多长时间，并使用闹钟管理你的时间）。
+*   通用相机（为你的游戏设计的灵活相机）。
 
 ### Github 插件
 
-* 角色锁定器（在编辑关卡时可以锁定角色）。
-* 高级运动系统重构（C++版本）。
-* Agora 静态网格缩略图渲染器（在内容浏览器中提供一些关于静态网格的信息）。
-* Aliaser（允许在内容浏览器中显示别名）。
-* ALS-Refactored XT（扩展 ALS 重构，包含扩展的角色状态、改进的足迹系统、滑行、跳跃和攀墙功能）。
-* AsyncLoadingScreen (能够添加自定义加载屏幕)。
-* Audio Analysis Tools (提供多种分析音频数据的功能。与 Runtime Audio Importer 插件协同工作)。
-* Audio Meters for Unreal Engine 5.1 (能够监控您的音频电平)。
-* Batch Rename Tool (使用命名规则快速重命名多个资源)。
-* BlueprintUE C++ (允许您将蓝图发送到关联到您的账户)。
-* BUI Cheat Manager (作弊管理器，提供定义作弊快捷方式的方法)。
-* 循环依赖检测器。
-* CrystalNodes (美化虚幻编辑器图节点)。
-* CsToCpp (C#到 UE C++编译器)。
-* CustomShapeButton (允许在 UE5.3 中制作任意形状的按钮)。
-* Elementus Inventory (数据驱动型库存与物品系统)。
-* ExtendedUnreal (为蓝图提供实用函数)。
-* FlatNodes (Unreal Engine 图节点的一种极简风格)。
-* FlowGraph (为游戏流程设计的无设计依赖节点系统)。
-* Function Picker (允许在 UE5.3 中的任何蓝图属性中直接选择函数)。
-* Hotbar and Inventory System (易于使用的 Hotbar 和背包系统)。
-* MDMetaDataEditor (能够编辑蓝图属性、函数以及函数和事件参数的元数据)。
-* Neat Metadata (允许在蓝图中使用各种元数据，这些元数据通常仅在 C++中可用)。
-* ObjectPool (通过从固定池中重复使用对象而不是单独分配和释放它们来提高性能和内存使用)。
-* PBCharacterMovement (C++中的 HL2 风格经典 FPS 移动，适用于 UE)。
-* 池管理器（帮助在 UE5.3 中重用对象）。
-* 刷新所有节点（能够在单个蓝图实例中刷新所有节点。当蓝图版本未更新到其对应的 C++版本时很有用）。
-* 串行通信（串行通信端口库）。
-* 设置小部件构造器（从 UE5.3 中的数据表自动生成游戏设置 UI）。
-* 子系统浏览器插件（添加子系统浏览器面板，用于探索运行中的子系统并编辑其属性）。
-* 标签恢复（恢复已关闭的标签）。
-* UE4/UMG 的 UI 缓动库。
-* 虚幻引擎蓝图 CSV 解析。
-* UnrealImGui (将 Dear ImGui 框架集成到 Unreal Engine 中)。
-* VoxelCore (在 UE 中使用体素)。
+*   角色锁定器（在编辑关卡时可以锁定角色）。
+*   高级运动系统重构（C++版本）。
+*   Agora 静态网格缩略图渲染器（在内容浏览器中提供一些关于静态网格的信息）。
+*   Aliaser（允许在内容浏览器中显示别名）。
+*   ALS-Refactored XT（扩展 ALS 重构，包含扩展的角色状态、改进的足迹系统、滑行、跳跃和攀墙功能）。
+*   AsyncLoadingScreen (能够添加自定义加载屏幕)。
+*   Audio Analysis Tools (提供多种分析音频数据的功能。与 Runtime Audio Importer 插件协同工作)。
+*   Audio Meters for Unreal Engine 5.1 (能够监控您的音频电平)。
+*   Batch Rename Tool (使用命名规则快速重命名多个资源)。
+*   BlueprintUE C++ (允许您将蓝图发送到关联到您的账户)。
+*   BUI Cheat Manager (作弊管理器，提供定义作弊快捷方式的方法)。
+*   循环依赖检测器。
+*   CrystalNodes (美化虚幻编辑器图节点)。
+*   CsToCpp (C#到 UE C++编译器)。
+*   CustomShapeButton (允许在 UE5.3 中制作任意形状的按钮)。
+*   Elementus Inventory (数据驱动型库存与物品系统)。
+*   ExtendedUnreal (为蓝图提供实用函数)。
+*   FlatNodes (Unreal Engine 图节点的一种极简风格)。
+*   FlowGraph (为游戏流程设计的无设计依赖节点系统)。
+*   Function Picker (允许在 UE5.3 中的任何蓝图属性中直接选择函数)。
+*   Hotbar and Inventory System (易于使用的 Hotbar 和背包系统)。
+*   MDMetaDataEditor (能够编辑蓝图属性、函数以及函数和事件参数的元数据)。
+*   Neat Metadata (允许在蓝图中使用各种元数据，这些元数据通常仅在 C++中可用)。
+*   ObjectPool (通过从固定池中重复使用对象而不是单独分配和释放它们来提高性能和内存使用)。
+*   PBCharacterMovement (C++中的 HL2 风格经典 FPS 移动，适用于 UE)。
+*   池管理器（帮助在 UE5.3 中重用对象）。
+*   刷新所有节点（能够在单个蓝图实例中刷新所有节点。当蓝图版本未更新到其对应的 C++版本时很有用）。
+*   串行通信（串行通信端口库）。
+*   设置小部件构造器（从 UE5.3 中的数据表自动生成游戏设置 UI）。
+*   子系统浏览器插件（添加子系统浏览器面板，用于探索运行中的子系统并编辑其属性）。
+*   标签恢复（恢复已关闭的标签）。
+*   UE4/UMG 的 UI 缓动库。
+*   虚幻引擎蓝图 CSV 解析。
+*   UnrealImGui (将 Dear ImGui 框架集成到 Unreal Engine 中)。
+*   VoxelCore (在 UE 中使用体素)。
 
 ### Epic Games 插件
 
-* 由 Epic Games 制作的 Advanced Renamer。
-* 游戏输入由 Epic Games 制作。
-* 混沌载具由 Epic Games 制作（载具系统）。
-* 通用 UI 由 Epic Games 制作。
-* 增强输入由 Epic Games 制作。
-* 由 Epic Games 制作的太阳位置计算器（实时天空）。
+*   由 Epic Games 制作的 Advanced Renamer。
+*   游戏输入由 Epic Games 制作。
+*   混沌载具由 Epic Games 制作（载具系统）。
+*   通用 UI 由 Epic Games 制作。
+*   增强输入由 Epic Games 制作。
+*   由 Epic Games 制作的太阳位置计算器（实时天空）。
 
 ### MrRobinOfficial 的插件
 
-* 通用时间（提供编辑 DateTime 和 Timespan 值的编辑器视图）。
-* 通用车辆（扩展 Chaos 车辆系统）。
-* IniParser (导入/导出 .ini 文件).
+*   通用时间（提供编辑 DateTime 和 Timespan 值的编辑器视图）。
+*   通用车辆（扩展 Chaos 车辆系统）。
+*   IniParser (导入/导出 .ini 文件).
 
 我计划制作更多插件，你可以在 Github 上找到我。
 
@@ -151,15 +128,15 @@ title: UE5 C++ 入门
 
 <table><tbody><tr><td>本节并非与 ChatGPT 一同编写。</td></tr></tbody></table>
 
-* `stat fps` : 显示 FPS.
-* `stat unit` : 显示帧时间。
-* `stat game` : 显示各种游戏循环的耗时概况。
-* `dumpticks` : 显示当前场景中正在更新的角色列表。
-* `slomo` : 加快或减慢游戏时间。
-* `obj list` : 显示当前加载对象列表。
-* `obj list class=BP_PlayerCharacter_C` : 与 `obj list` 相同，但带有过滤功能。
-* `obj gc` : 收集所有带有 GC（垃圾收集器）的对象。
-* `au.Debug.AudioSoloSoundWave` : 需要一个声音波名称作为额外输入，并切换该声音波是否为独奏（唯一可听的声音）。
+*   `stat fps` : 显示 FPS.
+*   `stat unit` : 显示帧时间。
+*   `stat game` : 显示各种游戏循环的耗时概况。
+*   `dumpticks` : 显示当前场景中正在更新的角色列表。
+*   `slomo` : 加快或减慢游戏时间。
+*   `obj list` : 显示当前加载对象列表。
+*   `obj list class=BP_PlayerCharacter_C` : 与 `obj list` 相同，但带有过滤功能。
+*   `obj gc` : 收集所有带有 GC（垃圾收集器）的对象。
+*   `au.Debug.AudioSoloSoundWave` : 需要一个声音波名称作为额外输入，并切换该声音波是否为独奏（唯一可听的声音）。
 
 这里还有一个 Pongrit 制作的网站，展示了虚幻引擎的所有控制台命令。
 
@@ -169,74 +146,74 @@ title: UE5 C++ 入门
 
 要更改任何快捷键，您可以通过编辑器首选项访问键盘快捷键设置，然后在常规选项中选择键盘快捷键。
 
-***
+* * *
 
 基本
 
-* Ctrl + C : 复制
-* Ctrl + X : 剪切
-* Ctrl + V : 粘贴
-* Del - 删除
-* Ctrl + Y : 撤销
-* Ctrl + Z : 重做
-* Ctrl + A : 全选
-* Esc : 清除选择
-* Up/Down/Left/Right Arrow Keys : 移动选择
-* Ctrl + Spacebar : 打开内容浏览器
-* Ctrl + B : 在内容浏览器中查找
-* Ctrl + Tab : 浏览标签页
-* Ctrl + O : 打开关卡
-* Ctrl + P : 资产选择器
-* Alt + P 或 Alt + S : 播放/模拟
-* P : 显示导航网格
-* Mouse Wheel Up/Down : 放大
+*   Ctrl + C : 复制
+*   Ctrl + X : 剪切
+*   Ctrl + V : 粘贴
+*   Del - 删除
+*   Ctrl + Y : 撤销
+*   Ctrl + Z : 重做
+*   Ctrl + A : 全选
+*   Esc : 清除选择
+*   Up/Down/Left/Right Arrow Keys : 移动选择
+*   Ctrl + Spacebar : 打开内容浏览器
+*   Ctrl + B : 在内容浏览器中查找
+*   Ctrl + Tab : 浏览标签页
+*   Ctrl + O : 打开关卡
+*   Ctrl + P : 资产选择器
+*   Alt + P 或 Alt + S : 播放/模拟
+*   P : 显示导航网格
+*   Mouse Wheel Up/Down : 放大
 
-***
+* * *
 
 大纲
 
-* Ctrl + G 或 Shift + G : 组合/取消组合
-* Right-Click 在组合上：固定/取消固定
+*   Ctrl + G 或 Shift + G : 组合/取消组合
+*   Right-Click 在组合上：固定/取消固定
 
-***
+* * *
 
 蓝图编辑器
 
-* Ctrl + S : 保存蓝图
-* Ctrl + F : 在蓝图中查找
-* Ctrl + Shift + F : 在所有蓝图中查找
+*   Ctrl + S : 保存蓝图
+*   Ctrl + F : 在蓝图中查找
+*   Ctrl + Shift + F : 在所有蓝图中查找
 
-***
+* * *
 
 关卡编辑
 
-* Ctrl + S : 全部保存
-* End : 对齐到地面
-* Alt + End : 对齐枢轴到地面
-* Shift + End : 将约束边界吸附到地面
-* Ctrl + End : 将原点吸附到网格
-* Alt + Transform : 复制并变换
+*   Ctrl + S : 全部保存
+*   End : 对齐到地面
+*   Alt + End : 对齐枢轴到地面
+*   Shift + End : 将约束边界吸附到地面
+*   Ctrl + End : 将原点吸附到网格
+*   Alt + Transform : 复制并变换
 
-***
+* * *
 
 相机/变换
 
-* Alt + G : 透视图
-* Alt + H : 正视图
-* Alt + J : 俯视图
-* Alt + K : 侧视图
-* F : 聚焦
-* G : 查看
-* R : 缩放
-* W : 平移
-* E : 旋转
-* Spacebar : 切换移动/旋转/缩放
+*   Alt + G : 透视图
+*   Alt + H : 正视图
+*   Alt + J : 俯视图
+*   Alt + K : 侧视图
+*   F : 聚焦
+*   G : 查看
+*   R : 缩放
+*   W : 平移
+*   E : 旋转
+*   Spacebar : 切换移动/旋转/缩放
 
-***
+* * *
 
 工具
 
-* Ctrl + Shift + Comma : GPU 可视化
+*   Ctrl + Shift + Comma : GPU 可视化
 
 ## ⌛ 开始学习 C++
 
@@ -268,11 +245,12 @@ C++是一种静态类型、编译型、通用的编程语言，它结合了高�
 
 在 Unreal Engine 和 C++开发中常用的 IDE 包括：
 
-* Visual Studio：用于 Unreal Engine 开发的 Visual Studio IDE。它提供了一套强大的 C++工具，并与 Unreal Engine 无缝集成，提供了一个稳固的开发环境。 `Free` .
+*   Visual Studio：用于 Unreal Engine 开发的 Visual Studio IDE。它提供了一套强大的 C++工具，并与 Unreal Engine 无缝集成，提供了一个稳固的开发环境。 `Free` .
 
-* Visual Studio Code (VSCode): Visual Studio Code 是一款轻量级、跨平台的代码编辑器，拥有丰富的扩展生态系统，包括用于 Unreal Engine 开发的扩展。 `Free` .
+*   Visual Studio Code (VSCode): Visual Studio Code 是一款轻量级、跨平台的代码编辑器，拥有丰富的扩展生态系统，包括用于 Unreal Engine 开发的扩展。 `Free` .
 
-* Rider: Rider 是由 JetBrains 开发的流行 IDE，专为游戏开发设计，并提供了与 Unreal Engine 项目的良好集成。 `Cost` .
+*   Rider: Rider 是由 JetBrains 开发的流行 IDE，专为游戏开发设计，并提供了与 Unreal Engine 项目的良好集成。 `Cost` .
+
 
 ### ⛏️ 帮助你旅程的工具
 
@@ -280,33 +258,36 @@ C++是一种静态类型、编译型、通用的编程语言，它结合了高�
 
 这里有一些可以集成到你的 IDE 中，以提升性能、调试或编写良好代码实践的工具。
 
-* Visual Assist：一款用于重构、阅读、编写、导航和生成 C/C++/C#代码的生产力工具。 `Cost` 和 `VS` 。
+*   Visual Assist：一款用于重构、阅读、编写、导航和生成 C/C++/C#代码的生产力工具。 `Cost` 和 `VS` 。
 
-* UnrealMacroGenerator：提供宏编辑器，用于 Unreal Engine 的 Unreal C++。您可以创建宏并编辑已编写的宏。 `Free` 和 `VS` 。
+*   UnrealMacroGenerator：提供宏编辑器，用于 Unreal Engine 的 Unreal C++。您可以创建宏并编辑已编写的宏。 `Free` 和 `VS` 。
+
 
 ### 🟢 使用 Unreal Engine 进行 C++开发的优势
 
 <table><tbody><tr><td>本节内容由 ChatGPT 共同编写。</td></tr></tbody></table>
 
-* 高性能：C++允许你编写可以直接在 CPU 和 GPU 上运行的代码，使你的游戏或应用程序能够实现非常高的性能水平。
+*   高性能：C++允许你编写可以直接在 CPU 和 GPU 上运行的代码，使你的游戏或应用程序能够实现非常高的性能水平。
 
-* 与现有代码库的集成：如果你希望将现有的 C++代码集成到你的 Unreal Engine 项目中，使用 C++可以让你更轻松地实现这一点。
+*   与现有代码库的集成：如果你希望将现有的 C++代码集成到你的 Unreal Engine 项目中，使用 C++可以让你更轻松地实现这一点。
 
-* 低级功能的访问：与其他编程语言相比，C++为你提供了更底层的功能访问，这在游戏开发中特别有用，因为对内存、数据结构和算法进行细粒度控制往往是必要的。
+*   低级功能的访问：与其他编程语言相比，C++为你提供了更底层的功能访问，这在游戏开发中特别有用，因为对内存、数据结构和算法进行细粒度控制往往是必要的。
 
-* 垃圾回收和内存管理：虽然 C++要求手动内存管理，但 Unreal Engine 提供了一个垃圾回收器，可以高效地从内存中清除 `UObject` 类。通过手动内存处理的控制，你可以精确地指定何时分配和释放内存。
+*   垃圾回收和内存管理：虽然 C++要求手动内存管理，但 Unreal Engine 提供了一个垃圾回收器，可以高效地从内存中清除 `UObject` 类。通过手动内存处理的控制，你可以精确地指定何时分配和释放内存。
+
 
 ### 🔴 使用 C++与虚幻引擎的缺点
 
 <table><tbody><tr><td>本节并非与 ChatGPT 一同编写。</td></tr></tbody></table>
 
-* 更容易出错：C++是一种强类型语言，需要精确使用分号、括号和准确的语法来确保成功编译。纠正这些问题可能耗时。相反，蓝图基于节点的图形系统不需要“正确”的语法，提供了一个更“宽容”的环境。
+*   更容易出错：C++是一种强类型语言，需要精确使用分号、括号和准确的语法来确保成功编译。纠正这些问题可能耗时。相反，蓝图基于节点的图形系统不需要“正确”的语法，提供了一个更“宽容”的环境。
 
-* 绑定于虚幻的 API：随着虚幻引擎的发展，Epic Games 可能会修改源代码，导致某些函数和成员变得过时/弃用。因此，虚幻可能会建议根据最新的 API 变化更新代码库。若不这样做，将来可能会导致编译错误。
+*   绑定于虚幻的 API：随着虚幻引擎的发展，Epic Games 可能会修改源代码，导致某些函数和成员变得过时/弃用。因此，虚幻可能会建议根据最新的 API 变化更新代码库。若不这样做，将来可能会导致编译错误。
 
-* 更新你的代码库：在使用 C++和虚幻引擎时，你的 C++代码会被编译成一个.DLL（在 Windows 操作系统）文件，虚幻引擎可以读取并在蓝图图中使用这些文件。然而，这需要虚幻引擎重新加载才能包含你的代码更改。Epic Games 推出了热重载功能，允许在不重启编辑器的情况下重新加载代码，从而简化开发流程。尽管热重载功能有时能正常工作一段时间，但它并不稳定，经常导致蓝图损坏或其他问题。
+*   更新你的代码库：在使用 C++和虚幻引擎时，你的 C++代码会被编译成一个.DLL（在 Windows 操作系统）文件，虚幻引擎可以读取并在蓝图图中使用这些文件。然而，这需要虚幻引擎重新加载才能包含你的代码更改。Epic Games 推出了热重载功能，允许在不重启编辑器的情况下重新加载代码，从而简化开发流程。尽管热重载功能有时能正常工作一段时间，但它并不稳定，经常导致蓝图损坏或其他问题。
 
-* 需要更多存储空间：在使用虚幻引擎中的 C++时，通常需要使用“调试用编辑器符号”，这会占用大约 60 GB 的存储空间。同样地，如果你选择从其源代码构建虚幻引擎（在他们的 GitHub 页面上），你将需要大约 200 GB 的存储空间。
+*   需要更多存储空间：在使用虚幻引擎中的 C++时，通常需要使用“调试用编辑器符号”，这会占用大约 60 GB 的存储空间。同样地，如果你选择从其源代码构建虚幻引擎（在他们的 GitHub 页面上），你将需要大约 200 GB 的存储空间。
+
 
 ## 🌍 C++和编程世界的总结
 
@@ -417,176 +398,176 @@ graph TD;
 
 点击展开
 
-* UClass 继承 `UStruct`
+*   UClass 继承 `UStruct`
 
-  * 一个对象类。
-* UObject 继承自 `UObjectBaseUtility`
+    *   一个对象类。
+*   UObject 继承自 `UObjectBaseUtility`
 
-  * 所有 UE 对象的基类。
-  * 对象的类型由其 `UClass` 定义。
-  * 这提供了创建和使用对象的支持函数，以及子类中应重写的虚拟函数。
-* AActor 继承 `UObject`
+    *   所有 UE 对象的基类。
+    *   对象的类型由其 `UClass` 定义。
+    *   这提供了创建和使用对象的支持函数，以及子类中应重写的虚拟函数。
+*   AActor 继承 `UObject`
 
-  * Actor 是可放置或生成在关卡中的对象的基类。
-  * Actor 可包含一组 ActorComponents，这些组件可用于控制对象的移动方式、渲染方式等。Actor 的另一个主要功能是在游戏过程中通过网络复制属性和函数调用。
-  * `AActor` 本身没有变换（即在世界中的位置），它依赖于根组件的变换。
-  * 常用功能：
-    * `void PreInitializeComponents()` - 在 actor 的组件调用 InitializeComponent 之前被调用。这仅在游戏运行期间和某些编辑器预览窗口中调用。
-    * `void InitializeComponent()` - 只有当组件具有 bWantsInitializeComponentSet 时才会被调用。这每个游戏会话只发生一次。
-    * `void PostInitializeComponents()` - 在角色的组件初始化后调用，仅在游戏进行中和某些编辑器预览期间。
-    * `void BeginPlay()` - 在关卡开始计时时调用，仅在真正的游戏进行中。这通常发生在 PostInitializeComponents 之后，但对于网络或子角色可能会延迟。
-    * `void Tick(float DeltaSeconds)` - 在此角色每帧调用的函数。
-    * `void EndPlay(const EEndPlayReason::Type EndPlayReason)` - 可重写的函数，在角色从关卡中移除时调用。
-    * `void SetLifeSpan(float InLifespan)` - 设置角色的生命周期。
-    * `void Destroy(bool bNetForce, bool bShouldModifyLevel)` - 销毁角色。
-    * `void SetActorTickEnabled(bool bEnabled)` - 设置此角色的 tick 函数为启用或禁用。
-    * `void SetActorTickInterval(float TickInterval)` - 设置此角色的主要 tick 函数的 tick 间隔。
-* 棋子继承 `AActor`
+    *   Actor 是可放置或生成在关卡中的对象的基类。
+    *   Actor 可包含一组 ActorComponents，这些组件可用于控制对象的移动方式、渲染方式等。Actor 的另一个主要功能是在游戏过程中通过网络复制属性和函数调用。
+    *   `AActor` 本身没有变换（即在世界中的位置），它依赖于根组件的变换。
+    *   常用功能：
+        *   `void PreInitializeComponents()` - 在 actor 的组件调用 InitializeComponent 之前被调用。这仅在游戏运行期间和某些编辑器预览窗口中调用。
+        *   `void InitializeComponent()` - 只有当组件具有 bWantsInitializeComponentSet 时才会被调用。这每个游戏会话只发生一次。
+        *   `void PostInitializeComponents()` - 在角色的组件初始化后调用，仅在游戏进行中和某些编辑器预览期间。
+        *   `void BeginPlay()` - 在关卡开始计时时调用，仅在真正的游戏进行中。这通常发生在 PostInitializeComponents 之后，但对于网络或子角色可能会延迟。
+        *   `void Tick(float DeltaSeconds)` - 在此角色每帧调用的函数。
+        *   `void EndPlay(const EEndPlayReason::Type EndPlayReason)` - 可重写的函数，在角色从关卡中移除时调用。
+        *   `void SetLifeSpan(float InLifespan)` - 设置角色的生命周期。
+        *   `void Destroy(bool bNetForce, bool bShouldModifyLevel)` - 销毁角色。
+        *   `void SetActorTickEnabled(bool bEnabled)` - 设置此角色的 tick 函数为启用或禁用。
+        *   `void SetActorTickInterval(float TickInterval)` - 设置此角色的主要 tick 函数的 tick 间隔。
+*   棋子继承 `AActor`
 
-  * 棋子是所有可以被玩家或 AI 控制的角色的基类。它们是关卡中玩家和生物的物理表现。
-  * `APawn` 提供了基本的控制机制和输入处理支持，以及碰撞检测和物理模拟。
-  * 常用功能：
-    * `void BeginPlay()` - 当关卡开始计时调用，仅在真实游戏中调用。
-    * `void Tick(float DeltaSeconds)` - 更新函数，在 Actor 的每一帧调用。
-    * `void EndPlay(const EEndPlayReason::Type EndPlayReason)` - 每当 Actor 从关卡中移除时
-    * `void SetLifeSpan(float InLifespan)` - 设置 Actor 的生存时间。
-    * `void Destroy(bool bNetForce, bool bShouldModifyLevel)` - 销毁角色。
-* AHUD 继承 `AActor`
+    *   棋子是所有可以被玩家或 AI 控制的角色的基类。它们是关卡中玩家和生物的物理表现。
+    *   `APawn` 提供了基本的控制机制和输入处理支持，以及碰撞检测和物理模拟。
+    *   常用功能：
+        *   `void BeginPlay()` - 当关卡开始计时调用，仅在真实游戏中调用。
+        *   `void Tick(float DeltaSeconds)` - 更新函数，在 Actor 的每一帧调用。
+        *   `void EndPlay(const EEndPlayReason::Type EndPlayReason)` - 每当 Actor 从关卡中移除时
+        *   `void SetLifeSpan(float InLifespan)` - 设置 Actor 的生存时间。
+        *   `void Destroy(bool bNetForce, bool bShouldModifyLevel)` - 销毁角色。
+*   AHUD 继承 `AActor`
 
-  * HUD 的基类。HUD 向玩家显示重要信息，例如生命值和弹药量，并提供游戏事件（如伤害或拾取能力提升）的视觉反馈。
-  * 它有一个画布和一个调试画布，可以在上面绘制基本图形。它还包含一个简单的碰撞框列表，可用于简单的物品点击检测。它还包含一种渲染调试文本的方法。提供了一些用于渲染文本、纹理、矩形和材质的简单方法，这些方法也可以从蓝图访问。
-* A 角色继承 `APawn`
+    *   HUD 的基类。HUD 向玩家显示重要信息，例如生命值和弹药量，并提供游戏事件（如伤害或拾取能力提升）的视觉反馈。
+    *   它有一个画布和一个调试画布，可以在上面绘制基本图形。它还包含一个简单的碰撞框列表，可用于简单的物品点击检测。它还包含一种渲染调试文本的方法。提供了一些用于渲染文本、纹理、矩形和材质的简单方法，这些方法也可以从蓝图访问。
+*   A 角色继承 `APawn`
 
-  * 角色是具有网格、碰撞和内置移动逻辑的棋子（ `APawn` ）。
-  * 它们负责玩家或 AI 与世界之间的所有物理交互，并实现基本网络和输入模型。它们是为垂直方向的玩家表示设计的，可以使用 `UCharacterMovementComponent` 在世界中行走、跳跃、飞行和游泳。
-  * `ACharacter` 可以作为游戏中的玩家角色、敌人和其他类型角色的基础类。
-* AController 继承 `AActor`
+    *   角色是具有网格、碰撞和内置移动逻辑的棋子（ `APawn` ）。
+    *   它们负责玩家或 AI 与世界之间的所有物理交互，并实现基本网络和输入模型。它们是为垂直方向的玩家表示设计的，可以使用 `UCharacterMovementComponent` 在世界中行走、跳跃、飞行和游泳。
+    *   `ACharacter` 可以作为游戏中的玩家角色、敌人和其他类型角色的基础类。
+*   AController 继承 `AActor`
 
-  * 控制器是非物理的参与者，可以拥有一个 Pawn 来控制其动作。PlayerControllers 被人类玩家用来控制 Pawn，而 AIControllers 为它们控制的 Pawn 实现人工智能。控制器通过它们的 `Possess()` 方法来控制一个 Pawn，并通过调用 `UnPossess()` 来释放对 Pawn 的控制。
-  * 控制器会接收到它们所控制的 Pawn 发生的许多事件的通知。这给控制器提供了机会来响应这些事件，拦截事件并覆盖 Pawn 的默认行为。
-  * ControlRotation（通过 `GetControlRotation()` 访问），决定了受控 Pawn 的观看/瞄准方向，并受来自鼠标或游戏手柄等输入的影响。
-* UActorComponent 继承 `UObject`
+    *   控制器是非物理的参与者，可以拥有一个 Pawn 来控制其动作。PlayerControllers 被人类玩家用来控制 Pawn，而 AIControllers 为它们控制的 Pawn 实现人工智能。控制器通过它们的 `Possess()` 方法来控制一个 Pawn，并通过调用 `UnPossess()` 来释放对 Pawn 的控制。
+    *   控制器会接收到它们所控制的 Pawn 发生的许多事件的通知。这给控制器提供了机会来响应这些事件，拦截事件并覆盖 Pawn 的默认行为。
+    *   ControlRotation（通过 `GetControlRotation()` 访问），决定了受控 Pawn 的观看/瞄准方向，并受来自鼠标或游戏手柄等输入的影响。
+*   UActorComponent 继承 `UObject`
 
-  * ActorComponent 是定义可添加到不同类型 Actor 上的可重用行为的基类。
-  * 具有变换的 ActorComponent 称为 SceneComponent（ `USceneComponent` ），而可渲染的称为 PrimitiveComponent（ `UPrimitiveComponent` ）。
-  * `UActorComponent` 不会出现在世界中。
-  * 常用功能：
-    * `void BeginPlay()` - 开始组件的播放。
-    * `void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)` - 在 ActorComponent 上每帧调用的函数。
-    * `void EndPlay(const EEndPlayReason::Type EndPlayReason)` - 结束组件的游戏播放。
-* UMovementComponent 继承 `UActorComponent`
+    *   ActorComponent 是定义可添加到不同类型 Actor 上的可重用行为的基类。
+    *   具有变换的 ActorComponent 称为 SceneComponent（ `USceneComponent` ），而可渲染的称为 PrimitiveComponent（ `UPrimitiveComponent` ）。
+    *   `UActorComponent` 不会出现在世界中。
+    *   常用功能：
+        *   `void BeginPlay()` - 开始组件的播放。
+        *   `void TickComponent(float DeltaTime, enum ELevelTick TickType, FActorComponentTickFunction* ThisTickFunction)` - 在 ActorComponent 上每帧调用的函数。
+        *   `void EndPlay(const EEndPlayReason::Type EndPlayReason)` - 结束组件的游戏播放。
+*   UMovementComponent 继承 `UActorComponent`
 
-  * MovementComponent 是一个抽象组件类，定义了每帧移动一个 PrimitiveComponent（我们的 UpdatedComponent）的功能。
-* USceneComponent 继承 `UActorComponent`
+    *   MovementComponent 是一个抽象组件类，定义了每帧移动一个 PrimitiveComponent（我们的 UpdatedComponent）的功能。
+*   USceneComponent 继承 `UActorComponent`
 
-  * 一个 SceneComponent 拥有变换，支持附着，但没有渲染或碰撞功能。
-  * 可用作层级中的"虚拟"组件，以平衡其他组件。
-  * 被需要知道自己在世界中的位置以运行逻辑的组件使用，即 `UAudioComponnent` ， `UCameraComponent` 。
-* UPrimitiveComponent 继承 `USceneComponent`
+    *   一个 SceneComponent 拥有变换，支持附着，但没有渲染或碰撞功能。
+    *   可用作层级中的"虚拟"组件，以平衡其他组件。
+    *   被需要知道自己在世界中的位置以运行逻辑的组件使用，即 `UAudioComponnent` ， `UCameraComponent` 。
+*   UPrimitiveComponent 继承 `USceneComponent`
 
-  * PrimitiveComponents 是包含或生成某种几何形状的 SceneComponents，通常用于渲染或作为碰撞数据使用。
-  * 几何学有多种子类，但最常见的是 ShapeComponents（Capsule、Sphere、Box）、StaticMeshComponent 和 SkeletalMeshComponent。
-  * ShapeComponents 生成用于碰撞检测但不会渲染的几何体，而 StaticMeshComponents 和 SkeletalMeshComponents 包含预构建的几何体，这些几何体既会被渲染，也可以用于碰撞检测。
-* USubsystem 继承 `UObject`
+    *   PrimitiveComponents 是包含或生成某种几何形状的 SceneComponents，通常用于渲染或作为碰撞数据使用。
+    *   几何学有多种子类，但最常见的是 ShapeComponents（Capsule、Sphere、Box）、StaticMeshComponent 和 SkeletalMeshComponent。
+    *   ShapeComponents 生成用于碰撞检测但不会渲染的几何体，而 StaticMeshComponents 和 SkeletalMeshComponents 包含预构建的几何体，这些几何体既会被渲染，也可以用于碰撞检测。
+*   USubsystem 继承 `UObject`
 
-  * 子系统是自动实例化的类，它们共享某些引擎结构的生命周期。
-  * 子系统负责初始化、更新和关闭其关联的服务，并且可以根据需要用于自定义或扩展引擎功能。
-  * 6 种类型的子系统
-    * UEngineSubsystem 共享引擎的生命周期。
-    * UEditorSubsystem 共享编辑器的生命周期。
-    * UGameInstanceSubsystem 共享游戏实例的生命周期。
-    * ULocalPlayerSubsystem - 共享本地玩家的生命周期。
-    * UWorldSubsystem - 共享 `UWorld` 的生命周期。
-    * UTickableWorldSubsystem - 共享 `UWorld` 的生命周期，并随其一起进行更新。
-* UBlueprintFunctionLibrary 继承 `UObject`
+    *   子系统是自动实例化的类，它们共享某些引擎结构的生命周期。
+    *   子系统负责初始化、更新和关闭其关联的服务，并且可以根据需要用于自定义或扩展引擎功能。
+    *   6 种类型的子系统
+        *   UEngineSubsystem 共享引擎的生命周期。
+        *   UEditorSubsystem 共享编辑器的生命周期。
+        *   UGameInstanceSubsystem 共享游戏实例的生命周期。
+        *   ULocalPlayerSubsystem - 共享本地玩家的生命周期。
+        *   UWorldSubsystem - 共享 `UWorld` 的生命周期。
+        *   UTickableWorldSubsystem - 共享 `UWorld` 的生命周期，并随其一起进行更新。
+*   UBlueprintFunctionLibrary 继承 `UObject`
 
-  * 这个类是任何暴露给蓝图的功能库的基类。
-  * 子类中的方法应该是静态的，这个基类不应添加任何方法。
-* UEngine、UEditorEngine 和 UGameEngine 继承 `UObject`
+    *   这个类是任何暴露给蓝图的功能库的基类。
+    *   子类中的方法应该是静态的，这个基类不应添加任何方法。
+*   UEngine、UEditorEngine 和 UGameEngine 继承 `UObject`
 
-  * 所有 Engine 类的抽象基类，负责管理对编辑器或游戏系统至关重要的系统。还定义了某些引擎系统的默认类。
-  * `UGameEngine` 管理使游戏运行的核心系统。
-  * `UEditorEngine` 驱动编辑器。与 `UGameEngine` 分开，因为它可能具有与游戏实例本身所需的期望功能差异很大的功能。
-* UGameViewportClient 继承 `UScriptViewportClient`
+    *   所有 Engine 类的抽象基类，负责管理对编辑器或游戏系统至关重要的系统。还定义了某些引擎系统的默认类。
+    *   `UGameEngine` 管理使游戏运行的核心系统。
+    *   `UEditorEngine` 驱动编辑器。与 `UGameEngine` 分开，因为它可能具有与游戏实例本身所需的期望功能差异很大的功能。
+*   UGameViewportClient 继承 `UScriptViewportClient`
 
-  * 一个游戏视口（FViewport）是平台特定渲染、音频和输入子系统的抽象高级接口。
-  * 每个游戏实例都会创建一个 GameViewportClient。
-* ULocalPlayer 继承 `UObject`
+    *   一个游戏视口（FViewport）是平台特定渲染、音频和输入子系统的抽象高级接口。
+    *   每个游戏实例都会创建一个 GameViewportClient。
+*   ULocalPlayer 继承 `UObject`
 
-  * 当前客户端/监听服务器上活跃的每个玩家都有一个 LocalPlayer。
-  * 它在所有地图上都保持活跃状态，在分屏/合作模式下可能会有多个实例生成。在专用服务器上不会生成任何实例。
-  * LocalPlayer 通常与其他类（如 `APlayerController` ）一起使用，以管理本地玩家与游戏的交互。
-  * 常见功能：
-    * `TSubsystemClass* GetSubsystem() const` - 获取指定类型的子系统
-* UWorld 继承 `UObject`
+    *   当前客户端/监听服务器上活跃的每个玩家都有一个 LocalPlayer。
+    *   它在所有地图上都保持活跃状态，在分屏/合作模式下可能会有多个实例生成。在专用服务器上不会生成任何实例。
+    *   LocalPlayer 通常与其他类（如 `APlayerController` ）一起使用，以管理本地玩家与游戏的交互。
+    *   常见功能：
+        *   `TSubsystemClass* GetSubsystem() const` - 获取指定类型的子系统
+*   UWorld 继承 `UObject`
 
-  * 世界是代表地图或沙盒的顶层对象，在其中 Actor 和 Component 将存在并被渲染。
-  * 一个世界可以是一个单一的持久化关卡，带有可选的流式关卡列表，这些关卡通过体积和蓝图函数加载和卸载，或者它可以是一个由世界组合组织起来的关卡集合。
-  * 在独立游戏中，通常只有一个世界存在，除了无缝区域转换期间，当目的地和当前世界都存在时。在编辑器中，存在许多世界：正在编辑的关卡、每个 PIE 实例、每个具有交互式渲染视口的编辑器工具，等等。
-  * 常用功能：
-    * `void SpawnActor()` 或 `void SpawnActorDeferred()` - 从它的类中生成一个角色。延迟方法将允许你在它生成到世界之前设置角色的属性。
-* [ULevel](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/Engine/ULevel)
+    *   世界是代表地图或沙盒的顶层对象，在其中 Actor 和 Component 将存在并被渲染。
+    *   一个世界可以是一个单一的持久化关卡，带有可选的流式关卡列表，这些关卡通过体积和蓝图函数加载和卸载，或者它可以是一个由世界组合组织起来的关卡集合。
+    *   在独立游戏中，通常只有一个世界存在，除了无缝区域转换期间，当目的地和当前世界都存在时。在编辑器中，存在许多世界：正在编辑的关卡、每个 PIE 实例、每个具有交互式渲染视口的编辑器工具，等等。
+    *   常用功能：
+        *   `void SpawnActor()` 或 `void SpawnActorDeferred()` - 从它的类中生成一个角色。延迟方法将允许你在它生成到世界之前设置角色的属性。
+*   [ULevel](https://dev.epicgames.com/documentation/en-us/unreal-engine/API/Runtime/Engine/Engine/ULevel)
 
-  * 一个关卡是一组角色的集合（灯光、体积、网格实例等）。多个关卡可以被加载和卸载到世界中，以创建流式体验。
-* UGameInstance 继承 `UObject`
+    *   一个关卡是一组角色的集合（灯光、体积、网格实例等）。多个关卡可以被加载和卸载到世界中，以创建流式体验。
+*   UGameInstance 继承 `UObject`
 
-  * 运行游戏实例的高级管理对象。在游戏创建时生成，直到游戏实例关闭前不会销毁。作为独立游戏运行时，将有一个此类实例。在 PIE（编辑器内播放）模式下，每个 PIE 实例将生成一个此类实例。
-  * 游戏实例可用于跨关卡管理持久数据及游戏状态，同时也可执行全局游戏操作，如处理网络、输入及其他系统级任务。
-* AGameMode 继承 `AGameModeBase`
+    *   运行游戏实例的高级管理对象。在游戏创建时生成，直到游戏实例关闭前不会销毁。作为独立游戏运行时，将有一个此类实例。在 PIE（编辑器内播放）模式下，每个 PIE 实例将生成一个此类实例。
+    *   游戏实例可用于跨关卡管理持久数据及游戏状态，同时也可执行全局游戏操作，如处理网络、输入及其他系统级任务。
+*   AGameMode 继承 `AGameModeBase`
 
-  * GameMode 是 GameModeBase 的一个子类，其行为类似于基于多人匹配的游戏。
-  * 它具有选择出生点和匹配状态的默认行为。或者你可以定义特定游戏模式的规则和机制，例如死亡竞赛或夺旗。
-  * 如果你想要一个更简单的基类，可以直接继承 GameModeBase。
-  * 游戏中的每个关卡（ `ULevel` ）可以拥有自己的 `AGameMode` ，从而允许在不同关卡中使用不同的游戏模式。
-* AGameState 继承 `AGameStateBase`
+    *   GameMode 是 GameModeBase 的一个子类，其行为类似于基于多人匹配的游戏。
+    *   它具有选择出生点和匹配状态的默认行为。或者你可以定义特定游戏模式的规则和机制，例如死亡竞赛或夺旗。
+    *   如果你想要一个更简单的基类，可以直接继承 GameModeBase。
+    *   游戏中的每个关卡（ `ULevel` ）可以拥有自己的 `AGameMode` ，从而允许在不同关卡中使用不同的游戏模式。
+*   AGameState 继承 `AGameStateBase`
 
-  * GameState 是一个继承自 GameStateBase 的子类，其行为类似于多人基于匹配的游戏。它与 GameMode 中的功能相关联。
-  * `AGameState` 也可以用于在网络游戏中同步游戏状态，确保所有玩家都能准确查看游戏世界。
-* APlayerState 继承 `AInfo`
+    *   GameState 是一个继承自 GameStateBase 的子类，其行为类似于多人基于匹配的游戏。它与 GameMode 中的功能相关联。
+    *   `AGameState` 也可以用于在网络游戏中同步游戏状态，确保所有玩家都能准确查看游戏世界。
+*   APlayerState 继承 `AInfo`
 
-  * 每个服务器上的玩家（或在独立游戏中）都会创建一个 PlayerState。
-  * PlayerStates 会复制到所有客户端，并包含关于玩家的网络游戏相关信息，例如玩家名、得分等。
-* UWidget 继承 `UVisual`
+    *   每个服务器上的玩家（或在独立游戏中）都会创建一个 PlayerState。
+    *   PlayerStates 会复制到所有客户端，并包含关于玩家的网络游戏相关信息，例如玩家名、得分等。
+*   UWidget 继承 `UVisual`
 
-  * 这是所有暴露给 UObjects 的包装 Slate 控制的基类。
-* 用户小部件继承 `UWidget`
+    *   这是所有暴露给 UObjects 的包装 Slate 控制的基类。
+*   用户小部件继承 `UWidget`
 
-  * 一个通过 WidgetBlueprint 实现 UI 扩展性的小部件。
-  * `UUserWidget` 提供了一个灵活的框架，用于创建按钮、文本字段和图像等 UI 元素，并且可以自定义以实现复杂的 UI 行为，如动画、过渡和数据绑定。
-* 资源管理器小部件继承 `UObject`
+    *   一个通过 WidgetBlueprint 实现 UI 扩展性的小部件。
+    *   `UUserWidget` 提供了一个灵活的框架，用于创建按钮、文本字段和图像等 UI 元素，并且可以自定义以实现复杂的 UI 行为，如动画、过渡和数据绑定。
+*   资源管理器小部件继承 `UObject`
 
-  * 一个单例 `UObject` 负责加载和卸载 PrimaryAssets，并维护特定游戏的资源引用。游戏应该重写这个类并更改类引用
-* UDataAsset 继承 `UObject`
+    *   一个单例 `UObject` 负责加载和卸载 PrimaryAssets，并维护特定游戏的资源引用。游戏应该重写这个类并更改类引用
+*   UDataAsset 继承 `UObject`
 
-  * 创建一个简单的资源，用于在类实例中存储与特定系统相关的数据。
-  * 可以使用继承自这个类的任何原生类在内容浏览器中创建资源。
-  * 如果你需要数据继承或复杂的层次结构，应该创建数据仅蓝图类。
-* UPrimaryDataAsset 继承 `UDataAsset`
+    *   创建一个简单的资源，用于在类实例中存储与特定系统相关的数据。
+    *   可以使用继承自这个类的任何原生类在内容浏览器中创建资源。
+    *   如果你需要数据继承或复杂的层次结构，应该创建数据仅蓝图类。
+*   UPrimaryDataAsset 继承 `UDataAsset`
 
-  * 一个实现了 `GetPrimaryAssetId()` 并具有资源包支持的数据资产，这允许它从 AssetManager 手动加载/卸载（ `UAssetManager` ）。
-  * 表示引擎中的主要数据资产。主要数据资产是在 Unreal 编辑器中创建的游戏内容的一部分，例如网格、纹理、声音或关卡。 `UPrimaryDataAsset` 提供了一个基础类，用于创建自定义数据资产，这些资产可以在运行时被游戏加载和使用。
-  * `UPrimaryDataAsset` 可用于管理和组织游戏内容，并可根据需求定制，以提供数据验证和元数据管理等附加功能。
-* USoundBase 继承 `UObject`
+    *   一个实现了 `GetPrimaryAssetId()` 并具有资源包支持的数据资产，这允许它从 AssetManager 手动加载/卸载（ `UAssetManager` ）。
+    *   表示引擎中的主要数据资产。主要数据资产是在 Unreal 编辑器中创建的游戏内容的一部分，例如网格、纹理、声音或关卡。 `UPrimaryDataAsset` 提供了一个基础类，用于创建自定义数据资产，这些资产可以在运行时被游戏加载和使用。
+    *   `UPrimaryDataAsset` 可用于管理和组织游戏内容，并可根据需求定制，以提供数据验证和元数据管理等附加功能。
+*   USoundBase 继承 `UObject`
 
-  * 可播放声音对象的基类
-  * `USoundBase` 可用于在游戏世界中播放音效、音乐和其他音频。
-  * `USoundBase` 提供了多种控制音频播放的功能，包括音量、音调和空间化效果，如 3D 声音和混响。
-* UMaterial 继承 `UMaterialInterface`
+    *   可播放声音对象的基类
+    *   `USoundBase` 可用于在游戏世界中播放音效、音乐和其他音频。
+    *   `USoundBase` 提供了多种控制音频播放的功能，包括音量、音调和空间化效果，如 3D 声音和混响。
+*   UMaterial 继承 `UMaterialInterface`
 
-  * 材质是一种可以应用于网格以控制场景视觉外观的资源。
-  * 当场景中的光线照射到表面时，材质的着色模型用于计算光线如何与表面相互作用。
-* UMaterialInstance 继承 `UMaterialInterface`
+    *   材质是一种可以应用于网格以控制场景视觉外观的资源。
+    *   当场景中的光线照射到表面时，材质的着色模型用于计算光线如何与表面相互作用。
+*   UMaterialInstance 继承 `UMaterialInterface`
 
-  * 材质资源的实例。这样，你可以创建一个层次材质系统。
-* UMaterialInstanceDynamic 继承 `UMaterialInstance`
+    *   材质资源的实例。这样，你可以创建一个层次材质系统。
+*   UMaterialInstanceDynamic 继承 `UMaterialInstance`
 
-  * 动态生成的实例材质。
-* UTexture 继承 `UObject`
+    *   动态生成的实例材质。
+*   UTexture 继承 `UObject`
 
-  * 表示可以在引擎中用于各种目的（如材质或用户界面元素）的图像或纹理。
-* UTexture2D 继承 `UTexture`
+    *   表示可以在引擎中用于各种目的（如材质或用户界面元素）的图像或纹理。
+*   UTexture2D 继承 `UTexture`
 
-  * 表示可以在引擎中用于各种目的（如材质或用户界面元素）的 2D 图像或纹理。
+    *   表示可以在引擎中用于各种目的（如材质或用户界面元素）的 2D 图像或纹理。
 
 你可以在他们的文档中了解更多关于虚幻架构的信息。
 
@@ -594,13 +575,7 @@ graph TD;
 
 你也可以观看 Kekdot 关于虚幻引擎多人框架的视频讨论。
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    这个架构基于多人游戏设置。但是，如果你在制作单人游戏，那么你可以忽略一些类。主要是 `APlayerState` 和 `AGameState` （以及它们的基类）。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] 这个架构基于多人游戏设置。但是，如果你在制作单人游戏，那么你可以忽略一些类。主要是 `APlayerState` 和 `AGameState` （以及它们的基类）。
 
 你也可以观看 Alex Forsythe 的《虚幻引擎游戏框架：从 int main()到 BeginPlay》，他讲述了虚幻引擎如何从源代码启动你的游戏/编辑器，以及这些类如何相互协作。
 
@@ -611,6 +586,8 @@ graph TD;
 ### 🎳 命名规范
 
 <table><tbody><tr><td>本节内容由 ChatGPT 共同编写。</td></tr></tbody></table>
+
+![Naming Conventions](/static-img/Naming_conventions.png)
 
 有一个 GitHub 仓库，讨论了虚幻引擎的命名规范。该仓库非常详细，解释了应该如何命名你的资源以及代码。仓库名为 Michael Allar 的《虚幻引擎风格指南》。
 
@@ -645,9 +622,9 @@ public:
 
 变量、方法和类名应该是：
 
-* 清晰的
-* 明确
-* 描述性
+*   清晰的
+*   明确
+*   描述性
 
 名称范围越大，一个好的描述性名称就越重要。避免过度缩写。
 
@@ -677,13 +654,7 @@ bool IsTeaFresh(FTea Tea);
 | T | 模板 | TSubclassOf, TArray, TSet, TMap, TMultiMap |
 | G | 全局类 | GEngine, GConfig, GWorld, GEngineLoop, GIsEditor |
 
-<ObsidianCallout type="TIP">
-  <ObsidianCalloutTitle>
-    你知道吗， `F` 前缀实际上代表 `Float` （浮点数）。但它意外地被广泛传播，并失去了原本的含义。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!TIP\] 你知道吗， `F` 前缀实际上代表 `Float` （浮点数）。但它意外地被广泛传播，并失去了原本的含义。
 
 ### 编码规范
 
@@ -762,55 +733,57 @@ UMETA([specifier1=setting1, specifier2, ...])
 
 #### 指定符
 
-* `EditAnywhere` : 允许在编辑器和运行时编辑类的所有实例的属性。
+*   `EditAnywhere` : 允许在编辑器和运行时编辑类的所有实例的属性。
 
-* `EditDefaultsOnly` : 仅允许在编辑器中编辑类的默认对象的属性。
+*   `EditDefaultsOnly` : 仅允许在编辑器中编辑类的默认对象的属性。
 
-* `EditInstanceOnly` : 仅在运行时允许编辑类的实例的属性。
+*   `EditInstanceOnly` : 仅在运行时允许编辑类的实例的属性。
 
-* `VisibleAnywhere` : 在编辑器中显示所有类实例的属性值。
+*   `VisibleAnywhere` : 在编辑器中显示所有类实例的属性值。
 
-* `VisibleDefaultsOnly` : 在编辑器中显示类的默认对象的属性值。
+*   `VisibleDefaultsOnly` : 在编辑器中显示类的默认对象的属性值。
 
-* `VisibleInstanceOnly` : 仅在编辑器中显示类实例的属性值。
+*   `VisibleInstanceOnly` : 仅在编辑器中显示类实例的属性值。
 
-* `BlueprintReadOnly` : 将属性暴露给 Blueprint 脚本，但仅限于读取，不可写入。
+*   `BlueprintReadOnly` : 将属性暴露给 Blueprint 脚本，但仅限于读取，不可写入。
 
-* `BlueprintReadWrite` : 将属性暴露给 Blueprint 脚本，支持读取和写入。
+*   `BlueprintReadWrite` : 将属性暴露给 Blueprint 脚本，支持读取和写入。
 
-* `Category` : 在编辑器中将属性组织为命名类别，以改善组织性和可读性。
+*   `Category` : 在编辑器中将属性组织为命名类别，以改善组织性和可读性。
 
-* `EditFixedSize` : 指定 `TArray` 或 `TMap` 属性应在编辑器的详情面板中可编辑，且元素数量固定，禁止添加或删除。
+*   `EditFixedSize` : 指定 `TArray` 或 `TMap` 属性应在编辑器的详情面板中可编辑，且元素数量固定，禁止添加或删除。
 
-* `Transient` : 表示属性不应被序列化，使其非持久化，在保存对象状态时不保存。
+*   `Transient` : 表示属性不应被序列化，使其非持久化，在保存对象状态时不保存。
 
-* `Replicated` : 当属性在服务器上发生变化时，自动将属性值复制到多玩家环境中的客户端。
+*   `Replicated` : 当属性在服务器上发生变化时，自动将属性值复制到多玩家环境中的客户端。
 
-* `ReplicatedUsing` : 指定一个自定义函数，该函数应在服务器和客户端上调用以处理属性值的复制。
+*   `ReplicatedUsing` : 指定一个自定义函数，该函数应在服务器和客户端上调用以处理属性值的复制。
 
-* `SimpleDisplay` : 表示属性的值应在编辑器 UI 中以简单简洁的方式显示。
+*   `SimpleDisplay` : 表示属性的值应在编辑器 UI 中以简单简洁的方式显示。
 
-* `AdvancedDisplay` : 表示该属性的值应在编辑器 UI 中以高级选项显示。
+*   `AdvancedDisplay` : 表示该属性的值应在编辑器 UI 中以高级选项显示。
 
-* `Config` : 标记该属性将序列化到项目配置文件中，以便进行外部自定义。
+*   `Config` : 标记该属性将序列化到项目配置文件中，以便进行外部自定义。
 
-* `GlobalConfig` : 标记该属性将序列化到全局配置文件中，以便跨所有项目进行外部自定义。
+*   `GlobalConfig` : 标记该属性将序列化到全局配置文件中，以便跨所有项目进行外部自定义。
+
 
 #### 元标签
 
-* `DisplayName` : 在编辑器中为属性设置自定义显示名称。
+*   `DisplayName` : 在编辑器中为属性设置自定义显示名称。
 
-* `Tooltip` : 在编辑器中为属性提供提示描述。
+*   `Tooltip` : 在编辑器中为属性提供提示描述。
 
-* `ClampMin` : 在编辑器中为属性设置最小允许值。
+*   `ClampMin` : 在编辑器中为属性设置最小允许值。
 
-* `ClampMax` : 在编辑器中为属性设置最大允许值。
+*   `ClampMax` : 在编辑器中为属性设置最大允许值。
 
-* `AllowPrivateAccess` : 允许访问它所属类中的私有成员。
+*   `AllowPrivateAccess` : 允许访问它所属类中的私有成员。
 
-* `Units` : 为编辑器中的属性提供人类可读的单位标签。
+*   `Units` : 为编辑器中的属性提供人类可读的单位标签。
 
-* `ForceUnits` : 强制设置单位。而不是让编辑器决定它想要什么。
+*   `ForceUnits` : 强制设置单位。而不是让编辑器决定它想要什么。
+
 
 #### 示例
 
@@ -880,33 +853,35 @@ float Deliciousness;
 
 #### 常用修饰符
 
-* `BlueprintCallable` : 将函数暴露给蓝图脚本，允许从蓝图图内部调用。
+*   `BlueprintCallable` : 将函数暴露给蓝图脚本，允许从蓝图图内部调用。
 
-* `BlueprintPure` : 指示该函数是纯计算，不会修改任何状态，因此可以在蓝图图中使用而不会产生副作用。
+*   `BlueprintPure` : 指示该函数是纯计算，不会修改任何状态，因此可以在蓝图图中使用而不会产生副作用。
 
-* `BlueprintImplementableEvent` : 在 C++中作为占位符函数，可以被覆盖并在蓝图中进行实现。
+*   `BlueprintImplementableEvent` : 在 C++中作为占位符函数，可以被覆盖并在蓝图中进行实现。
 
-* `BlueprintNativeEvent` : 类似于 `BlueprintImplementableEvent` ，但它还提供了 C++实现，可以在蓝图中可选地覆盖。
+*   `BlueprintNativeEvent` : 类似于 `BlueprintImplementableEvent` ，但它还提供了 C++实现，可以在蓝图中可选地覆盖。
 
-* `Category` : 在编辑器中将属性组织成命名类别，以更好地组织和提高可读性。
+*   `Category` : 在编辑器中将属性组织成命名类别，以更好地组织和提高可读性。
+
 
 #### 常见的元标签
 
-* `DisplayName` : 在编辑器中为函数设置自定义显示名称。
+*   `DisplayName` : 在编辑器中为函数设置自定义显示名称。
 
-* `Tooltip` : 在编辑器中为函数提供提示描述。
+*   `Tooltip` : 在编辑器中为函数提供提示描述。
 
-* `ShortToolTip` : 为编辑器中的函数提供简短的提示描述。
+*   `ShortToolTip` : 为编辑器中的函数提供简短的提示描述。
 
-* `AllowPrivateAccess` : 允许访问它所属类中的私有成员。
+*   `AllowPrivateAccess` : 允许访问它所属类中的私有成员。
 
-* `HideSelfPin` : 隐藏"self"引脚，该引脚指示被调用的对象。"self"引脚会在与调用蓝图类兼容的 `BlueprintPure` 函数上自动隐藏。频繁使用 `HideSelfPin` 元标签的函数也经常使用 `DefaultToSelf` 限定符。
+*   `HideSelfPin` : 隐藏"self"引脚，该引脚指示被调用的对象。"self"引脚会在与调用蓝图类兼容的 `BlueprintPure` 函数上自动隐藏。频繁使用 `HideSelfPin` 元标签的函数也经常使用 `DefaultToSelf` 限定符。
 
-* `BlueprintInternalUseOnly` : 该函数是内部实现细节，用于实现另一个函数或节点。它永远不会直接在蓝图图中暴露。
+*   `BlueprintInternalUseOnly` : 该函数是内部实现细节，用于实现另一个函数或节点。它永远不会直接在蓝图图中暴露。
 
-* `BlueprintProtected` : 该函数只能在一个蓝图中的拥有对象上调用。不能在其他实例上调用。
+*   `BlueprintProtected` : 该函数只能在一个蓝图中的拥有对象上调用。不能在其他实例上调用。
 
-* `DeprecatedFunction` : 任何对此函数的蓝图引用都会导致编译警告，提示用户该函数已弃用。您可以使用 `DeprecationMessage` 元数据指定符来添加到弃用警告消息中（例如，提供替换已弃用函数的说明）。
+*   `DeprecatedFunction` : 任何对此函数的蓝图引用都会导致编译警告，提示用户该函数已弃用。您可以使用 `DeprecationMessage` 元数据指定符来添加到弃用警告消息中（例如，提供替换已弃用函数的说明）。
+
 
 #### 示例
 
@@ -937,31 +912,33 @@ bool TryPetDog(const FName Name);
 
 #### 常见指定符
 
-* `Blueprintable` : 允许类在编辑器中作为蓝图使用。
+*   `Blueprintable` : 允许类在编辑器中作为蓝图使用。
 
-* `BlueprintType` : 指定该类可以在蓝图脚本中实例化和操作。
+*   `BlueprintType` : 指定该类可以在蓝图脚本中实例化和操作。
 
-* `Abstract` : 表明该类是一个抽象类，不能直接实例化。
+*   `Abstract` : 表明该类是一个抽象类，不能直接实例化。
 
-* `Transient` : 排除该类被序列化并保存到游戏的持久化数据中。
+*   `Transient` : 排除该类被序列化并保存到游戏的持久化数据中。
 
-* `MinimalAPI` : 限制该类的导出可见性，更适合引擎内部使用。
+*   `MinimalAPI` : 限制该类的导出可见性，更适合引擎内部使用。
 
-* `NotBlueprintType` : 防止该类被用作蓝图。
+*   `NotBlueprintType` : 防止该类被用作蓝图。
+
 
 #### 常见的元标签
 
-* `DisplayName` : 在编辑器中为该类设置自定义显示名称。
+*   `DisplayName` : 在编辑器中为该类设置自定义显示名称。
 
-* `ToolTip` : 在编辑器中为该类提供提示描述。
+*   `ToolTip` : 在编辑器中为该类提供提示描述。
 
-* `HideCategories` : 隐藏特定属性类别在编辑器中显示。
+*   `HideCategories` : 隐藏特定属性类别在编辑器中显示。
 
-* `ClassGroup` : 将类分配给编辑器类选择器中的特定组。
+*   `ClassGroup` : 将类分配给编辑器类选择器中的特定组。
 
-* `IncludePath` : 指定类生成代码的包含路径。
+*   `IncludePath` : 指定类生成代码的包含路径。
 
-* `BlueprintSpawnableComponent` : 将从 `USceneComponent` 派生的类标记为在蓝图中的可生成。
+*   `BlueprintSpawnableComponent` : 将从 `USceneComponent` 派生的类标记为在蓝图中的可生成。
+
 
 #### 示例
 
@@ -994,19 +971,21 @@ public:
 
 #### 通用规范
 
-* `BlueprintType` : 指定该结构可以在蓝图脚本中使用。
+*   `BlueprintType` : 指定该结构可以在蓝图脚本中使用。
 
-* `Atomic` : 确保该结构被视为原子类型，以便在多人游戏中复制。
+*   `Atomic` : 确保该结构被视为原子类型，以便在多人游戏中复制。
 
-* `NotReplicated` : 排除该结构在网络中复制。
+*   `NotReplicated` : 排除该结构在网络中复制。
+
 
 #### 通用元标签
 
-* `DisplayName` : 为编辑器中的结构设置自定义显示名称。
+*   `DisplayName` : 为编辑器中的结构设置自定义显示名称。
 
-* `ToolTip` : 为编辑器中的结构提供提示描述。
+*   `ToolTip` : 为编辑器中的结构提供提示描述。
 
-* `Category` : 指定结构在编辑器中出现的分类。
+*   `Category` : 指定结构在编辑器中出现的分类。
+
 
 #### 示例
 
@@ -1032,21 +1011,23 @@ struct FMyStruct
 
 #### 通用规范
 
-* `BlueprintType` : 指定该枚举可以在蓝图脚本中使用。
+*   `BlueprintType` : 指定该枚举可以在蓝图脚本中使用。
 
-* `DisplayNames` : 指定在编辑器中为每个枚举值提供的自定义显示名称列表。
+*   `DisplayNames` : 指定在编辑器中为每个枚举值提供的自定义显示名称列表。
+
 
 #### 通用元标签
 
-* `DisplayName` : 在编辑器中为枚举设置自定义显示名称。
+*   `DisplayName` : 在编辑器中为枚举设置自定义显示名称。
 
-* `ToolTip` : 在编辑器中为枚举提供提示描述。
+*   `ToolTip` : 在编辑器中为枚举提供提示描述。
 
-* `Hidden` : 在编辑器中隐藏枚举，使其不显示。
+*   `Hidden` : 在编辑器中隐藏枚举，使其不显示。
 
-* `Bitflags` : 指示该枚举表示一组位标志。
+*   `Bitflags` : 指示该枚举表示一组位标志。
 
-* `EnumRange` : 指定枚举的最小值和最大值。
+*   `EnumRange` : 指定枚举的最小值和最大值。
+
 
 #### 示例
 
@@ -1067,13 +1048,14 @@ enum class EWeaponType
 
 `UPARAM` 是一个宏，用于向 Unreal Header Tool 提供附加信息。它与 UFUNCTION 和 UPROPERTY 参数一起使用，以指定引擎应如何处理数据。
 
-* `UPARAM(Ref)` : 用于标记按引用传递的参数。它确保在代码生成过程中将参数视为引用，这可能影响引擎如何处理该参数。
+*   `UPARAM(Ref)` : 用于标记按引用传递的参数。它确保在代码生成过程中将参数视为引用，这可能影响引擎如何处理该参数。
 
-* `UPARAM(DisplayName)` : 用于为在编辑器的蓝图节点图中出现的函数参数设置自定义显示名称。
+*   `UPARAM(DisplayName)` : 用于为在编辑器的蓝图节点图中出现的函数参数设置自定义显示名称。
 
-* `UPARAM(BlueprintCallable, BlueprintPure)` : 用于将多个限定符应用于函数参数。例如，将参数标记为同时具有 BlueprintCallable 和 BlueprintPure。
+*   `UPARAM(BlueprintCallable, BlueprintPure)` : 用于将多个限定符应用于函数参数。例如，将参数标记为同时具有 BlueprintCallable 和 BlueprintPure。
 
-* `UPARAM(meta = (CustomMetaTag))` : 允许开发者创建自定义元标签，并在函数参数中使用它们以向 Unreal Header Tool 提供额外信息。
+*   `UPARAM(meta = (CustomMetaTag))` : 允许开发者创建自定义元标签，并在函数参数中使用它们以向 Unreal Header Tool 提供额外信息。
+
 
 #### 示例
 
@@ -1102,17 +1084,18 @@ public:
 
 #### 常见指定符
 
-* `DisplayName` : 在编辑器中为枚举值设置自定义显示名称。
+*   `DisplayName` : 在编辑器中为枚举值设置自定义显示名称。
 
-* `ToolTip` : 在编辑器中为枚举值提供提示描述。
+*   `ToolTip` : 在编辑器中为枚举值提供提示描述。
 
-* `Hidden` : 隐藏枚举值在编辑器中的显示。
+*   `Hidden` : 隐藏枚举值在编辑器中的显示。
 
-* `DisplayPriority` : 指定枚举值在编辑器中的显示优先级。
+*   `DisplayPriority` : 指定枚举值在编辑器中的显示优先级。
 
-* `DisplayThumbnail` : 允许在编辑器中为枚举值附加自定义缩略图。
+*   `DisplayThumbnail` : 允许在编辑器中为枚举值附加自定义缩略图。
 
-* `CustomMetaData` : 指定开发者可以定义并按需使用的自定义元数据。
+*   `CustomMetaData` : 指定开发者可以定义并按需使用的自定义元数据。
+
 
 #### 示例
 
@@ -1132,6 +1115,8 @@ enum class EMyEnum
 
 <table><tbody><tr><td>本节内容由 ChatGPT 共同编写。</td></tr></tbody></table>
 
+![Data types](/static-img/Data_types.png)
+
 ### 字符
 
 在 C++原生中，您使用 `char` 数据类型来编写一个字符：
@@ -1142,12 +1127,12 @@ char myChar = 'a';
 
 在 Unreal 中，有几种 `char` 数据类型：
 
-* `ANSICHAR` - 一个 ANSI 字符。通常是一个有符号类型。
-* `WIDECHAR` - 一个宽字符。通常是一个有符号类型。
-* `TCHAR` - 根据平台是否支持宽字符或许可方的需求，选择 `ANSICHAR` 或 `WIDECHAR` 。
-* `UTF8CHAR` - 一个包含 UTF8（Unicode，8 位，变宽）代码单元的 8 位字符。
-* `UTF16CHAR` - 一个包含 UTF16（Unicode，16 位，变宽）代码单元的 16 位字符。
-* `UTF32CHAR` - 一个包含 UTF32（Unicode，32 位，定宽）代码单元的 32 位字符。
+*   `ANSICHAR` - 一个 ANSI 字符。通常是一个有符号类型。
+*   `WIDECHAR` - 一个宽字符。通常是一个有符号类型。
+*   `TCHAR` - 根据平台是否支持宽字符或许可方的需求，选择 `ANSICHAR` 或 `WIDECHAR` 。
+*   `UTF8CHAR` - 一个包含 UTF8（Unicode，8 位，变宽）代码单元的 8 位字符。
+*   `UTF16CHAR` - 一个包含 UTF16（Unicode，16 位，变宽）代码单元的 16 位字符。
+*   `UTF32CHAR` - 一个包含 UTF32（Unicode，32 位，定宽）代码单元的 32 位字符。
 
 在使用 Unreal 时，你通常会使用 `TCHAR` 作为 `char` 类型的数据类型。
 
@@ -1159,30 +1144,30 @@ TCHAR MyChar = 'A';
 
 并且要使用这些数据类型的额外功能，你必须使用：
 
-* `FChar` for `TCHAR`
-* `FCharWide` for `WIDECHAR`
-* `FCharAnsi` for `ANSICHAR`
+*   `FChar` for `TCHAR`
+*   `FCharWide` for `WIDECHAR`
+*   `FCharAnsi` for `ANSICHAR`
 
 这里是一个函数列表，你可以从 `FChar` 访问：
 
-* `ToUpper()` - 仅转换 ASCII 字符。
-* `ToLower()` - 仅转换 ASCII 字符。
-* `IsUpper()` - 如果字符是大写字母，则返回布尔值。
-* `IsLower()` - 如果字符是小写字母，则返回布尔值。
-* `IsAlpha()` - 如果字符是字母，则返回布尔值。
-* `IsGraph()` - 如果字符是图形字符（可打印且不是空格），则返回布尔值。
-* `IsPrint()` - 如果字符是可打印字符（包括空白字符），则返回布尔值。
-* `IsPunct()` - 如果字符是标点字符（既不是字母数字也不是空白字符），则返回布尔值。
-* `IsAlnum()` - 如果字符是字母数字字符（字母或数字），则返回布尔值。
-* `IsDigit()` - 如果字符是十六进制数字（0-9，a-f 或 A-f），则返回布尔值。
-* `IsHexDigit()` - 如果字符是十进制数字（0-9），则返回布尔值。
-* `IsWhitespace()` - 如果字符是空白字符（空格、制表符、换行符、回车符、垂直制表符或换页符），则返回布尔值。
-* `IsControl()` - 如果字符是控制字符（非打印字符），则返回布尔值。
-* `IsOctDigit()` - 如果字符是八进制数字（0-7），则返回布尔值。
-* `ConvertCharDigitToInt()` - 将表示十进制数字的字符转换为整数。
-* `IsIdentifier()` - 如果字符是字母数字或下划线字符，则返回布尔值。
-* `IsUnderscore()` - 如果字符是下划线，则返回布尔值。
-* `ToUnsigned()` - 将字符转换为无符号整数以避免与小于 `int` 的带符号字符的符号扩展问题。
+*   `ToUpper()` - 仅转换 ASCII 字符。
+*   `ToLower()` - 仅转换 ASCII 字符。
+*   `IsUpper()` - 如果字符是大写字母，则返回布尔值。
+*   `IsLower()` - 如果字符是小写字母，则返回布尔值。
+*   `IsAlpha()` - 如果字符是字母，则返回布尔值。
+*   `IsGraph()` - 如果字符是图形字符（可打印且不是空格），则返回布尔值。
+*   `IsPrint()` - 如果字符是可打印字符（包括空白字符），则返回布尔值。
+*   `IsPunct()` - 如果字符是标点字符（既不是字母数字也不是空白字符），则返回布尔值。
+*   `IsAlnum()` - 如果字符是字母数字字符（字母或数字），则返回布尔值。
+*   `IsDigit()` - 如果字符是十六进制数字（0-9，a-f 或 A-f），则返回布尔值。
+*   `IsHexDigit()` - 如果字符是十进制数字（0-9），则返回布尔值。
+*   `IsWhitespace()` - 如果字符是空白字符（空格、制表符、换行符、回车符、垂直制表符或换页符），则返回布尔值。
+*   `IsControl()` - 如果字符是控制字符（非打印字符），则返回布尔值。
+*   `IsOctDigit()` - 如果字符是八进制数字（0-7），则返回布尔值。
+*   `ConvertCharDigitToInt()` - 将表示十进制数字的字符转换为整数。
+*   `IsIdentifier()` - 如果字符是字母数字或下划线字符，则返回布尔值。
+*   `IsUnderscore()` - 如果字符是下划线，则返回布尔值。
+*   `ToUnsigned()` - 将字符转换为无符号整数以避免与小于 `int` 的带符号字符的符号扩展问题。
 
 包含头文件：
 
@@ -1260,8 +1245,8 @@ double SpeedInMetersPerSecond = 5.5;
 
 C++实现可以定义数据类型的大小（以字节为单位）（ `sizeof(type)` ）为任何值，只要：
 
-* 表达式 `sizeof(type) * CHAR_BIT` 的值足够高，能够包含所需的范围。
-* 并且类型的顺序仍然有效（例如 `sizeof(int) <= sizeof(long)` ）。
+*   表达式 `sizeof(type) * CHAR_BIT` 的值足够高，能够包含所需的范围。
+*   并且类型的顺序仍然有效（例如 `sizeof(int) <= sizeof(long)` ）。
 
 `CHAR_BIT` 是 char 中的位数。它在 C++语言的“limits.h”头文件中声明。每个字节为 8 位。
 
@@ -1273,14 +1258,14 @@ C++实现可以定义数据类型的大小（以字节为单位）（ `sizeof(ty
 
 你可以在 Stack Overflow 上从 Alex 那里了解更多详细信息。
 
-***
+* * *
 
 这是 Unreal 的完整数据类型大小列表：
 
 | 数据类型 | 有符号 | 大小（字节） |
 | --- | --- | --- |
-| bool | - | 永远不要假设大小 |
-| TCHAR | - | 永远不要假设大小 |
+| bool | \- | 永远不要假设大小 |
+| TCHAR | \- | 永远不要假设大小 |
 | uint8 | false | 1 |
 | int8 | true | 1 |
 | uint16 | false | 2 |
@@ -1352,13 +1337,7 @@ typedef FPlatformTypes::TYPE_OF_NULL	TYPE_OF_NULL;
 typedef FPlatformTypes::TYPE_OF_NULLPTR	TYPE_OF_NULLPTR;
 ```
 
-<ObsidianCallout type="WARNING">
-  <ObsidianCalloutTitle>
-    `uint16` 、 `uint32` 、 `uint64` 、 `int8` 、 `int16` 和 `double` 在 UHT [3](#user-content-fn-2) 中不受支持。这意味着无法将其暴露给蓝图。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!WARNING\] `uint16` 、 `uint32` 、 `uint64` 、 `int8` 、 `int16` 和 `double` 在 UHT [3](#user-content-fn-2) 中不受支持。这意味着无法将其暴露给蓝图。
 
 ### 📖 字符串数据类型
 
@@ -1500,13 +1479,7 @@ FText NumberText = FText::AsNumber(Health, &NumberFormat);
 NumberText = FText::AsCultureInvariant(NumberText); // Disable the culture formatting
 ```
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    默认情况下，Unreal 在执行此格式化时会使用本地文化。如果你希望禁用文化格式化，请使用 `FText::AsCultureInvariant` 函数。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] 默认情况下，Unreal 在执行此格式化时会使用本地文化。如果你希望禁用文化格式化，请使用 `FText::AsCultureInvariant` 函数。
 
 #### FString
 
@@ -1542,7 +1515,7 @@ FString Text = FString("abcde");
 Text.ReverseString(); // Output: "edcba"
 ```
 
-***
+* * *
 
 | 数据类型 | 描述 | 使用案例 |
 | --- | --- | --- |
@@ -1552,13 +1525,7 @@ Text.ReverseString(); // Output: "edcba"
 
 ### 🚀 数学数据类型
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    在虚幻引擎 5.0 及以上版本中，默认情况下所有与数学相关的数据类型都使用 `double` 作为后端数据类型。这使虚幻引擎能够支持大型世界坐标（LWC）。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] 在虚幻引擎 5.0 及以上版本中，默认情况下所有与数学相关的数据类型都使用 `double` 作为后端数据类型。这使虚幻引擎能够支持大型世界坐标（LWC）。
 
 #### Vector4
 
@@ -1577,15 +1544,9 @@ FVector4 OldLocation = FVector4::ZeroVector; // (0, 0, 0)
 FVector4 NewLocation = FVector4::OneVector; // (1, 1, 1)
 ```
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    使用 `FVector4f` 代表 `float` ，使用 `FVector4d` 代表 `double` ，作为后端转换的明确数据类型。
-  </ObsidianCalloutTitle>
+> \[!NOTE\] 使用 `FVector4f` 代表 `float` ，使用 `FVector4d` 代表 `double` ，作为后端转换的明确数据类型。
 
-  <ObsidianCalloutBody />
-</ObsidianCallout>
-
-***
+* * *
 
 要使用 `FVector4` 的整数版本：
 
@@ -1632,75 +1593,57 @@ double& Y = Vec[1];
 double& Z = Vec[2];
 ```
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    使用 `FVector3f` 作为 `float` ，使用 `FVector3d` 作为 `double` ，作为后端转换的显式数据类型。
-  </ObsidianCalloutTitle>
+> \[!NOTE\] 使用 `FVector3f` 作为 `float` ，使用 `FVector3d` 作为 `double` ，作为后端转换的显式数据类型。
 
-  <ObsidianCalloutBody />
-</ObsidianCallout>
-
-***
+* * *
 
 常用的静态函数：
 
-* `FVector::Cross()` - 计算此向量和另一个向量的叉积。
-* `FVector::CrossProduct()` - 计算两个向量的叉积。
-* `FVector::Dot()` - 计算此向量和另一个向量的点积。
-* `FVector::DotProduct()` - 计算两个向量的点积。
-* `FVector::Dist()` 或 `FVector::Distance()` - 两个点之间的欧几里得距离。
-* `FVector::Dist2D()` 或 `FVector::DistXY()` - 两个点在 XY 平面上的欧几里得距离（忽略 Z 轴）。
-* `FVector::DistSquared()` - 两个点之间的平方距离。
-* `FVector::DistSquared2D()` 或 `FVector::DistSquaredXY()` - 仅 XY 平面中两点之间的平方距离。
-* `FVector::AllComponentsEqual()` - 检查该向量的所有分量是否相同，允许一定的误差。
+*   `FVector::Cross()` - 计算此向量和另一个向量的叉积。
+*   `FVector::CrossProduct()` - 计算两个向量的叉积。
+*   `FVector::Dot()` - 计算此向量和另一个向量的点积。
+*   `FVector::DotProduct()` - 计算两个向量的点积。
+*   `FVector::Dist()` 或 `FVector::Distance()` - 两个点之间的欧几里得距离。
+*   `FVector::Dist2D()` 或 `FVector::DistXY()` - 两个点在 XY 平面上的欧几里得距离（忽略 Z 轴）。
+*   `FVector::DistSquared()` - 两个点之间的平方距离。
+*   `FVector::DistSquared2D()` 或 `FVector::DistSquaredXY()` - 仅 XY 平面中两点之间的平方距离。
+*   `FVector::AllComponentsEqual()` - 检查该向量的所有分量是否相同，允许一定的误差。
 
-<ObsidianCallout type="TIP">
-  <ObsidianCalloutTitle>
-    您可以使用 `|` 运算符来调用点积。
-  </ObsidianCalloutTitle>
+> \[!TIP\] 您可以使用 `|` 运算符来调用点积。
 
-  <ObsidianCalloutBody />
-</ObsidianCallout>
-
-<ObsidianCallout type="TIP">
-  <ObsidianCalloutTitle>
-    您可以使用 `^` 运算符来调用叉积。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!TIP\] 您可以使用 `^` 运算符来调用叉积。
 
 常用的本地函数：
 
-* `GetComponentForAxis()` - 通过枚举指定轴，获取向量的特定分量。
-* `SetGetComponentForAxis()` - 通过枚举指定轴，设置向量的特定分量。
-* `Set()` - 直接设置向量的值。
-* `GetMax()` - 获取向量分量的最大值。
-* `GetAbsMax()` - 获取向量分量的最大绝对值。
-* `GetMin()` - 获取向量分量的最小绝对值。
-* `GetAbsMin()` - 获取向量分量的最小绝对值。
-* `GetAbs()` - 获取此向量的副本，其中每个分量的绝对值。
-* `Size()` 或 `Length()` - 获取此向量的长度（模）。
-* `SizeSquared()` 或 `SquaredLength()` - 获取此向量的平方长度。
-* `Size2D()` - 获取此向量二维分量的长度。
-* `SizeSquared2D()` - 获取此向量二维分量的平方长度。
-* `HeadingAngle()` - 将方向向量转换为'航向'角度。
-* `IsNearlyZero()` - 检查向量是否在指定容差范围内接近零。
-* `IsZero()` - 检查向量的所有分量是否完全为零。
-* `IsUnit()` - 检查向量是否为单位长度，具有指定的容差。
-* `IsNormalized()` - 检查向量是否已归一化。
-* `Normalize()` - 如果向量大于给定容差，则原地归一化该向量。如果不符合条件，则保持不变。
-* `GetSignVector()` - 获取向量的符号副本。每个分量被设置为+1 或-1，零的符号被视为+1。
-* `Projection()` - Z 向量的 2D 分量。
-* `GridSnap()` - 获取一个与此向量对齐到网格的副本。
-* `IsUniform()` - 检查 X、Y 和 Z 是否几乎相等。
-* `ConstainsNaN()` - 检查此向量中是否存在任何非有限值（NaN 或 Inf）的实用工具。
-* `ToString()` - 获取此向量的文本表示。
-* `ToCompactString()` - 获取此向量的简短文本表示，用于紧凑、可读的日志记录。
-* `ToText()` - 获取具有区域设置感知的此向量的文本表示。
-* `ToCompactText()` - 获取具有区域设置感知的此向量的简短文本表示，用于紧凑、可读的日志记录。
+*   `GetComponentForAxis()` - 通过枚举指定轴，获取向量的特定分量。
+*   `SetGetComponentForAxis()` - 通过枚举指定轴，设置向量的特定分量。
+*   `Set()` - 直接设置向量的值。
+*   `GetMax()` - 获取向量分量的最大值。
+*   `GetAbsMax()` - 获取向量分量的最大绝对值。
+*   `GetMin()` - 获取向量分量的最小绝对值。
+*   `GetAbsMin()` - 获取向量分量的最小绝对值。
+*   `GetAbs()` - 获取此向量的副本，其中每个分量的绝对值。
+*   `Size()` 或 `Length()` - 获取此向量的长度（模）。
+*   `SizeSquared()` 或 `SquaredLength()` - 获取此向量的平方长度。
+*   `Size2D()` - 获取此向量二维分量的长度。
+*   `SizeSquared2D()` - 获取此向量二维分量的平方长度。
+*   `HeadingAngle()` - 将方向向量转换为'航向'角度。
+*   `IsNearlyZero()` - 检查向量是否在指定容差范围内接近零。
+*   `IsZero()` - 检查向量的所有分量是否完全为零。
+*   `IsUnit()` - 检查向量是否为单位长度，具有指定的容差。
+*   `IsNormalized()` - 检查向量是否已归一化。
+*   `Normalize()` - 如果向量大于给定容差，则原地归一化该向量。如果不符合条件，则保持不变。
+*   `GetSignVector()` - 获取向量的符号副本。每个分量被设置为+1 或-1，零的符号被视为+1。
+*   `Projection()` - Z 向量的 2D 分量。
+*   `GridSnap()` - 获取一个与此向量对齐到网格的副本。
+*   `IsUniform()` - 检查 X、Y 和 Z 是否几乎相等。
+*   `ConstainsNaN()` - 检查此向量中是否存在任何非有限值（NaN 或 Inf）的实用工具。
+*   `ToString()` - 获取此向量的文本表示。
+*   `ToCompactString()` - 获取此向量的简短文本表示，用于紧凑、可读的日志记录。
+*   `ToText()` - 获取具有区域设置感知的此向量的文本表示。
+*   `ToCompactText()` - 获取具有区域设置感知的此向量的简短文本表示，用于紧凑、可读的日志记录。
 
-***
+* * *
 
 要使用 `FVector` 的整数版本：
 
@@ -1738,15 +1681,9 @@ FVector2D OldLocation = FVector2D::ZeroVector; // (0, 0, 0)
 FVector2D NewLocation = FVector2D::OneVector; // (1, 1, 1)
 ```
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    使用 `FVector2f` 表示 `float` ，使用 `FVector2d` 表示 `double` ，作为后端转换的显式数据类型。
-  </ObsidianCalloutTitle>
+> \[!NOTE\] 使用 `FVector2f` 表示 `float` ，使用 `FVector2d` 表示 `double` ，作为后端转换的显式数据类型。
 
-  <ObsidianCalloutBody />
-</ObsidianCallout>
-
-***
+* * *
 
 要使用 `FVector2D` 的整数版本：
 
@@ -1778,13 +1715,7 @@ FUIntPoint UnsignedMinPoint = FUIntPoint(0, 0);
 FUIntPoint UnsignedMaxPoint = FUIntPoint(255, 255);
 ```
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    使用 `FInt32Point` 代表 `int32` ， `FUint32Point` 代表 `uint32` ， `FInt64Point` 代表 `int64` ，以及 `FUint64Point` 代表 `uint64` ，作为后端转换的明确数据类型。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] 使用 `FInt32Point` 代表 `int32` ， `FUint32Point` 代表 `uint32` ， `FInt64Point` 代表 `int64` ，以及 `FUint64Point` 代表 `uint64` ，作为后端转换的明确数据类型。
 
 #### IntRect
 
@@ -1806,13 +1737,7 @@ FUIntPoint UnsignedMaxPoint = FUIntPoint(255, 255);
 FUIntReact UnsignedRect = FIntRect(UnsignedMinPoint, UnsignedMaxPoint);
 ```
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    使用 `FInt32Rect` 表示 `int32` ， `FUint32Rect` 表示 `uint32` ， `FInt64Rect` 表示 `int64` ，以及 `FUint64Rect` 表示 `uint64` ，作为后端转换的显式数据类型。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] 使用 `FInt32Rect` 表示 `int32` ， `FUint32Rect` 表示 `uint32` ， `FInt64Rect` 表示 `int64` ，以及 `FUint64Rect` 表示 `uint64` ，作为后端转换的显式数据类型。
 
 #### 旋转器
 
@@ -1830,24 +1755,18 @@ FRotator MyRotator = FRotator(0.0f, 90.0f, 0.0f);
 FRotator MyRotator = FRotator::ZeroRotator; // (0, 0, 0)
 ```
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    使用 `FRotator3f` 表示 `float` ，使用 `FRotator3d` 表示 `double` ，作为后端转换的明确数据类型。
-  </ObsidianCalloutTitle>
+> \[!NOTE\] 使用 `FRotator3f` 表示 `float` ，使用 `FRotator3d` 表示 `double` ，作为后端转换的明确数据类型。
 
-  <ObsidianCalloutBody />
-</ObsidianCallout>
-
-***
+* * *
 
 常用的静态函数：
 
-* `FRotator::Vector()` - 将旋转转换为指向其方向的单位向量。
+*   `FRotator::Vector()` - 将旋转转换为指向其方向的单位向量。
 
 常用的本地函数：
 
-* `GetInverse()` - 返回旋转器的逆。
-* `GridSnap()` - 获取旋转，并 snapped 到指定的度数段。
+*   `GetInverse()` - 返回旋转器的逆。
+*   `GridSnap()` - 获取旋转，并 snapped 到指定的度数段。
 
 #### 四元数
 
@@ -1865,13 +1784,7 @@ FQuat MyQuaternion = FQuat(0.0f, 90.0f, 0.0f, 0.0f);
 FQuat MyQuaternion = FQuat::Identify; // (0, 0, 0, 0)
 ```
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    使用 `FQuat4f` 代替 `float` ，使用 `FQuat4d` 代替 `double` ，作为后端转换的明确数据类型。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] 使用 `FQuat4f` 代替 `float` ，使用 `FQuat4d` 代替 `double` ，作为后端转换的明确数据类型。
 
 #### 转换
 
@@ -1894,13 +1807,7 @@ FTransform MyTransform = FTransform(Rotation, Location, Scale);
 FTransform MyTransform = FTransform::Identify; // NaN
 ```
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    使用 `FTransform3f` 代表 `float` ，使用 `FTransform3d` 代表 `double` ，作为后端转换的明确数据类型。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] 使用 `FTransform3f` 代表 `float` ，使用 `FTransform3d` 代表 `double` ，作为后端转换的明确数据类型。
 
 #### 平面
 
@@ -1922,13 +1829,7 @@ FPlane Plane = FVector(X, Y, Z);
 FPlane Plane = FVector(FVector(0.0f, 0.0f, 0.0f));
 ```
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    将 `FPlane4f` 用于 `float` ，将 `FPlane4d` 用于 `double` ，作为后端转换的明确数据类型。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] 将 `FPlane4f` 用于 `float` ，将 `FPlane4d` 用于 `double` ，作为后端转换的明确数据类型。
 
 #### 矩阵
 
@@ -1963,13 +1864,7 @@ int32 ColumnIndex = 0;
 double Element = Matrix[RowIndex][ColumnIndex];
 ```
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    在后端转换时，使用 `FMatrix44f` 作为 `float` ，使用 `FMatrix44d` 作为 `double` ，作为显式的数据类型。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] 在后端转换时，使用 `FMatrix44f` 作为 `float` ，使用 `FMatrix44d` 作为 `double` ，作为显式的数据类型。
 
 #### 球体
 
@@ -1984,13 +1879,7 @@ float Radius = 500.0f;
 FSphere Sphere = FSphere(Center, Radius);
 ```
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    使用 `FSphere3f` 表示 `float` ，使用 `FSphere3d` 表示 `double` ，作为后端转换的明确数据类型。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] 使用 `FSphere3f` 表示 `float` ，使用 `FSphere3d` 表示 `double` ，作为后端转换的明确数据类型。
 
 #### Box
 
@@ -2005,13 +1894,7 @@ FVector MaxPoint = FVector(25.0f, 25.0f);
 FBox Box2D = FBox(MinPoint, MaxPoint);
 ```
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    使用 `FBox3f` 表示 `float` ，使用 `FBox3d` 表示 `double` ，作为后端转换的明确数据类型。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] 使用 `FBox3f` 表示 `float` ，使用 `FBox3d` 表示 `double` ，作为后端转换的明确数据类型。
 
 #### Box2D
 
@@ -2026,13 +1909,7 @@ FVector2D MaxPoint = FVector2D(20, 20);
 FBox2D Box2D = FBox2D(MinPoint, MaxPoint);
 ```
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    使用 `FBox2f` 表示 `float` ，使用 `FBox2d` 表示 `double` ，作为后端转换的明确数据类型。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] 使用 `FBox2f` 表示 `float` ，使用 `FBox2d` 表示 `double` ，作为后端转换的明确数据类型。
 
 #### Ray
 
@@ -2062,13 +1939,7 @@ FVector PointAt = Ray.PointAt(ScalarDistance);
 double CalcScalarDistance = Ray.GetParameter(PointAt); // Will convert back to 'ScalarDistance'
 ```
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    将 `FRay3f` 用于 `float` ，将 `FRay3d` 用于 `double` ，作为后端转换的显式数据类型。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] 将 `FRay3f` 用于 `float` ，将 `FRay3d` 用于 `double` ，作为后端转换的显式数据类型。
 
 #### 颜色
 
@@ -2094,31 +1965,31 @@ FString HexString = HexColor.ToHex(); // Convert it back to a string. The format
 
 `FLinearColor` 的常见颜色列表：
 
-* `FLinearColor::White`
-* `FLinearColor::Gray`
-* `FLinearColor::Black`
-* `FLinearColor::Transparent`
-* `FLinearColor::Red`
-* `FLinearColor::Green`
-* `FLinearColor::Blue`
-* `FLinearColor::Yellow`
+*   `FLinearColor::White`
+*   `FLinearColor::Gray`
+*   `FLinearColor::Black`
+*   `FLinearColor::Transparent`
+*   `FLinearColor::Red`
+*   `FLinearColor::Green`
+*   `FLinearColor::Blue`
+*   `FLinearColor::Yellow`
 
 `FColor` 的常见颜色列表：
 
-* `FColor::White`
-* `FColor::Black`
-* `FColor::Transparent`
-* `FColor::Red`
-* `FColor::Green`
-* `FColor::Blue`
-* `FColor::Yellow`
-* `FColor::Cyan`
-* `FColor::Magenta`
-* `FColor::Orange`
-* `FColor::Purple`
-* `FColor::Turquoise`
-* `FColor::Silver`
-* `FColor::Emerald`
+*   `FColor::White`
+*   `FColor::Black`
+*   `FColor::Transparent`
+*   `FColor::Red`
+*   `FColor::Green`
+*   `FColor::Blue`
+*   `FColor::Yellow`
+*   `FColor::Cyan`
+*   `FColor::Magenta`
+*   `FColor::Orange`
+*   `FColor::Purple`
+*   `FColor::Turquoise`
+*   `FColor::Silver`
+*   `FColor::Emerald`
 
 你可以在 Unreal 的文档中了解更多关于线性颜色的信息。
 
@@ -2126,15 +1997,15 @@ FString HexString = HexColor.ToHex(); // Convert it back to a string. The format
 
 ### 💐 收藏集
 
-![Collections](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/Collections.png)
+![Collections](/static-img/Collections.png)
 
 <table><tbody><tr><td>本节并非与 ChatGPT 一同编写。</td></tr></tbody></table>
 
-| 数据容器   | 描述                                      | 使用场景                                 |
-| ------ | --------------------------------------- | ------------------------------------ |
-| TArray | 一个在运行时可以增长或缩小大小的动态数组，支持随机访问和迭代。         | 适用于存储和管理元素集合，其中大小可能频繁变化且需要快速访问元素。    |
-| TSet   | 一种集合数据结构，以无特定顺序存储唯一元素，高效支持元素插入、删除和成员检查。 | 非常适合维护一组不同的元素，并能快速进行成员检查且不重复。        |
-| TMap   | 一种关联容器，存储键值对，允许基于键进行高效的查找和检索。           | 用于创建字典或关联数组，其中数据根据唯一键进行组织，以便快速高效地访问。 |
+| 数据容器 | 描述 | 使用场景 |
+| --- | --- | --- |
+| TArray | 一个在运行时可以增长或缩小大小的动态数组，支持随机访问和迭代。 | 适用于存储和管理元素集合，其中大小可能频繁变化且需要快速访问元素。 |
+| TSet | 一种集合数据结构，以无特定顺序存储唯一元素，高效支持元素插入、删除和成员检查。 | 非常适合维护一组不同的元素，并能快速进行成员检查且不重复。 |
+| TMap | 一种关联容器，存储键值对，允许基于键进行高效的查找和检索。 | 用于创建字典或关联数组，其中数据根据唯一键进行组织，以便快速高效地访问。 |
 
 #### TArray
 
@@ -2194,7 +2065,7 @@ for (const int32& Element : MyArray)
 }
 ```
 
-***
+* * *
 
 你可以选择在栈上或堆上分配数组。如果没有指定，你正在堆上创建数组分配，而数组返回一个栈上的数据容器。
 
@@ -2216,29 +2087,11 @@ StackArray.Add(4);
 StackArray.Add(5); // Will be allocated on the heap!
 ```
 
-<ObsidianCallout type="WARNING">
-  <ObsidianCalloutTitle>
-    如果你试图使用 `TInlineAllocator` 在栈上分配堆对象，Unreal 会默认采用堆分配。
-  </ObsidianCalloutTitle>
+> \[!WARNING\] 如果你试图使用 `TInlineAllocator` 在栈上分配堆对象，Unreal 会默认采用堆分配。
 
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!WARNING\] 如果你添加的元素数量超过已分配的容量，Unreal 会默认采用堆分配。
 
-<ObsidianCallout type="WARNING">
-  <ObsidianCalloutTitle>
-    如果你添加的元素数量超过已分配的容量，Unreal 会默认采用堆分配。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
-
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    Unreal 会将栈分配的数组视为不同的数据类型，与普通数组不同。为了适应这一点，请使用 `TArrayView` 。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] Unreal 会将栈分配的数组视为不同的数据类型，与普通数组不同。为了适应这一点，请使用 `TArrayView` 。
 
 如果你希望避免用堆分配填充剩余的元素，请使用 `TFixedAllocator` 。
 
@@ -2432,14 +2285,14 @@ int32 PlayerID = KeyValueArray[0].Value; // 001100
 
 使用这些容器，你可以使用几个有用的函数。
 
-* `Empty()` - 清空存储元素（同时将缓冲区大小调整为零）。
-* `Reset()` - 清空存储元素（不调整缓冲区大小）。
-* `GetSlack()` - 获取存储元素数量减去其缓冲区大小。 `Slack = NumOfElements - BufferCapacity` 。
-* `GetAllocationSize()` - 获取缓冲区容量。
-* `Shrink()` - 它将重置缓冲区大小为当前存储的元素数量。
-* `Reserve()` - 它将扩展缓冲区大小到该数量。注意，缓冲区大小之后可能会改变。
-* `RemoveAll` - 将移除所有预测作为参数的元素。
-* `RemoveAllSwap` - 与 `RemoveAll()` 函数相同，但不保持顺序。
+*   `Empty()` - 清空存储元素（同时将缓冲区大小调整为零）。
+*   `Reset()` - 清空存储元素（不调整缓冲区大小）。
+*   `GetSlack()` - 获取存储元素数量减去其缓冲区大小。 `Slack = NumOfElements - BufferCapacity` 。
+*   `GetAllocationSize()` - 获取缓冲区容量。
+*   `Shrink()` - 它将重置缓冲区大小为当前存储的元素数量。
+*   `Reserve()` - 它将扩展缓冲区大小到该数量。注意，缓冲区大小之后可能会改变。
+*   `RemoveAll` - 将移除所有预测作为参数的元素。
+*   `RemoveAllSwap` - 与 `RemoveAll()` 函数相同，但不保持顺序。
 
 这里有一个例子：
 
@@ -2518,7 +2371,7 @@ Array.Shrink();
 // Current buffer size: 4
 ```
 
-***
+* * *
 
 为了移除一个元素而不允许容器缩小，你可以使用这些参数：
 
@@ -2534,7 +2387,7 @@ bool bAllowShrinking = false;
 Array.RemoveAt(LastElementIndex, NumToRemove, bAllowShrinking)
 ```
 
-***
+* * *
 
 容器在何时以及多少内存用于未来的使用情况？
 
@@ -2605,39 +2458,39 @@ Algo 是一个包含许多容器辅助函数的命名空间。
 
 这里是一些常用函数：
 
-* `Algo::Accumulate()` - 对一个范围求和。
-* `Algo::AllOf()` - 检查范围内每个元素的投影是否为真。
-* `Algo::AnyOf()` - 检查范围内至少有一个元素的投影为真。
-* `Algo::BinarySearch()` - 返回范围内第一个匹配指定值的元素的索引，该范围必须按 `<` 排序。
-* `Algo::BinarySearchBy()` - 与 `Algo::BinarySearch()` 相同，但具有自定义逻辑。
-* `Algo::Compare()` - 使用 operator== 比较两个相邻容器的元素对。
-* `Algo::CompareByPredicate()` - 使用谓词比较两个相邻容器的元素对。
-* `Algo::Copy()` - 将一个范围复制到容器中。
-* `Algo::CopyIf()` - 条件复制一个范围内的元素到容器中。
-* `Algo::Count()` - 统计范围内等于指定值的元素数量。
-* `Algo::CountBy()` - 统计范围内投影等于指定值的元素数量。
-* `Algo::CountIf()` - 统计范围内匹配给定谓词的元素数量。
-* `Algo::Find()` - 返回范围内第一个等于给定值的元素的指针。
-* `Algo::FindBy()` - 返回范围内其投影等于给定值的元素的指针。
-* `Algo::FindLast()` - 返回范围内最后一个等于给定值的元素的指针。
-* `Algo::FindLastBy()` - 返回范围内其投影等于给定值的最后一个元素的指针。
-* `Algo::FindSequence()` - 在另一个序列中搜索元素序列的第一个出现。
-* `Algo::ForEach()` - 对范围内的每个元素调用可调用对象。
-* `Algo::Includes()` - 通过比较元素对来检查一个有序连续容器是否是另一个有序连续容器的子序列。
-* `Algo::IndexOf()` - 返回范围内第一个等于给定值的元素的索引。
-* `Algo::IndexOfByPredicate()` - 返回范围内第一个匹配谓词的元素的索引。
-* `Algo::IsSorted()` - 测试范围是否按其元素类型的操作符 `<` 排序。
-* `Algo::MaxElement()` - 返回范围内最大元素的指针。
-* `Algo::MinElement()` - 返回范围内最小元素的指针。
-* `Algo::NoneOf()` - 检查范围内没有元素为真。
-* `Algo::Sort()` - 对范围进行排序。默认使用 `<` 操作符（升序）。但是可以添加自定义逻辑。
-* `Algo::SortBy()` - 与 `Algo::Sort` 相同，但使用投影方法。投影是针对值的转换。
-* `Algo::RandomShuffle()` - 随机打乱范围内的元素。
-* `Algo::RemoveIf()` - 将所有不满足谓词的元素移到范围内的前面，而将其他元素置于一个构造但未指定的状态。
-* `Algo::Replace()` - 将所有与一个值相等比较的元素替换为一个新的值。
-* `Algo::ReplaceIf()` - 将所有满足谓词的元素替换为给定的值。
-* `Algo::Reverse()` - 反转一个范围。
-* `Algo::Transform()` - 将转换应用于一个范围并将结果存储到容器中。
+*   `Algo::Accumulate()` - 对一个范围求和。
+*   `Algo::AllOf()` - 检查范围内每个元素的投影是否为真。
+*   `Algo::AnyOf()` - 检查范围内至少有一个元素的投影为真。
+*   `Algo::BinarySearch()` - 返回范围内第一个匹配指定值的元素的索引，该范围必须按 `<` 排序。
+*   `Algo::BinarySearchBy()` - 与 `Algo::BinarySearch()` 相同，但具有自定义逻辑。
+*   `Algo::Compare()` - 使用 operator== 比较两个相邻容器的元素对。
+*   `Algo::CompareByPredicate()` - 使用谓词比较两个相邻容器的元素对。
+*   `Algo::Copy()` - 将一个范围复制到容器中。
+*   `Algo::CopyIf()` - 条件复制一个范围内的元素到容器中。
+*   `Algo::Count()` - 统计范围内等于指定值的元素数量。
+*   `Algo::CountBy()` - 统计范围内投影等于指定值的元素数量。
+*   `Algo::CountIf()` - 统计范围内匹配给定谓词的元素数量。
+*   `Algo::Find()` - 返回范围内第一个等于给定值的元素的指针。
+*   `Algo::FindBy()` - 返回范围内其投影等于给定值的元素的指针。
+*   `Algo::FindLast()` - 返回范围内最后一个等于给定值的元素的指针。
+*   `Algo::FindLastBy()` - 返回范围内其投影等于给定值的最后一个元素的指针。
+*   `Algo::FindSequence()` - 在另一个序列中搜索元素序列的第一个出现。
+*   `Algo::ForEach()` - 对范围内的每个元素调用可调用对象。
+*   `Algo::Includes()` - 通过比较元素对来检查一个有序连续容器是否是另一个有序连续容器的子序列。
+*   `Algo::IndexOf()` - 返回范围内第一个等于给定值的元素的索引。
+*   `Algo::IndexOfByPredicate()` - 返回范围内第一个匹配谓词的元素的索引。
+*   `Algo::IsSorted()` - 测试范围是否按其元素类型的操作符 `<` 排序。
+*   `Algo::MaxElement()` - 返回范围内最大元素的指针。
+*   `Algo::MinElement()` - 返回范围内最小元素的指针。
+*   `Algo::NoneOf()` - 检查范围内没有元素为真。
+*   `Algo::Sort()` - 对范围进行排序。默认使用 `<` 操作符（升序）。但是可以添加自定义逻辑。
+*   `Algo::SortBy()` - 与 `Algo::Sort` 相同，但使用投影方法。投影是针对值的转换。
+*   `Algo::RandomShuffle()` - 随机打乱范围内的元素。
+*   `Algo::RemoveIf()` - 将所有不满足谓词的元素移到范围内的前面，而将其他元素置于一个构造但未指定的状态。
+*   `Algo::Replace()` - 将所有与一个值相等比较的元素替换为一个新的值。
+*   `Algo::ReplaceIf()` - 将所有满足谓词的元素替换为给定的值。
+*   `Algo::Reverse()` - 反转一个范围。
+*   `Algo::Transform()` - 将转换应用于一个范围并将结果存储到容器中。
 
 你可以在 Unreal 的文档中了解更多关于 Algo 的信息。
 
@@ -2778,13 +2631,7 @@ MyMultiMap.RemoveSingle(TEXT("X"), 10.0f);
 
 你可以在 Unreal 的文档中了解更多信息。
 
-<ObsidianCallout type="WARNING">
-  <ObsidianCalloutTitle>
-    Unreal 不支持 `TMultiMap` 与 UHT [3](#user-content-fn-2) 。这意味着你不能将其暴露给蓝图。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!WARNING\] Unreal 不支持 `TMultiMap` 与 UHT [3](#user-content-fn-2) 。这意味着你不能将其暴露给蓝图。
 
 #### TStaticArray
 
@@ -2843,13 +2690,7 @@ for (const FVector& Vec : StaticArray)
 
 你可以在 Unreal 的文档中了解更多信息。
 
-<ObsidianCallout type="WARNING">
-  <ObsidianCalloutTitle>
-    Unreal Engine 不支持 `TStaticArray` 与 UHT [3](#user-content-fn-2) 。这意味着你不能将其暴露给蓝图。要在蓝图中使用静态数组，请在 `TArray` 属性上使用 `FixedSized` 指定符。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!WARNING\] Unreal Engine 不支持 `TStaticArray` 与 UHT [3](#user-content-fn-2) 。这意味着你不能将其暴露给蓝图。要在蓝图中使用静态数组，请在 `TArray` 属性上使用 `FixedSized` 指定符。
 
 #### FHashTable
 
@@ -2980,7 +2821,7 @@ TList<ElementType>* Next; // Pointer to the next node
 
 使用数组相比于链表有一些缺点：
 
-<table><tbody><tr><td>缓存未命中 当计算机读取内存时，它从 RAM（随机存取存储器）中读取。因此，它的名称是随机访问内存。使用 TArray ，你的内存分配是连续的。这意味着 TArray 将请求一个大的空间来存放其内存块。 然而，如果 TArray 找不到或无法适应一个特定的位置（因为 TArray 可以增长和缩小），它需要重新计算并找到一个新的位置。这使得添加或删除元素变得令人烦恼。 但 TArray 拥有的东西是链表所缺乏的，那就是缓存命中。缓存命中是一个术语，其中 CPU 可以将一个数组预加载到 CPU 缓存内存中。因为数组存储在连续的内存中，允许 CPU 预加载整个数组，而无需在内存位置之间来回跳转。 对于链表来说，没有连续的内存。这意味着 CPU 需要在不同位置找到每个节点。这不允许 CPU 将其先前结果缓存到内存中。这就称为缓存未命中。 ![](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/LinkedListMemory.png) 来自 Dhathri Vupparapalli 博客的图片。 这是 SimonDev 关于缓存未命中和命中的视频。 你还可以在维基百科上了解更多关于 CPU 缓存的信息。 内存空间 TList 每个节点占用更多的内存空间。 因为每个节点都需要跟踪列表中的下一个节点。而下一个变量是一个指针，它在 32 位计算机上占用 4 个字节，在 64 位计算机上占用 8 个字节。 如果你只想使用基本数据类型，例如 ( int , float , double , bool 或 char )，那么你可以直接使用 TArray 。虽然 TArray 存储了一些开销，但这个开销非常小。 没有辅助函数 TList 仅提供数据元素和下一个节点的指针。 TList 不提供任何在列表中添加或删除节点的辅助函数。 如果您希望拥有这些函数，那么您可以直接使用 TLinkedList 。 只能向前遍历。 使用 TList 时，你只能向前移动。 这是因为每个节点都没有前一个节点。也就是说，你不能在列表中向后移动。 如果你想要向后移动，那么你只需要使用 TDoubleLinkedList 即可。</td></tr></tbody></table>
+<table><tbody><tr><td>缓存未命中 当计算机读取内存时，它从 RAM（随机存取存储器）中读取。因此，它的名称是随机访问内存。使用 TArray ，你的内存分配是连续的。这意味着 TArray 将请求一个大的空间来存放其内存块。 然而，如果 TArray 找不到或无法适应一个特定的位置（因为 TArray 可以增长和缩小），它需要重新计算并找到一个新的位置。这使得添加或删除元素变得令人烦恼。 但 TArray 拥有的东西是链表所缺乏的，那就是缓存命中。缓存命中是一个术语，其中 CPU 可以将一个数组预加载到 CPU 缓存内存中。因为数组存储在连续的内存中，允许 CPU 预加载整个数组，而无需在内存位置之间来回跳转。 对于链表来说，没有连续的内存。这意味着 CPU 需要在不同位置找到每个节点。这不允许 CPU 将其先前结果缓存到内存中。这就称为缓存未命中。 来自 Dhathri Vupparapalli 博客的图片。 这是 SimonDev 关于缓存未命中和命中的视频。 你还可以在维基百科上了解更多关于 CPU 缓存的信息。 内存空间 TList 每个节点占用更多的内存空间。 因为每个节点都需要跟踪列表中的下一个节点。而下一个变量是一个指针，它在 32 位计算机上占用 4 个字节，在 64 位计算机上占用 8 个字节。 如果你只想使用基本数据类型，例如 ( int , float , double , bool 或 char )，那么你可以直接使用 TArray 。虽然 TArray 存储了一些开销，但这个开销非常小。 没有辅助函数 TList 仅提供数据元素和下一个节点的指针。 TList 不提供任何在列表中添加或删除节点的辅助函数。 如果您希望拥有这些函数，那么您可以直接使用 TLinkedList 。 只能向前遍历。 使用 TList 时，你只能向前移动。 这是因为每个节点都没有前一个节点。也就是说，你不能在列表中向后移动。 如果你想要向后移动，那么你只需要使用 TDoubleLinkedList 即可。</td></tr></tbody></table>
 
 **这里有一个例子：**
 
@@ -3013,21 +2854,9 @@ while (CurrentNode != nullptr)
 }
 ```
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    `TList` 不为每个节点提供插入或删除功能。如果您希望使用这些功能，请使用 `TLinkedList` 。
-  </ObsidianCalloutTitle>
+> \[!NOTE\] `TList` 不为每个节点提供插入或删除功能。如果您希望使用这些功能，请使用 `TLinkedList` 。
 
-  <ObsidianCalloutBody />
-</ObsidianCallout>
-
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    一般来说，您几乎总是应该使用 `TArray` ，除非您有使用链表的具体原因。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] 一般来说，您几乎总是应该使用 `TArray` ，除非您有使用链表的具体原因。
 
 您可以在虚幻引擎的文档中了解更多信息。
 
@@ -3249,29 +3078,11 @@ UE_LOG(LogTemp, Log, TEXT("Sum=%i"), SumArray(StackAllocatedArray));
 UE_LOG(LogTemp, Log, TEXT("Sum=%i"), SumArray(CArray));
 ```
 
-<ObsidianCallout type="WARNING">
-  <ObsidianCalloutTitle>
-    `TArrayView` 是一个固定大小且独立的数组。这意味着它不会影响其原始分配，也不支持 Add()或 Remove()函数。
-  </ObsidianCalloutTitle>
+> \[!WARNING\] `TArrayView` 是一个固定大小且独立的数组。这意味着它不会影响其原始分配，也不支持 Add()或 Remove()函数。
 
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] 仍然可以使用 Algo 库，它提供了用于 TArrayView 和 TArray 的函数，例如 Algo::Reverse() 和 Algo::ForEach()。
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    仍然可以使用 Algo 库，它提供了用于 TArrayView 和 TArray 的函数，例如 Algo::Reverse() 和 Algo::ForEach()。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
-
-<ObsidianCallout type="CAUTION">
-  <ObsidianCalloutTitle>
-    避免将 `TArrayView` 与临时数组变量一起使用。因为数组可能会超出作用域，这将使 `TArrayView` 变量无效并指向不同的内存块。这是因为视图依赖于数组的内存块。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!CAUTION\] 避免将 `TArrayView` 与临时数组变量一起使用。因为数组可能会超出作用域，这将使 `TArrayView` 变量无效并指向不同的内存块。这是因为视图依赖于数组的内存块。
 
 ```cpp
 #include "Containers/ArrayView.h"
@@ -3359,7 +3170,7 @@ UE_LOG(LogTemp, Log, TEXT("Copied StringView: %s"), *CopiedStringView);
 
 分配的缓冲区空间大小通过模板参数指定，如果构建的字符串超出初始缓冲区，将使用常规动态内存分配分配新的缓冲区。
 
-***
+* * *
 
 构建字符串构建器有两种方式。要么使用已初始化的缓冲区大小，要么使用未知的缓冲区大小。
 
@@ -3422,13 +3233,7 @@ StringBuilder.Append(TEXT(" and welcome!"));
 // StringBuilder: { 'H', 'e', 'l', 'l', 'o', ',', ' ', 'W', 'o', 'r', 'l', 'd', ' ', 'a', 'n', 'd', ' ', 'w', 'e', 'l', 'c', 'o', 'm', 'e', '!' }
 ```
 
-<ObsidianCallout type="WARNING">
-  <ObsidianCalloutTitle>
-    如果需要，字符串构建器将分配更多内存。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!WARNING\] 如果需要，字符串构建器将分配更多内存。
 
 这里还有一个例子：
 
@@ -3486,13 +3291,7 @@ UE_LOG(LogTemp, Log, TEXT("Value of the: %i"), UEnum::GetValueAsName(Val));
 UE_LOG(LogTemp, Log, TEXT("Integer value of the: %i"), IntVal);
 ```
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    `UPROPERTY` 支持常规枚举，并取代了使用 `TEnumAsByte` 的需求。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] `UPROPERTY` 支持常规枚举，并取代了使用 `TEnumAsByte` 的需求。
 
 你可以在虚幻引擎的文档中了解更多信息。
 
@@ -3597,6 +3396,8 @@ if (DamageHealth(PlayerHealth)) // Passing the `PlayerHealth` as a direct refere
 
 <table><tbody><tr><td>本节内容由 ChatGPT 共同编写。</td></tr></tbody></table>
 
+![Pointers](/static-img/Pointers.png)
+
 最后，我们来看指针。本节将介绍原始指针和智能指针。如果你对指针一无所知，强烈建议观看 Cherno 关于指针的视频。
 
 指针和引用相似之处在于它们都指向变量，但有一个关键区别。指针是间接引用，意味着它们可以在代码中改变，指向不同的变量。而普通引用是直接的，并且只能指向它们初始化时指定的变量。
@@ -3617,7 +3418,7 @@ if (DamageHealth(PlayerHealth)) // Passing the `PlayerHealth` as a direct refere
 
 为了避免这种情况，在使用指针之前，你必须先检查它是否有效。
 
-> \[!警告] 对原始指针使用名为 `IsValid()` 的函数，并对其进行任何操作。
+> \[!警告\] 对原始指针使用名为 `IsValid()` 的函数，并对其进行任何操作。
 
 这里有一个示例：
 
@@ -3639,21 +3440,9 @@ void KillActor()
 }
 ```
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    `ActorPtr` 使用 `UPROPERTY()` 标记，以通知 UHT [3](#user-content-fn-2) 该指针存在。当指针未被使用时，垃圾收集器会将其标记并删除其内存。请注意，此过程可能需要几个帧，并非即时完成。因此，请始终使用 `IsValid()` 函数，该函数还会检查指针是否已被标记用于垃圾收集。避免使用手动检查，例如 `PlayerCharacter != nullptr` （因为它与垃圾收集系统不兼容）。
-  </ObsidianCalloutTitle>
+> \[!NOTE\] `ActorPtr` 使用 `UPROPERTY()` 标记，以通知 UHT [3](#user-content-fn-2) 该指针存在。当指针未被使用时，垃圾收集器会将其标记并删除其内存。请注意，此过程可能需要几个帧，并非即时完成。因此，请始终使用 `IsValid()` 函数，该函数还会检查指针是否已被标记用于垃圾收集。避免使用手动检查，例如 `PlayerCharacter != nullptr` （因为它与垃圾收集系统不兼容）。
 
-  <ObsidianCalloutBody />
-</ObsidianCallout>
-
-<ObsidianCallout type="WARNING">
-  <ObsidianCalloutTitle>
-    如果其他内容正在引用 `ActorPtr` ，该指针将不会通过垃圾收集被销毁（除非它是弱指针）。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!WARNING\] 如果其他内容正在引用 `ActorPtr` ，该指针将不会通过垃圾收集被销毁（除非它是弱指针）。
 
 从 Unreal Engine (5.0) 版本开始，推荐使用 `TObjectPtr` 而不是 `*` 来标记原始指针。 `TObjectPtr` 类包含一些针对编辑器的优化。
 
@@ -3755,7 +3544,7 @@ if (WeakPtr.IsValid())
 
 这个智能指针用于持有对 `UObject` 子类的软引用。它用于引用在运行时可以加载和卸载的资源。软引用不会阻止资源被垃圾回收。
 
-![TSoftObjectPtr](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/TSoftObjectPtr_BP.png)
+![TSoftObjectPtr](/static-img/TSoftObjectPtr_BP.png)
 
 示例用法：
 
@@ -3795,19 +3584,13 @@ if (SoftPtr.IsValid())
 }
 ```
 
-<ObsidianCallout type="WARNING">
-  <ObsidianCalloutTitle>
-    不要使用 `FSoftObjectPath` 或 `FSoftObjectPtr` 。用于内部用途。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!WARNING\] 不要使用 `FSoftObjectPath` 或 `FSoftObjectPtr` 。用于内部用途。
 
 ##### TSoftClassPtr
 
 这个智能指针用于持有对 `UClass` 子类的软引用。它用于引用可以在运行时加载和卸载的蓝图类或其他类。
 
-![TSoftClassPtr](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/TSoftClassPtr_BP.png)
+![TSoftClassPtr](/static-img/TSoftClassPtr_BP.png)
 
 示例用法：
 
@@ -3853,15 +3636,9 @@ if (SoftPtr.IsValid())
 }
 ```
 
-<ObsidianCallout type="WARNING">
-  <ObsidianCalloutTitle>
-    不要使用 `FSoftClassPath` 。旧代码。
-  </ObsidianCalloutTitle>
+> \[!WARNING\] 不要使用 `FSoftClassPath` 。旧代码。
 
-  <ObsidianCalloutBody />
-</ObsidianCallout>
-
-***
+* * *
 
 | 智能指针 | 基于类型的 | 描述 |
 | --- | --- | --- |
@@ -3881,13 +3658,14 @@ C++中的关键字用于定义程序的结构和行为。它们用于声明变�
 
 #### 常量
 
-* `const` - 指定对象或成员为只读且不能被修改。也就是说，它们是不可变的。
+*   `const` - 指定对象或成员为只读且不能被修改。也就是说，它们是不可变的。
 
-* `constexpr` - 指定一个函数或成员可以在编译时进行评估。 `constexpr` 可用于在不需要使用宏的情况下内联变量 [7](#user-content-fn-4) 。注意，编译器不保证编译时评估（仅它可以在编译时被评估）。
+*   `constexpr` - 指定一个函数或成员可以在编译时进行评估。 `constexpr` 可用于在不需要使用宏的情况下内联变量 [7](#user-content-fn-4) 。注意，编译器不保证编译时评估（仅它可以在编译时被评估）。
 
-* `consteval` - 指定一个函数必须在编译时进行评估。注意，它仅适用于函数，并且编译器必须在编译时进行评估。
+*   `consteval` - 指定一个函数必须在编译时进行评估。注意，它仅适用于函数，并且编译器必须在编译时进行评估。
 
-* `constinit` - 指定一个变量只能用常量表达式进行初始化。
+*   `constinit` - 指定一个变量只能用常量表达式进行初始化。
+
 
 ```cpp
 int Add(const int& a, const int& b)
@@ -3920,13 +3698,7 @@ constexpr int getSizeOfAnArray()
 int array[getSizeOfAnArray()]; // array has 5 elements
 ```
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    如果你希望在编译时获得一个"真正"的常量值，并且不期望编译器有任何处理，你可以使用 `consteval` 关键字。这会强制编译器在编译时编译你的代码。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] 如果你希望在编译时获得一个"真正"的常量值，并且不期望编译器有任何处理，你可以使用 `consteval` 关键字。这会强制编译器在编译时编译你的代码。
 
 ```cpp
 consteval int getSizeOfAnArray()
@@ -3941,21 +3713,9 @@ int array[getSizeOfAnArray()]; // array has 10 elements
 constinit int sizeOfAnArray = getSizeOfAnArray();
 ```
 
-<ObsidianCallout type="WARNING">
-  <ObsidianCalloutTitle>
-    `consteval` 和 `constinit` 关键字仅在 C++ 20 版本中受支持。这意味着如果你的编译器不支持这些关键字，你将无法使用它们。
-  </ObsidianCalloutTitle>
+> \[!WARNING\] `consteval` 和 `constinit` 关键字仅在 C++ 20 版本中受支持。这意味着如果你的编译器不支持这些关键字，你将无法使用它们。
 
-  <ObsidianCalloutBody />
-</ObsidianCallout>
-
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    Unreal Engine 现在支持 C++ 版本 20。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] Unreal Engine 现在支持 C++ 版本 20。
 
 ```cpp
 // Example of using constinit keyword
@@ -3972,9 +3732,9 @@ static_assert(Data::j == 20);
 
 #### 访问修饰符
 
-* `public` - 该成员对任何可以看到该类的代码都是可访问的。
-* `protected` - 该成员可在声明它的类及其派生类中访问。
-* `private` - 该成员只能在声明它的类内部访问。
+*   `public` - 该成员对任何可以看到该类的代码都是可访问的。
+*   `protected` - 该成员可在声明它的类及其派生类中访问。
+*   `private` - 该成员只能在声明它的类内部访问。
 
 以下是一个访问修饰符的实现示例：
 
@@ -4019,9 +3779,9 @@ int main()
 
 #### 类、结构体和内存
 
-* `class` 和 `struct` - 用于定义封装数据和函数的用户自定义类型。在常规 C++ 中， `class` 和 `struct` 实际上是同一回事。 `struct` 暴露的成员默认为公有。
-* `new` - 为对象分配内存（在堆内存上）并调用其构造函数。
-* `delete` - 释放使用 `new` 关键字分配的内存。
+*   `class` 和 `struct` - 用于定义封装数据和函数的用户自定义类型。在常规 C++ 中， `class` 和 `struct` 实际上是同一回事。 `struct` 暴露的成员默认为公有。
+*   `new` - 为对象分配内存（在堆内存上）并调用其构造函数。
+*   `delete` - 释放使用 `new` 关键字分配的内存。
 
 ```cpp
 /**
@@ -4049,7 +3809,7 @@ std::cout << "Age: " << person->age << std::endl;
 delete person;
 ```
 
-> \[!警告] 在 Unreal Engine 中，建议使用 `NewObject()` 和 `MakeShared()` 这类内置的内存管理函数来为对象分配内存，而不是使用 `new` 和 `delete` 。使用 `new` 和 `delete` 可能会干扰垃圾回收器，导致游戏出现内存泄漏或崩溃。
+> \[!警告\] 在 Unreal Engine 中，建议使用 `NewObject()` 和 `MakeShared()` 这类内置的内存管理函数来为对象分配内存，而不是使用 `new` 和 `delete` 。使用 `new` 和 `delete` 可能会干扰垃圾回收器，导致游戏出现内存泄漏或崩溃。
 
 那么类和结构有什么区别呢？
 
@@ -4063,11 +3823,11 @@ delete person;
 
 #### 与函数相关的
 
-* `virtual` - 指定一个函数应该是多态的，这意味着它可以被派生类重写。
-* `override` - 表示派生类中的函数打算重写基类中的函数。
-* `static` - 指定一个变量或函数与类相关联，而不是与类的特定实例相关联。
-* `inline` - 指定一个函数应该是内联的（即，它的代码应该直接插入到调用代码中，而不是调用函数）。
-* `force_inline` - 指示编译器无论是否通常这样做，都要内联一个函数。
+*   `virtual` - 指定一个函数应该是多态的，这意味着它可以被派生类重写。
+*   `override` - 表示派生类中的函数打算重写基类中的函数。
+*   `static` - 指定一个变量或函数与类相关联，而不是与类的特定实例相关联。
+*   `inline` - 指定一个函数应该是内联的（即，它的代码应该直接插入到调用代码中，而不是调用函数）。
+*   `force_inline` - 指示编译器无论是否通常这样做，都要内联一个函数。
 
 ```cpp
 /**
@@ -4186,7 +3946,7 @@ public:
 Details details = VehicleBase::GetDetails();
 ```
 
-***
+* * *
 
 > “理论上，使用内联函数可以使您的程序更快，因为它们消除了与函数调用相关的开销。调用一个函数需要在栈上推送返回地址，将参数推送到栈上，跳转到函数体，然后在函数完成时执行返回指令。通过内联函数可以消除这个过程。编译器在展开内联函数与未展开的函数之间也有不同的优化机会。内联函数的权衡是，您的程序的整体大小可能会增加。”
 
@@ -4196,13 +3956,7 @@ Details details = VehicleBase::GetDetails();
 
 要强制使用内联函数，你必须使用 `force_inline` 关键字。
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    在虚幻引擎中，更常见的是使用名为 `FORCEINLINE` 的宏，它本质上扩展为 `force_inline` 关键字。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] 在虚幻引擎中，更常见的是使用名为 `FORCEINLINE` 的宏，它本质上扩展为 `force_inline` 关键字。
 
 ```cpp
 inline int CalcNewHealth(int Health)
@@ -4216,10 +3970,10 @@ Health = CalcNewHealth(Health); // Compiles to: Health = 10 - 10;
 
 #### 类型转换
 
-* `dynamic_cast` - 执行运行时检查以确定对象是否可以转换为不同类型。
-* `static_cast` - 执行静态类型转换，允许在编译时将表达式转换为不同的数据类型。
-* `const_cast` - 执行类型转换，但会移除变量上声明的 const 属性。
-* `reinterpret_cast` - 执行类型转换，允许将指针转换为任何其他类型的指针。这意味着这种转换将允许你对代表值的位进行重新解释，而不会改变它们。
+*   `dynamic_cast` - 执行运行时检查以确定对象是否可以转换为不同类型。
+*   `static_cast` - 执行静态类型转换，允许在编译时将表达式转换为不同的数据类型。
+*   `const_cast` - 执行类型转换，但会移除变量上声明的 const 属性。
+*   `reinterpret_cast` - 执行类型转换，允许将指针转换为任何其他类型的指针。这意味着这种转换将允许你对代表值的位进行重新解释，而不会改变它们。
 
 ```cpp
 // Performs a runtime check to determine whether an object can be cast to a different type.
@@ -4257,21 +4011,9 @@ int* ptr = new int(65);
 char* charPtr = reinterpret_cast<char*>(ptr); // Will be casted to char pointer, with the value of 'A'.
 ```
 
-<ObsidianCallout type="CAUTION">
-  <ObsidianCalloutTitle>
-    不要在 Unreal Engine 项目中使用 C++版本的类型转换。相反，应使用引擎提供的 `Cast()` 。这种转换针对 UE 进行了优化。
-  </ObsidianCalloutTitle>
+> \[!CAUTION\] 不要在 Unreal Engine 项目中使用 C++版本的类型转换。相反，应使用引擎提供的 `Cast()` 。这种转换针对 UE 进行了优化。
 
-  <ObsidianCalloutBody />
-</ObsidianCallout>
-
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    如果您希望在 Unreal 中使用 `static_cast()` ，则应使用引擎提供的 `StaticCast()` 。这将生成相同的代码，但会修复 Visual Studio 中的一些问题。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] 如果您希望在 Unreal 中使用 `static_cast()` ，则应使用引擎提供的 `StaticCast()` 。这将生成相同的代码，但会修复 Visual Studio 中的一些问题。
 
 ```cpp
 ACharacter* MyCharacter = GetPlayerCharacter();
@@ -4292,21 +4034,22 @@ int32 Value = StaticCast<int32>(3.14159265359);
 
 #### 流程控制
 
-* `if` , `else if` 和 `else` - 用于程序中的条件执行。 `if` 检查一个条件，如果条件为真则执行一段代码。 `else if` 提供一个备选条件，如果第一个条件为假则检查该条件。 `else` 如果之前的条件都不为真，则执行一段代码。
+*   `if` , `else if` 和 `else` - 用于程序中的条件执行。 `if` 检查一个条件，如果条件为真则执行一段代码。 `else if` 提供一个备选条件，如果第一个条件为假则检查该条件。 `else` 如果之前的条件都不为真，则执行一段代码。
 
-* `switch` - 一种流程控制语句，用于根据表达式的值从多个代码块中选择一个要执行的代码块。
+*   `switch` - 一种流程控制语句，用于根据表达式的值从多个代码块中选择一个要执行的代码块。
 
-* `for` - 一种循环语句，只要条件为真就重复执行一段代码。它包括初始化、条件和自增/自减表达式。
+*   `for` - 一种循环语句，只要条件为真就重复执行一段代码。它包括初始化、条件和自增/自减表达式。
 
-* `while` - 另一种循环语句，只要指定条件为真就执行一段代码。
+*   `while` - 另一种循环语句，只要指定条件为真就执行一段代码。
 
-* `do` 和 `while` - 类似于 `while` 循环，但 `do while` 循环在检查条件之前至少会执行一次代码块。
+*   `do` 和 `while` - 类似于 `while` 循环，但 `do while` 循环在检查条件之前至少会执行一次代码块。
 
-* `break` - 用于提前退出循环或 switch 语句，将程序控制权转移到循环或 switch 之后的语句。
+*   `break` - 用于提前退出循环或 switch 语句，将程序控制权转移到循环或 switch 之后的语句。
 
-* `continue` - 使程序跳过当前循环的其余部分，并继续执行下一个循环迭代。
+*   `continue` - 使程序跳过当前循环的其余部分，并继续执行下一个循环迭代。
 
-* `try` , `catch` 和 `finally` - 通过尝试执行可能抛出异常的代码块，捕获抛出的异常，并在 `finally` 块中执行清理代码来实现异常处理，无论是否抛出异常。
+*   `try` , `catch` 和 `finally` - 通过尝试执行可能抛出异常的代码块，捕获抛出的异常，并在 `finally` 块中执行清理代码来实现异常处理，无论是否抛出异常。
+
 
 ```cpp
 int num = 10;
@@ -4409,7 +4152,7 @@ finally
 
 #### 通用编程
 
-* `template` - 通过在编译时定义具有参数的类型或函数，允许进行通用编程。
+*   `template` - 通过在编译时定义具有参数的类型或函数，允许进行通用编程。
 
 ```cpp
 template <typename T>
@@ -4434,10 +4177,10 @@ PrintArray(arr3, sizeof(arr3) / sizeof(arr3[0])); // one, two, three, four, five
 
 #### 杂项
 
-* `auto` - 允许编译器根据变量的初始化器推断其类型。类似于 C# 版本的 `var` 关键字。
-* `namespace` - 为标识符定义作用域，以避免命名冲突。
-* `operator` - 将函数声明为重载运算符。
-* `explicit` - 指明构造函数或转换运算符不能用于隐式类型转换。
+*   `auto` - 允许编译器根据变量的初始化器推断其类型。类似于 C# 版本的 `var` 关键字。
+*   `namespace` - 为标识符定义作用域，以避免命名冲突。
+*   `operator` - 将函数声明为重载运算符。
+*   `explicit` - 指明构造函数或转换运算符不能用于隐式类型转换。
 
 ```cpp
 namespace MyNamespace
@@ -4496,21 +4239,9 @@ namespace MyNamespace
 }
 ```
 
-<ObsidianCallout type="TIP">
-  <ObsidianCalloutTitle>
-    建议在单行中声明变量两次时使用 `auto` 关键字。例如，在强制类型转换操作期间。如果你在函数返回值上使用 `auto` 关键字，其他开发者将极难看出返回值的类型。
-  </ObsidianCalloutTitle>
+> \[!TIP\] 建议在单行中声明变量两次时使用 `auto` 关键字。例如，在强制类型转换操作期间。如果你在函数返回值上使用 `auto` 关键字，其他开发者将极难看出返回值的类型。
 
-  <ObsidianCalloutBody />
-</ObsidianCallout>
-
-<ObsidianCallout type="CAUTION">
-  <ObsidianCalloutTitle>
-    UHT [3](#user-content-fn-2) 不支持 `operator` 或 `namespace` 关键字。这意味着你不能有一个带有命名空间的 C++ 类，也不能使用操作函数为蓝图。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!CAUTION\] UHT [3](#user-content-fn-2) 不支持 `operator` 或 `namespace` 关键字。这意味着你不能有一个带有命名空间的 C++ 类，也不能使用操作函数为蓝图。
 
 ## 👷 构造函数、析构函数和初始化
 
@@ -4670,7 +4401,7 @@ int num5{1000.5};      // Error, narrowing conversion from double to int
 
 <table><tbody><tr><td>本节并非与 ChatGPT 一同编写。</td></tr></tbody></table>
 
-![Lifecycle breakdown](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/ActorLifeCycle.png)
+![Lifecycle breakdown](/static-img/ActorLifeCycle.png)
 
 生命周期分解
 
@@ -5124,13 +4855,7 @@ public:
 };
 ```
 
-<ObsidianCallout type="WARNING">
-  <ObsidianCalloutTitle>
-    `BlueprintNativeEvent` 允许你在 C++ 或蓝图中对函数进行重写，但如果你使用 `BlueprintImplementableEvent` ，它只允许在蓝图中对函数进行重写。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!WARNING\] `BlueprintNativeEvent` 允许你在 C++ 或蓝图中对函数进行重写，但如果你使用 `BlueprintImplementableEvent` ，它只允许在蓝图中对函数进行重写。
 
 ### 扩展接口函数：
 
@@ -5179,13 +4904,7 @@ void ACarPawn::Explode_Implementation(bool bForce)
 
 在 C++中调用接口函数时，必须使用 `Execute` 作为前缀调用该函数。如果不使用前缀，Unreal Engine 会发出警告。
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    你是从接口本身调用接口函数。也就是说，不能使用 `ACarPawn->Explode()` （接口函数），而必须使用 `IVehicle::Execute_Explode()` ，并将参数设置为接口函数要调用的对象。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] 你是从接口本身调用接口函数。也就是说，不能使用 `ACarPawn->Explode()` （接口函数），而必须使用 `IVehicle::Execute_Explode()` ，并将参数设置为接口函数要调用的对象。
 
 ```cpp
 UObject* CarObject = nullptr; // The UObject, that you wish to call the function on.
@@ -5221,7 +4940,7 @@ UObject* CarObject = nullptr; // The UObject, that you wish to call the function
 IVehicle* VehiclePtr = Cast<IVehicle>(CarObject);
 ```
 
-> \[!警告] `Cast<>` 方法只有在接口在 C++类中实现时才有效。如果接口是在蓝图（Blueprint）中实现的，那么强制类型转换将返回 `nullptr` 。你可以使用 `TScriptInterface<>` 来安全地复制接口指针。或者，你可以使用弱接口指针（ `TWeakInterfacePtr` ）。
+> \[!警告\] `Cast<>` 方法只有在接口在 C++类中实现时才有效。如果接口是在蓝图（Blueprint）中实现的，那么强制类型转换将返回 `nullptr` 。你可以使用 `TScriptInterface<>` 来安全地复制接口指针。或者，你可以使用弱接口指针（ `TWeakInterfacePtr` ）。
 
 ### 引用一个接口对象
 
@@ -5259,13 +4978,7 @@ if (VehiclePtr.IsValid())
 
 关于弱指针的更多信息，你可以在 💾 Soft vs hard references 中阅读。
 
-<ObsidianCallout type="TIP">
-  <ObsidianCalloutTitle>
-    Blueprint 中的 `TScriptInterface` 比 C++版本看起来更美观。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!TIP\] Blueprint 中的 `TScriptInterface` 比 C++版本看起来更美观。
 
 ## 🛸 反射系统
 
@@ -5313,13 +5026,7 @@ if (VehiclePtr.IsValid())
 
 > 垃圾回收器可能会删除你所指向的对象的所有者。
 
-<ObsidianCallout type="WARNING">
-  <ObsidianCalloutTitle>
-    为了让垃圾回收器完成其工作（确定哪些对象可以安全删除，对于容器而言），它必须遍历每个对象的每个字段。虽然 Unreal 提供了多种类型的容器（ `TArray` ， `TMap` ， …），但垃圾回收器只考虑 `TArray` 中的指针。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!WARNING\] 为了让垃圾回收器完成其工作（确定哪些对象可以安全删除，对于容器而言），它必须遍历每个对象的每个字段。虽然 Unreal 提供了多种类型的容器（ `TArray` ， `TMap` ， …），但垃圾回收器只考虑 `TArray` 中的指针。
 
 #### 示例
 
@@ -5344,13 +5051,7 @@ UObjects 不应该使用 `new` 创建，而只能使用默认的创建方法（ 
 
 对象的销毁不一定都在同一个帧中发生，当垃圾回收开始作用于它时，会首先调用 `BeginDestroy()` （不要自己调用这个），然后，在准备好时 `FinishDestroy()` 。
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    使用 `UPROPERTY` 声明的原始指针将被设置为 `nullptr`
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] 使用 `UPROPERTY` 声明的原始指针将被设置为 `nullptr`
 
 ### 验证
 
@@ -5375,7 +5076,7 @@ UObjectBase::IsValidLowLevelFast();
 
 <table><tbody><tr><td>本节由 ChatGPT 共同编写。</td></tr></tbody></table>
 
-![Soft vs hard references](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/Soft_Hard_Refs.png)
+![Soft vs hard references](/static-img/Soft_Hard_Refs.png)
 
 ### 软引用
 
@@ -5389,7 +5090,7 @@ UObjectBase::IsValidLowLevelFast();
 
 硬引用的一个类比可以是需要嵌入到特定位置的一块拼图。这块拼图是拼图不可或缺的一部分，移除或更改它都会破坏预期的结构。
 
-***
+* * *
 
 当加载具有硬引用的资产时，它会触发一系列依赖关系，导致所有具有硬引用的资产也被加载。这确保了所有必需的资产都可用于正常功能。这种加载行为被称为"链式加载"或"按需加载"。
 
@@ -5415,27 +5116,22 @@ UObjectBase::IsValidLowLevelFast();
 
 在 Unreal Engine 中，全局函数通常用于工具函数、辅助函数或独立于任何特定对象实例操作数据的函数。
 
-* `IsValid()` : 检查指针或对象引用是否有效。这很重要，以避免访问或修改空指针，这可能导致崩溃或其他意外行为。
+*   `IsValid()` : 检查指针或对象引用是否有效。这很重要，以避免访问或修改空指针，这可能导致崩溃或其他意外行为。
 
-* `Swap()` : 交换两个 `TObjectPtr` 对象的内容。
+*   `Swap()` : 交换两个 `TObjectPtr` 对象的内容。
 
-* `Exchange()` : 将一个 `TObjectPtr` 与新对象交换内容，并返回之前的对象。
+*   `Exchange()` : 将一个 `TObjectPtr` 与新对象交换内容，并返回之前的对象。
 
-* `MakeWeakObjectPtr()` : 从一个 `TObjectPtr` 创建一个弱指针（ `TWeakObjectPtr` ），允许对对象进行非拥有引用。
+*   `MakeWeakObjectPtr()` : 从一个 `TObjectPtr` 创建一个弱指针（ `TWeakObjectPtr` ），允许对对象进行非拥有引用。
 
-* `Cast()` : 动态转换为另一个对象。如果转换对象不是指定的类型，它将返回 nullptr。如果对象是指定的类型或其子类，该函数将返回指向指定类型转换对象的指针。
+*   `Cast()` : 动态转换为另一个对象。如果转换对象不是指定的类型，它将返回 nullptr。如果对象是指定的类型或其子类，该函数将返回指向指定类型转换对象的指针。
 
-* `CastChecked()` : 类似于 `Cast()` ，但在调试构建中会执行运行时检查，以确保对象是指定的类型。如果检查失败，将触发断言。当您确信对象应该是特定类型并希望在开发早期捕获错误时，此函数很有用。
+*   `CastChecked()` : 类似于 `Cast()` ，但在调试构建中会执行运行时检查，以确保对象是指定的类型。如果检查失败，将触发断言。当您确信对象应该是特定类型并希望在开发早期捕获错误时，此函数很有用。
 
-* `StaticCast()` : 尝试在编译时进行转换。但是，某些代码可能仅在运行时才能工作，因此编译器将决定是否静态转换是“适当”的。
+*   `StaticCast()` : 尝试在编译时进行转换。但是，某些代码可能仅在运行时才能工作，因此编译器将决定是否静态转换是“适当”的。
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    `StaticCast()` 函数只是转发 C++中的内置转换操作，该操作称为 `static_cast()` 。这意味着在 Unreal Engine `UObject` 中没有安全性保证。
-  </ObsidianCalloutTitle>
 
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] `StaticCast()` 函数只是转发 C++中的内置转换操作，该操作称为 `static_cast()` 。这意味着在 Unreal Engine `UObject` 中没有安全性保证。
 
 ## 🏛️ 库
 
@@ -5484,20 +5180,20 @@ bool UAnalyticsBlueprintLibrary::StartSession()
 
 ### Kismet 库
 
-* `UGameplayStatics` - 可在 Blueprint 和 C++中调用的 `gameplay` 实用函数
-* `UKismetMathLibrary` - `math` 可从 Blueprint 和 C++中调用的实用函数
-* `UKismetStringLibrary` - `string` 可从 Blueprint 和 C++中调用的实用函数
-* `UKismetTextLibrary` - `text` 可从 Blueprint 和 C++中调用的实用函数
-* `UKismetSystemLibrary` - `system` 可从 Blueprint 和 C++中调用的实用函数
-* `UKismetMaterialLibrary` - `material` 可从 Blueprint 和 C++中调用的实用函数
-* `UKismetInputLibrary` - `input` 可从 Blueprint 和 C++中调用的实用函数
-* `UKismetGuidLibrary` - `guid` 可从 Blueprint 和 C++中调用的实用函数
-* `UKismetArrayLibrary` - `array` 可从 Blueprint 和 C++中调用的实用函数
+*   `UGameplayStatics` - 可在 Blueprint 和 C++中调用的 `gameplay` 实用函数
+*   `UKismetMathLibrary` - `math` 可从 Blueprint 和 C++中调用的实用函数
+*   `UKismetStringLibrary` - `string` 可从 Blueprint 和 C++中调用的实用函数
+*   `UKismetTextLibrary` - `text` 可从 Blueprint 和 C++中调用的实用函数
+*   `UKismetSystemLibrary` - `system` 可从 Blueprint 和 C++中调用的实用函数
+*   `UKismetMaterialLibrary` - `material` 可从 Blueprint 和 C++中调用的实用函数
+*   `UKismetInputLibrary` - `input` 可从 Blueprint 和 C++中调用的实用函数
+*   `UKismetGuidLibrary` - `guid` 可从 Blueprint 和 C++中调用的实用函数
+*   `UKismetArrayLibrary` - `array` 可从 Blueprint 和 C++中调用的实用函数
 
 ### 杂项库
 
-* `FMath` - 数学辅助函数（更多数学函数请查看 `GenericPlatformMath.h` ）。
-* `DrawDebugHelpers.h` - 头文件包含调试绘制函数。了解更多信息请点击这里。
+*   `FMath` - 数学辅助函数（更多数学函数请查看 `GenericPlatformMath.h` ）。
+*   `DrawDebugHelpers.h` - 头文件包含调试绘制函数。了解更多信息请点击这里。
 
 ## 📃 宏定义
 
@@ -5518,63 +5214,64 @@ bool UAnalyticsBlueprintLibrary::StartSession()
 
 以下是 Unreal Engine 中常见的宏列表：
 
-* `GENERATED_BODY()` - 引擎所需的模板代码。
+*   `GENERATED_BODY()` - 引擎所需的模板代码。
 
-* `TEXT()` - 用于指定宽字符（UTF-16）编码。这使得字符串字面量成为平台无关的。没有这个宏，你将使用 ANSI 编码（这可能导致在其他机器上出现问题）。
+*   `TEXT()` - 用于指定宽字符（UTF-16）编码。这使得字符串字面量成为平台无关的。没有这个宏，你将使用 ANSI 编码（这可能导致在其他机器上出现问题）。
 
-* `TEXTVIEW()` - 在编译时计算字符串字面量的长度。
+*   `TEXTVIEW()` - 在编译时计算字符串字面量的长度。
 
-* `INVTEXT()` - 标记用于本地化的文本字符串。它代表"不变文本"，用于指定在本地化过程中应保持不变的文本。
+*   `INVTEXT()` - 标记用于本地化的文本字符串。它代表"不变文本"，用于指定在本地化过程中应保持不变的文本。
 
-* `LOCTEXT()` - 创建本地化文本。它代表"本地化文本"，允许你定义可本地化不同语言的文本字面量。
+*   `LOCTEXT()` - 创建本地化文本。它代表"本地化文本"，允许你定义可本地化不同语言的文本字面量。
 
-* `IN` 和 `OUT` - 函数参数装饰器。它们提供关于意图和数据流向的提示。 `IN` 表示该参数是输入参数，意味着它向函数提供数据。 `OUT` 表示该参数是输出参数，意味着函数将通过该参数修改或提供数据。
+*   `IN` 和 `OUT` - 函数参数装饰器。它们提供关于意图和数据流向的提示。 `IN` 表示该参数是输入参数，意味着它向函数提供数据。 `OUT` 表示该参数是输出参数，意味着函数将通过该参数修改或提供数据。
 
-* `LINE_TERMINATOR` - 在虚幻引擎中表示行终止符序列。它提供了一种与平台无关的方式，用于在文本文件或字符串中指定换行符。
+*   `LINE_TERMINATOR` - 在虚幻引擎中表示行终止符序列。它提供了一种与平台无关的方式，用于在文本文件或字符串中指定换行符。
 
-* `CONSTEXPR` - 声明常量表达式。它用于与 `constexpr` 关键字 [8](#user-content-fn-1) 结合使用，以指定函数或变量可以在编译时进行评估，并被视为常量表达式。
+*   `CONSTEXPR` - 声明常量表达式。它用于与 `constexpr` 关键字 [8](#user-content-fn-1) 结合使用，以指定函数或变量可以在编译时进行评估，并被视为常量表达式。
 
-* `ABSTRACT` - 声明一个抽象类。它表示一个类不能直接实例化，必须被子类继承。抽象类作为其他类的基础类，为它们提供共同功能的蓝图。
+*   `ABSTRACT` - 声明一个抽象类。它表示一个类不能直接实例化，必须被子类继承。抽象类作为其他类的基础类，为它们提供共同功能的蓝图。
 
-* `UPROPERTY()` - 定义属性的类型和行为，以及其元数据和显示名称。
+*   `UPROPERTY()` - 定义属性的类型和行为，以及其元数据和显示名称。
 
-* `UFUNCTION()` - 定义函数的参数和返回类型，以及其行为和元数据。
+*   `UFUNCTION()` - 定义函数的参数和返回类型，以及其行为和元数据。
 
-* `UCLASS()` - 定义类的属性和行为，包括其继承层次结构、默认属性和编辑器元数据。
+*   `UCLASS()` - 定义类的属性和行为，包括其继承层次结构、默认属性和编辑器元数据。
 
-* `USTRUCT()` - 定义结构体的属性和行为，包括其字段、默认值和编辑器元数据。
+*   `USTRUCT()` - 定义结构体的属性和行为，包括其字段、默认值和编辑器元数据。
 
-* `UINTERFACE()` - 定义枚举的值，以及其元数据和显示名称。
+*   `UINTERFACE()` - 定义枚举的值，以及其元数据和显示名称。
 
-* `UPARAM()` - 为虚幻引擎中的函数参数指定附加元数据。此元数据可用于多种目的，例如指定编辑器中参数的类别或提示信息。
+*   `UPARAM()` - 为虚幻引擎中的函数参数指定附加元数据。此元数据可用于多种目的，例如指定编辑器中参数的类别或提示信息。
 
-* `UENUM()` - 定义一个可在虚幻引擎类中使用的枚举。这允许开发人员以类型安全的方式定义一组命名的常量。
+*   `UENUM()` - 定义一个可在虚幻引擎类中使用的枚举。这允许开发人员以类型安全的方式定义一组命名的常量。
 
-* `UMETA()` - 指定在虚幻引擎中对枚举值添加额外元数据。这些元数据可用于多种目的，例如指定编辑器中该值的显示名称或提示信息。
+*   `UMETA()` - 指定在虚幻引擎中对枚举值添加额外元数据。这些元数据可用于多种目的，例如指定编辑器中该值的显示名称或提示信息。
 
-* `INLINE` - 向编译器建议将函数内联，但编译器不必须遵循该建议。（替代 `inline` 关键字 [8](#user-content-fn-1) ）
+*   `INLINE` - 向编译器建议将函数内联，但编译器不必须遵循该建议。（替代 `inline` 关键字 [8](#user-content-fn-1) ）
 
-* `FORCEINLINE` - 更强的建议，要求编译器尽可能内联该函数，如果函数不能内联，甚至可能产生错误。（替代 `force_inline` 关键字 [8](#user-content-fn-1) ）'
+*   `FORCEINLINE` - 更强的建议，要求编译器尽可能内联该函数，如果函数不能内联，甚至可能产生错误。（替代 `force_inline` 关键字 [8](#user-content-fn-1) ）'
 
-* `UE_LOG` - 将日志消息输出到日志文件。它接受的第一输入参数是日志分类的名称。
+*   `UE_LOG` - 将日志消息输出到日志文件。它接受的第一输入参数是日志分类的名称。
 
-* `check` 和 `checkf` （不允许在构建中使用）- 如果 `Expression` 为 false，则停止执行。 `checkf` 将 `FormattedText` 输出到日志。
+*   `check` 和 `checkf` （不允许在构建中使用）- 如果 `Expression` 为 false，则停止执行。 `checkf` 将 `FormattedText` 输出到日志。
 
-* `verify` 和 `verifyf` （允许在构建中使用）- 如果 `Expression` 为 false，则停止执行。 `verifyf` 将 `FormattedText` 输出到日志。
+*   `verify` 和 `verifyf` （允许在构建中使用）- 如果 `Expression` 为 false，则停止执行。 `verifyf` 将 `FormattedText` 输出到日志。
 
-* `ensure` 和 `ensureMsgf` （允许在构建中使用）- 当 `Expression` 第一次为 false 时，通知崩溃报告器。 `ensureMsgf` 将 `FormattedText` 输出到日志。
+*   `ensure` 和 `ensureMsgf` （允许在构建中使用）- 当 `Expression` 第一次为 false 时，通知崩溃报告器。 `ensureMsgf` 将 `FormattedText` 输出到日志。
 
-* `ensureAlways` 和 `ensureAlwaysMsgf` （允许在构建中使用）- 如果表达式为 false，则通知崩溃报告器。 `ensureAlwaysMsgf` 将 `FormattedText` 输出到日志。
+*   `ensureAlways` 和 `ensureAlwaysMsgf` （允许在构建中使用）- 如果表达式为 false，则通知崩溃报告器。 `ensureAlwaysMsgf` 将 `FormattedText` 输出到日志。
 
-* `unimplemented` - 如果行被触发，则停止执行，类似于 `check(false)` ，但用于应该被覆盖而不是调用的虚拟函数。
+*   `unimplemented` - 如果行被触发，则停止执行，类似于 `check(false)` ，但用于应该被覆盖而不是调用的虚拟函数。
 
-* `checkCode` - 在 do-while 循环结构中执行 `Code` ，该结构运行一次；主要用于作为另一种检查所需信息的方式。
+*   `checkCode` - 在 do-while 循环结构中执行 `Code` ，该结构运行一次；主要用于作为另一种检查所需信息的方式。
 
-* `checkNoEntry` - 如果行被触发，则停止执行，类似于 `check(false)` ，但用于应该无法访问的代码路径。
+*   `checkNoEntry` - 如果行被触发，则停止执行，类似于 `check(false)` ，但用于应该无法访问的代码路径。
 
-* `checkNoReentry` - 如果行被触发超过一次，则停止执行。
+*   `checkNoReentry` - 如果行被触发超过一次，则停止执行。
 
-* `checkNoRecursion` - 如果一行代码在未离开作用域的情况下被多次命中，则停止执行。
+*   `checkNoRecursion` - 如果一行代码在未离开作用域的情况下被多次命中，则停止执行。
+
 
 内联函数是什么？
 
@@ -5598,9 +5295,9 @@ bool UAnalyticsBlueprintLibrary::StartSession()
 
 在虚幻引擎中使用 C++向控制台记录日志，您可以使用 `UE_LOG()` 宏。这个宏接受一些参数。
 
-1. 日志类别
-2. 日志详细程度
-3. 实际要记录到控制台的内容
+1.  日志类别
+2.  日志详细程度
+3.  实际要记录到控制台的内容
 
 <table><tbody><tr><td>预定义的日志类别 LogPath LogController LogPhysics LogBlueprint LogBlueprintUserMessages LogAnimation LogRootMotion LogLevel LogSkeletalMesh LogStaticMesh LogNet LogRep LogNetPlayerMovement LogNetTraffic LogRepTraffic LogNetFastTArray LogNetDormancy LogSkeletalControl LogSubtitle LogTexture LogPlayerManagement LogSecurity LogEngineSessionManager LogHAL LogSerialization LogUnrealMath LogUnrealMatrix LogContentComparisonCommandlet LogNetPackageMap LogNetSerialization LogMemory LogProfilingDebugging LogCore LogOutputDevice LogSHA LogStats LogStreaming LogInit LogExit LogExec LogScript LogLocalization LogLongPackageNames LogProcess LogLoad LogTemp</td></tr></tbody></table>
 
@@ -5648,9 +5345,7 @@ DEFINE_LOG_CATEGORY(MyLogCategory);
 
 这是关于详细程度设置的示例：
 
-
 ```ini
-
 [Core.Log]
 Global=<Category>=<DesiredVerbosityLevel>
 ```
@@ -5673,13 +5368,7 @@ UE_LOG(LogTemp, Warning, TEXT("Hello"));
 UE_LOG(LogTemp, Warning, TEXT("The Actor's name is: %s"), *YourActor->GetName());
 ```
 
-<ObsidianCallout type="TIP">
-  <ObsidianCalloutTitle>
-    您可以使用 `__func__` 、 `__FUNCTION__` 或 `__PRETTY_FUNCTION__` 获取函数名称，并在日志中打印出来。但是，要添加这个字符串，您必须将其转换为 TCHAR 指针。通过使用 `ANSI_TO_TCHAR()` 宏。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!TIP\] 您可以使用 `__func__` 、 `__FUNCTION__` 或 `__PRETTY_FUNCTION__` 获取函数名称，并在日志中打印出来。但是，要添加这个字符串，您必须将其转换为 TCHAR 指针。通过使用 `ANSI_TO_TCHAR()` 宏。
 
 不幸的是， `UE_LOG` 不支持 `bool` 数据类型。
 
@@ -5796,13 +5485,7 @@ UE_LOGFMT(LogCore, Warning, "Loading '{0}' failed with error {1}", Package->GetN
 UE_LOGFMT(LogCore, Warning, "Loading '{Name}' failed with error {Error}", ("Error", ErrorCode), ("Name", Package->GetName()), ("Flags", LoadFlags));
 ```
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    FText 不支持 `UE_LOGFMT()` ，要使用 `FText` ，需要通过调用 `ToString()` 函数将其转换为 `FString` 。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] FText 不支持 `UE_LOGFMT()` ，要使用 `FText` ，需要通过调用 `ToString()` 函数将其转换为 `FString` 。
 
 ### 记录到游戏视图
 
@@ -5843,7 +5526,7 @@ GEngine->AddOnScreenDebugMessage(-1, 5.0f, FColor::Red, FString::Printf(TEXT("So
 
 <table><tbody><tr><td>本节由 ChatGPT 共同编写。</td></tr></tbody></table>
 
-![Assertions](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/Assertions.png)
+![Assertions](/static-img/Assertions.png)
 
 断言是一种编程技术，用于检测和报告代码中的错误或意外行为。在 Unreal Engine 中，提供了断言宏，以便更容易地将断言添加到代码中，并在断言失败时自定义引擎的行为。
 
@@ -5926,7 +5609,6 @@ void MyFunction() {
 }
 ```
 
-
 ### 杂项断言
 
 还有一个 `unimplemented` 断言宏。适用于编写需要代码的函数，但目前尚未实现。
@@ -5951,9 +5633,9 @@ checkCode(
 
 最后，我们有 `checkNoEntry` 、 `checkNoReentry` 和 `checkNoRecursion` 断言宏。
 
-* `checkNoEntry` 表示代码永远不会被执行。
-* `checkNoReentry` 表示代码不应被执行多次。
-* `checkNoRecursion` 表示代码永远不应该递归调用。
+*   `checkNoEntry` 表示代码永远不会被执行。
+*   `checkNoReentry` 表示代码不应被执行多次。
+*   `checkNoRecursion` 表示代码永远不应该递归调用。
 
 ```cpp
 void KillPlayer()
@@ -5984,33 +5666,33 @@ void CleanupCharacters(int32 Count)
 }
 ```
 
-***
+* * *
 
 您可以从文档中了解更多关于断言的信息。
 
 您也可以从 Sneaky Kitty Game Dev 观看关于它的视频。
 
-***
+* * *
 
 | 断言 | 描述 | 用例 |
 | --- | --- | --- |
-| check | 一个用于在虚幻引擎中运行时检查的宏，仅在调试版本中启用。 | - 验证代码中的前提条件或假设。- 确保在开发和调试过程中满足关键条件。 |
-|  | 如果 check 宏中指定的条件评估为假，则会触发断言失败，在 Debug 模式下停止程序执行，允许开发人员识别和修复问题。 | - 在开发过程中检测潜在的 bug 或逻辑错误。- 识别在测试或调试过程中不应出现的意外情况。 |
+| check | 一个用于在虚幻引擎中运行时检查的宏，仅在调试版本中启用。 | \- 验证代码中的前提条件或假设。- 确保在开发和调试过程中满足关键条件。 |
+|  | 如果 check 宏中指定的条件评估为假，则会触发断言失败，在 Debug 模式下停止程序执行，允许开发人员识别和修复问题。 | \- 在开发过程中检测潜在的 bug 或逻辑错误。- 识别在测试或调试过程中不应出现的意外情况。 |
 |  | 在非 Debug 构建中， check 宏会被编译出去，因此它对游戏发布版本的性能没有影响。 |  |
 |  |  |  |
-| verify | 一个类似于 check 的宏，用于虚幻引擎中的运行时检查，但它同时在 Debug 和 Release 构建中启用。 | - 与 check 类似的使用场景，但目的是在 Debug 和 Release 构建中检测问题。- 用于生产环境中的关键运行时检查。 |
+| verify | 一个类似于 check 的宏，用于虚幻引擎中的运行时检查，但它同时在 Debug 和 Release 构建中启用。 | \- 与 check 类似的使用场景，但目的是在 Debug 和 Release 构建中检测问题。- 用于生产环境中的关键运行时检查。 |
 |  | 如果 verify 宏中指定的条件评估为假，它会在 Debug 和 Release 构建中触发断言失败，停止程序的执行。 |  |
 |  | 这有助于在游戏或应用程序的最终发布版本中识别和修复关键问题。 |  |
 |  |  |  |
-| ensure | 专为虚幻引擎设计的宏，用于运行时检查，重点在于提高发布游戏中代码的健壮性。 | - 验证并强制执行代码中的假设、前提条件和不变量，以避免在生产环境中出现崩溃和意外行为。 |
-|  | ensure 宏在 Debug 和 Release 构建中都保持激活状态，其行为可以在 Unreal Editor 项目设置中配置。 | - 在发布构建中， ensure 可以设置为记录消息或执行安全失败操作，而不是停止程序的执行。 |
+| ensure | 专为虚幻引擎设计的宏，用于运行时检查，重点在于提高发布游戏中代码的健壮性。 | \- 验证并强制执行代码中的假设、前提条件和不变量，以避免在生产环境中出现崩溃和意外行为。 |
+|  | ensure 宏在 Debug 和 Release 构建中都保持激活状态，其行为可以在 Unreal Editor 项目设置中配置。 | \- 在发布构建中， ensure 可以设置为记录消息或执行安全失败操作，而不是停止程序的执行。 |
 |  | 如果 ensure 宏中指定的条件评估为 false，它可能会触发断言或根据项目设置执行替代操作。 |  |
 
-## 🔔 委托
+## 🔔 代表者
 
 <table><tbody><tr><td>本节并非与 ChatGPT 一同编写。</td></tr></tbody></table>
 
-![Delegates](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/Delegates.png)
+![Delegates](/static-img/Delegates.png)
 
 代表者本质上是一种类型安全的函数指针，可以用来将一个或多个函数绑定到事件上，然后在事件发生时触发这些函数。
 
@@ -6065,9 +5747,9 @@ FMyDelegate MyEvent;
 
 这些都是宏，将帮助你编写更小的代码。在幕后，它将自动生成函数名称字符串。该宏接受一个指向拥有该函数的对象的引用、函数的名称以及一个可选的用户数据参数。
 
-* `BindDynamic(UserObject, FuncName, ...)`
-* `AddDynamic(UserObject, FuncName)`
-* `RemoveDynamic(UserObject, FuncName)`
+*   `BindDynamic(UserObject, FuncName, ...)`
+*   `AddDynamic(UserObject, FuncName)`
+*   `RemoveDynamic(UserObject, FuncName)`
 
 ```cpp
 MyEvent.BindDynamic(this, &AMyActor::MyFunction);
@@ -6089,45 +5771,47 @@ MyEvent.BindDynamic(this, &AMyActor::MyFunction, 100, true, TEXT("Hello, World!"
 
 以下是用于非动态单委托的绑定函数列表：
 
-* `Bind()` - 绑定到一个现有的委托对象。这允许你将一个委托绑定到现有的委托，从而以一种更灵活的方式将委托绑定在一起。
+*   `Bind()` - 绑定到一个现有的委托对象。这允许你将一个委托绑定到现有的委托，从而以一种更灵活的方式将委托绑定在一起。
 
-* `BindLambda()` - 绑定一个函数对象。这通常用于 lambda 函数。函数对象按值存储，因此确保它足够小且易于复制。
+*   `BindLambda()` - 绑定一个函数对象。这通常用于 lambda 函数。函数对象按值存储，因此确保它足够小且易于复制。
 
-* `BindRaw()` - 绑定一个原始 C++指针委托。由于原始指针不使用任何形式的引用，在删除目标对象后调用 `Execute()` 或 `ExecuteIfBound()` 是不安全的。
+*   `BindRaw()` - 绑定一个原始 C++指针委托。由于原始指针不使用任何形式的引用，在删除目标对象后调用 `Execute()` 或 `ExecuteIfBound()` 是不安全的。
 
-* `BindStatic()` - 绑定一个原始 C++指针全局函数委托。这适用于绑定到任何类都不是成员的全局函数。
+*   `BindStatic()` - 绑定一个原始 C++指针全局函数委托。这适用于绑定到任何类都不是成员的全局函数。
 
-* `BindSP()` - 绑定一个基于共享指针的成员函数委托。共享指针委托对你的对象保持一个弱引用。你可以使用 `ExecuteIfBound()` 来调用它们。
+*   `BindSP()` - 绑定一个基于共享指针的成员函数委托。共享指针委托对你的对象保持一个弱引用。你可以使用 `ExecuteIfBound()` 来调用它们。
 
-* `BindUFunction()` - 绑定一个 `UFunction` 代理。这允许你绑定到蓝图函数或 `UObject` 子类中的函数。当代理被执行时，它将调用绑定时对象上的函数。如果对象被垃圾回收，代理将不会被执行。如果函数仍然有效，你可以使用 `ExecuteIfBound()` 来调用它。
+*   `BindUFunction()` - 绑定一个 `UFunction` 代理。这允许你绑定到蓝图函数或 `UObject` 子类中的函数。当代理被执行时，它将调用绑定时对象上的函数。如果对象被垃圾回收，代理将不会被执行。如果函数仍然有效，你可以使用 `ExecuteIfBound()` 来调用它。
 
-* `BindUObject()` - 绑定一个 `UObject` 成员函数代理。 `UObject` 代理保持对目标 `UObject` 的弱引用。你可以使用 `ExecuteIfBound()` 来调用它们。
+*   `BindUObject()` - 绑定一个 `UObject` 成员函数代理。 `UObject` 代理保持对目标 `UObject` 的弱引用。你可以使用 `ExecuteIfBound()` 来调用它们。
 
-* `BindWeakLambda()` - 绑定一个保持对绑定对象弱引用的函数对象。这允许你将代理绑定到一个可能被垃圾回收的对象。当代理被执行时，它将检查对象是否仍然有效。如果是，它将调用函数对象。如果不是，代理将不会被执行。
+*   `BindWeakLambda()` - 绑定一个保持对绑定对象弱引用的函数对象。这允许你将代理绑定到一个可能被垃圾回收的对象。当代理被执行时，它将检查对象是否仍然有效。如果是，它将调用函数对象。如果不是，代理将不会被执行。
 
-* `BindThreadSafeSP()` - 绑定一个基于共享指针的成员函数代理，该代理在任何线程中调用都是安全的。这与 `BindSP()` 类似，但它使用线程安全的引用计数方案。
+*   `BindThreadSafeSP()` - 绑定一个基于共享指针的成员函数代理，该代理在任何线程中调用都是安全的。这与 `BindSP()` 类似，但它使用线程安全的引用计数方案。
 
-* `UnBind()` - 解绑此代理。这将清除代理，因此当被触发时不会执行。
+*   `UnBind()` - 解绑此代理。这将清除代理，因此当被触发时不会执行。
+
 
 以下是静态多播代理的绑定函数列表：
 
-* `Add()` - 将一个函数代理添加到此多播代理的调用列表中。当调用 `Broadcast()` 函数时，代理将被执行。
+*   `Add()` - 将一个函数代理添加到此多播代理的调用列表中。当调用 `Broadcast()` 函数时，代理将被执行。
 
-* `AddLambda()` - 将一个函数对象（如 lambda、std::function 或函数对象类）作为代理添加。当调用 `Broadcast()` 函数时，代理将被执行。
+*   `AddLambda()` - 将一个函数对象（如 lambda、std::function 或函数对象类）作为代理添加。当调用 `Broadcast()` 函数时，代理将被执行。
 
-* `AddRaw()` - 添加一个原始 C++指针代理。当调用 `Broadcast()` 函数时，代理将被执行。代理将使用指定的参数被调用。
+*   `AddRaw()` - 添加一个原始 C++指针代理。当调用 `Broadcast()` 函数时，代理将被执行。代理将使用指定的参数被调用。
 
-* `AddStatic()` - 添加一个原始 C++指针全局函数代理。当调用 `Broadcast()` 函数时，代理将被执行。代理将使用指定的参数被调用。
+*   `AddStatic()` - 添加一个原始 C++指针全局函数代理。当调用 `Broadcast()` 函数时，代理将被执行。代理将使用指定的参数被调用。
 
-* `AddSP()` - 添加一个基于共享指针（快速，非线程安全）的成员函数代理。共享指针代理会保持对您对象的弱引用。当调用 `Broadcast()` 函数时，代理将被执行。代理将使用指定的参数被调用。
+*   `AddSP()` - 添加一个基于共享指针（快速，非线程安全）的成员函数代理。共享指针代理会保持对您对象的弱引用。当调用 `Broadcast()` 函数时，代理将被执行。代理将使用指定的参数被调用。
 
-* `AddUObject()` - 添加一个基于 UObject 的成员函数代理。UObject 代理会保持对您对象的弱引用。当调用 `Broadcast()` 函数时，代理将被执行。代理将使用指定的参数被调用。
+*   `AddUObject()` - 添加一个基于 UObject 的成员函数代理。UObject 代理会保持对您对象的弱引用。当调用 `Broadcast()` 函数时，代理将被执行。代理将使用指定的参数被调用。
 
-* `AddUFunction()` - 添加一个 UFunction 委托。当调用 `Broadcast()` 函数时，该委托将被执行。委托将使用指定的参数被调用。
+*   `AddUFunction()` - 添加一个 UFunction 委托。当调用 `Broadcast()` 函数时，该委托将被执行。委托将使用指定的参数被调用。
 
-* `AddWeakLambda()` - 添加一个保持对绑定对象弱引用的 functor。这允许你将委托绑定到一个可能被垃圾回收的对象。当委托被执行时，它会检查对象是否仍然有效。如果是，它将调用 functor。如果不是，委托将不会被执行。当调用 `Broadcast()` 函数时，委托将被执行。委托将使用指定的参数被调用。
+*   `AddWeakLambda()` - 添加一个保持对绑定对象弱引用的 functor。这允许你将委托绑定到一个可能被垃圾回收的对象。当委托被执行时，它会检查对象是否仍然有效。如果是，它将调用 functor。如果不是，委托将不会被执行。当调用 `Broadcast()` 函数时，委托将被执行。委托将使用指定的参数被调用。
 
-* `AddThreadSafeSP()` - 添加一个基于共享指针的成员函数委托，该委托可以从任何线程安全地调用。这与 `AddSP()` 类似，但它使用线程安全的引用计数方案。当调用 `Broadcast()` 函数时，委托将被执行。委托将使用指定的参数被调用。
+*   `AddThreadSafeSP()` - 添加一个基于共享指针的成员函数委托，该委托可以从任何线程安全地调用。这与 `AddSP()` 类似，但它使用线程安全的引用计数方案。当调用 `Broadcast()` 函数时，委托将被执行。委托将使用指定的参数被调用。
+
 
 ### 触发委托
 
@@ -6156,29 +5840,11 @@ bool bIsBound = MyEvent.IsBound();
 
 委托可用于响应用户输入、游戏状态变化或其他类型的事件来触发事件，并可用于实现各种游戏功能和机制。
 
-<ObsidianCallout type="TIP">
-  <ObsidianCalloutTitle>
-    这里是 BenUI 提供的在线工具，用于帮助您创建委托宏。
-  </ObsidianCalloutTitle>
+> \[!TIP\] 这里是 BenUI 提供的在线工具，用于帮助您创建委托宏。
 
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!TIP\] 尽量在不需要计时的情况下使用委托。这有助于节省计时性能。
 
-<ObsidianCallout type="TIP">
-  <ObsidianCalloutTitle>
-    尽量在不需要计时的情况下使用委托。这有助于节省计时性能。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
-
-<ObsidianCallout type="CAUTION">
-  <ObsidianCalloutTitle>
-    如果您使用原始绑定绑定委托，并且在之后没有解除绑定，当 `UObject` 被销毁时。这将导致内存泄漏。因为，即使 `UObject` 不再活跃，绑定仍然存在。因此，建议直接绑定 `UObject` 或 `UFunction` 。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!CAUTION\] 如果您使用原始绑定绑定委托，并且在之后没有解除绑定，当 `UObject` 被销毁时。这将导致内存泄漏。因为，即使 `UObject` 不再活跃，绑定仍然存在。因此，建议直接绑定 `UObject` 或 `UFunction` 。
 
 | 类型 | 绑定 C++函数 | 绑定 UFUNCTION |
 | --- | --- | --- |
@@ -6269,13 +5935,7 @@ UBUITween::Create( SomeWidget, 0.2f )
 
 例如，你可以创建一个名为 `Vehicle` 的模块来包含所有与车辆系统相关的代码。这将使你能够将车辆代码与其他游戏部分（如库存系统）隔离开来，并使维护和更新变得更加容易。
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    Unreal Engine 模块与 C++ 20 模块无关。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] Unreal Engine 模块与 C++ 20 模块无关。
 
 您可以在此处了解更多关于 Unreal Engine 模块的信息！
 
@@ -6289,7 +5949,7 @@ UBUITween::Create( SomeWidget, 0.2f )
 
 所有模块都应该放在插件或项目的源目录中。模块的根文件夹应该与相应的模块同名。
 
-每个模块的根文件夹中还应有一个\[模块名].Build.cs 文件，其 C++代码应包含在 Private 和 Public 文件夹中。
+每个模块的根文件夹中还应有一个\[模块名\].Build.cs 文件，其 C++代码应包含在 Private 和 Public 文件夹中。
 
 ![image](https://user-images.githubusercontent.com/61658252/236797649-1acb5aac-ab05-4676-86a4-959e443de404.png)
 
@@ -6400,7 +6060,7 @@ public:
 
 要解决循环依赖问题，可以采取几种方法：
 
-* 一种方法是在\[ModuleName].Build.cs 文件中使用 `CircularlyReferencedDependentModules` 语句。你可以在这里了解更多信息！
+*   一种方法是在\[ModuleName\].Build.cs 文件中使用 `CircularlyReferencedDependentModules` 语句。你可以在这里了解更多信息！
 
 这里有一个示例：
 
@@ -6421,9 +6081,10 @@ public class ModuleB : ModuleRules
 }
 ```
 
-* 另一种选择是创建另一个模块，将代码进一步拆分成更小的部分。
+*   另一种选择是创建另一个模块，将代码进一步拆分成更小的部分。
 
-* 最后，你也可以重构你的模块，完全避免循环依赖。
+*   最后，你也可以重构你的模块，完全避免循环依赖。
+
 
 *最佳解决方案将取决于你的具体情况和代码的复杂性。*
 
@@ -6688,7 +6349,7 @@ FColor Color = FColor(52, 220, 239);
 DrawDebugPoint(GetWorld(), Location, Size, Color, bPersistentLines);
 ```
 
-![Draw Debug Point](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/debugging/draw_point.png)
+![Draw Debug Point](/static-img/debugging/draw_point.png)
 
 结果
 
@@ -6708,7 +6369,7 @@ FColor Color = FColor(255, 0, 0);
 DrawDebugSphere(GetWorld(), Center, Radius, Segments, Color, bPersistentLines, LifeTime, DepthPriority, Thickness);
 ```
 
-![Draw Debug Sphere](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/debugging/draw_sphere.png)
+![Draw Debug Sphere](/static-img/debugging/draw_sphere.png)
 
 结果
 
@@ -6731,7 +6392,7 @@ FVector Center = FVector(-300, 0, 600);
 DrawDebugCircle(GetWorld(), Center, Radius, Segments, FColor(0, 0, 0), bPersistentLines, LifeTime, DepthPriority, Thickness);
 ```
 
-![Draw Circle](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/debugging/draw_circle.png)
+![Draw Circle](/static-img/debugging/draw_circle.png)
 
 结果
 
@@ -6754,7 +6415,7 @@ FColor Color = FColor::Yellow;
 DrawDebugCircleArc(GetWorld(), Center, Radius, Direction, AngleWidth, Segments, Color, bPersistentLines, LifeTime, DepthPriority, Thickness);
 ```
 
-![Draw Cricle Arc](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/debugging/draw_circle_arc.png)
+![Draw Cricle Arc](/static-img/debugging/draw_circle_arc.png)
 
 结果
 
@@ -6778,7 +6439,7 @@ FColor Color = FColor::Cyan;
 DrawDebug2DDonut(GetWorld(), TransformMatrix, InnerRadius, OuterRadius, Segments, Color, bPersistentLines, LifeTime, DepthPriority, Thickness);
 ```
 
-![Draw Debug 2D Donut](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/debugging/draw_2d_donut.png)
+![Draw Debug 2D Donut](/static-img/debugging/draw_2d_donut.png)
 
 结果
 
@@ -6796,7 +6457,7 @@ FTransform MyTransform = FTransform(FQuat::Identity, FVector(-400, -600, 600));
 DrawDebugSolidBox(GetWorld(), MyBox, FColor(200, 100, 50), MyTransform, bPersistentLines);
 ```
 
-![Draw Debug Soild Box](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/debugging/draw_solid_box.png)
+![Draw Debug Soild Box](/static-img/debugging/draw_solid_box.png)
 
 结果
 
@@ -6816,7 +6477,7 @@ FColor Color = FColor::Red;
 DrawDebugBox(GetWorld(), Center, Extent, Color, bPersistentLines, LifeTime, DepthPriority, Thickness);
 ```
 
-![Draw Debug Wired Box](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/debugging/draw_wired_box.png)
+![Draw Debug Wired Box](/static-img/debugging/draw_wired_box.png)
 
 结果
 
@@ -6837,7 +6498,7 @@ FColor Color = FColor(255, 0, 0);
 DrawDebugCylinder(GetWorld(), Start, End, Radius, Segments, Color, bPersistentLines, LifeTime, DepthPriority, Thickness);
 ```
 
-![Draw Debug Cylinder](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/debugging/draw_cylinder.png)
+![Draw Debug Cylinder](/static-img/debugging/draw_cylinder.png)
 
 结果
 
@@ -6858,7 +6519,7 @@ FColor Color = FColor(255, 0, 0);
 DrawDebugCapsule(GetWorld(), Center, HalfHeight, Radius, Rotation, Color, bPersistentLines, LifeTime, DepthPriority, Thickness);
 ```
 
-![Draw Debug Capsule](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/debugging/draw_capsule.png)
+![Draw Debug Capsule](/static-img/debugging/draw_capsule.png)
 
 结果
 
@@ -6894,7 +6555,7 @@ DrawDebugCone(
 );
 ```
 
-![Draw Debug Cone](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/debugging/draw_cone.png)
+![Draw Debug Cone](/static-img/debugging/draw_cone.png)
 
 结果
 
@@ -6918,7 +6579,7 @@ FVector2D Extents = FVector2D::One();
 DrawDebugSolidPlane(GetWorld(), Plane, Location, Extents, Color, bPersistentLines, LifeTime, DepthPriority);
 ```
 
-![Draw Debug Plane](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/debugging/draw_plane.png)
+![Draw Debug Plane](/static-img/debugging/draw_plane.png)
 
 结果
 
@@ -6937,7 +6598,7 @@ FColor Color = FColor::Emerald;
 DrawDebugLine(GetWorld(), LocationFrom, LocationTo, Color, bPersistentLines, LifeTime, DepthPriority, Thickness);
 ```
 
-![Draw Debug Line](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/debugging/draw_line.png)
+![Draw Debug Line](/static-img/debugging/draw_line.png)
 
 结果
 
@@ -6957,7 +6618,7 @@ FColor Color = FColor::Magenta;
 DrawDebugDirectionalArrow(GetWorld(), LocationFrom, LocationTo, ArrowSize, Color, bPersistentLines, LifeTime, DepthPriority, Thickness);
 ```
 
-![Draw Debug Arrow](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/debugging/draw_arrow.png)
+![Draw Debug Arrow](/static-img/debugging/draw_arrow.png)
 
 结果
 
@@ -6976,7 +6637,7 @@ FColor Color = FColor::White;
 DrawDebugCrosshairs(GetWorld(), AxisLocation, AxisRotation, Scale, Color, bPersistentLines, LifeTime, DepthPriority);
 ```
 
-![Draw Debug Crosshair](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/debugging/draw_crosshair.png)
+![Draw Debug Crosshair](/static-img/debugging/draw_crosshair.png)
 
 结果
 
@@ -6996,11 +6657,11 @@ FColor Color = FColor::White;
 DrawDebugCamera(GetWorld(), Location, Rotation, FOVDeg, Scale, Color, bPersistentLines, LifeTime, DepthPriority);
 ```
 
-![Draw Debug Camera](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/debugging/draw_camera.png)
+![Draw Debug Camera](/static-img/debugging/draw_camera.png)
 
 结果
 
-### 画一个网格体
+### 画一个网格
 
 ```cpp
 FVector Offset = FVector(-300, 600, 600); // Example offset values
@@ -7035,7 +6696,7 @@ FColor Color = FColor(255, 0, 0);
 DrawDebugMesh(GetWorld(), Verts, Indices, Color, bPersistentLines, LifeTime, DepthPriority);
 ```
 
-![Draw Debug Mesh](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/debugging/draw_mesh.png)
+![Draw Debug Mesh](/static-img/debugging/draw_mesh.png)
 
 结果
 
@@ -7053,7 +6714,7 @@ float FontScale = 5.0f;
 DrawDebugString(GetWorld(), TextLocation, Str, TestBaseActor, TextColor, Duration, bDrawShadow, FontScale);
 ```
 
-![Draw Debug String](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/debugging/draw_string.png)
+![Draw Debug String](/static-img/debugging/draw_string.png)
 
 结果
 
@@ -7083,11 +6744,11 @@ TConstArrayView<FColor> Colors;
 DrawCentripetalCatmullRomSpline(GetWorld(), Points, Colors, Alpha, NumSamplesPerSegment, bPersistentLines, LifeTime, DepthPriority, Thickness);
 ```
 
-![Draw Debug Centripetal catmull-rom spline](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/debugging/draw_centripetal_catmull_rom_spline.png)
+![Draw Debug Centripetal catmull-rom spline](/static-img/debugging/draw_centripetal_catmull_rom_spline.png)
 
 结果
 
-***
+* * *
 
 你可以阅读更多关于绘制形状的内容，作者是 Harrison McGuire。
 
@@ -7166,13 +6827,7 @@ exit 0
 
 计时器安排在延迟后或一段时间内执行操作。例如，你可能希望在玩家获得能量提升物品后使其无敌，然后在 10 秒后恢复易受伤害状态。或者你可能希望在玩家穿过充满有毒气体的房间时每秒造成一次伤害。这些操作可以通过使用计时器来实现。
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    如果计时器将要被调用的对象（例如 Actor）在时间结束前被销毁，计时器将自动取消。在这种情况下，计时器句柄将变得无效，函数将不会被调用。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] 如果计时器将要被调用的对象（例如 Actor）在时间结束前被销毁，计时器将自动取消。在这种情况下，计时器句柄将变得无效，函数将不会被调用。
 
 ```cpp
 // .h
@@ -7244,13 +6899,7 @@ GetWorld()->GetTimerManager().ClearTimer(TimerHandle);
 GetWorld()->GetTimerManager().ClearAllTimersForObject(this);
 ```
 
-<ObsidianCallout type="TIP">
-  <ObsidianCalloutTitle>
-    使用小于或等于零的速率调用 `SetTimer()` 与调用 `ClearTimer()` 相同。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!TIP\] 使用小于或等于零的速率调用 `SetTimer()` 与调用 `ClearTimer()` 相同。
 
 要暂停或恢复计时器，您可以调用 `PauseTimer()` 或 `UnPauseTimer()` 函数：
 
@@ -7295,13 +6944,7 @@ GetWorldTimerManager().GetTimerElapsed(this, &AUTWeapon::RefireCheckTimer);
 
 您可以在虚幻引擎的博客上了解更多关于 Gameplay 标签的信息。
 
-<ObsidianCallout type="IMPORTANT">
-  <ObsidianCalloutTitle>
-    要在 C++中使用 Gameplay 标签，您必须在构建系统中包含该模块（ `GameplayTags` ）。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!IMPORTANT\] 要在 C++中使用 Gameplay 标签，您必须在构建系统中包含该模块（ `GameplayTags` ）。
 
 您还可以观看 LeafBranchGames 制作的视频，以了解有关 Gameplay 标签的所有信息。
 
@@ -7311,31 +6954,32 @@ GetWorldTimerManager().GetTimerElapsed(this, &AUTWeapon::RefireCheckTimer);
 
 例如，您可以创建如下的标签树：
 
-* `Weapon`
-  * `Gun`
-    * `Rifle`
-      * `AK47`
-    * `Pistol`
-      * `Glock-18`
-    * `Sniper`
-      * `AWP`
-  * `Melee`
-    * `Knife`
+*   `Weapon`
+    *   `Gun`
+        *   `Rifle`
+            *   `AK47`
+        *   `Pistol`
+            *   `Glock-18`
+        *   `Sniper`
+            *   `AWP`
+    *   `Melee`
+        *   `Knife`
 
 然后您可以使用查询语法来查找特定标签或子标签，如下所示：
 
-* `Weapon.Gun.Rifle` 将返回 `Weapon.Gun.Rifle` 的所有子标签
-* `Weapon.Gun.Pistol` 将返回 `Weapon.Gun.Pistol` 的所有子标签
-* `Weapon.Gun.Sniper` 将返回 `Weapon.Gun.Sniper` 的所有子标签
-* `Weapon.Gun` 将返回 `Weapon.Gun` 的所有子标签
-* `Weapon.Melee` 将返回 `Weapon.Melee` 的所有子标签
-* `Weapon` 将返回 `Weapon` 的所有子标签
+*   `Weapon.Gun.Rifle` 将返回 `Weapon.Gun.Rifle` 的所有子标签
+*   `Weapon.Gun.Pistol` 将返回 `Weapon.Gun.Pistol` 的所有子标签
+*   `Weapon.Gun.Sniper` 将返回 `Weapon.Gun.Sniper` 的所有子标签
+*   `Weapon.Gun` 将返回 `Weapon.Gun` 的所有子标签
+*   `Weapon.Melee` 将返回 `Weapon.Melee` 的所有子标签
+*   `Weapon` 将返回 `Weapon` 的所有子标签
 
 ## 数据类型
 
-* FGameplayTag, 是一个单一标签。它表示在 GameplayTagsManager 中注册的形如 `x.y` 的层级名称。
+*   FGameplayTag, 是一个单一标签。它表示在 GameplayTagsManager 中注册的形如 `x.y` 的层级名称。
 
-* FGameplayTagContainer，用于存储一组标签。
+*   FGameplayTagContainer，用于存储一组标签。
+
 
 ## 代码
 
@@ -7368,13 +7012,7 @@ UE_DECLARE_GAMEPLAY_TAG_EXTERN(TAG_AK47)
 UE_DEFINE_GAMEPLAY_TAG(TAG_AK47, "Weapon.Gun.Rifle.AK47");
 ```
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    为了避免同时使用 `UE_DECLARE_GAMEPLAY_TAG_EXTERN()` 和 `UE_DEFINE_GAMEPLAY_TAG` ，你可以改用 `UE_DEFINE_GAMEPLAY_TAG_STATIC()` 。但是，这个宏应该只在使用声明的实现文件中使用。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] 为了避免同时使用 `UE_DECLARE_GAMEPLAY_TAG_EXTERN()` 和 `UE_DEFINE_GAMEPLAY_TAG` ，你可以改用 `UE_DEFINE_GAMEPLAY_TAG_STATIC()` 。但是，这个宏应该只在使用声明的实现文件中使用。
 
 ```cpp
 // .cpp
@@ -7578,7 +7216,7 @@ auto* MyTask = new FAsyncTask<FMyTask>( /*Parameters*/ );
 MyTask->StartBackgroundTask();
 ```
 
-***
+* * *
 
 如前所述，Ayliroé撰写了关于 Unreal 多线程和异步任务系统的精彩文档，你可以从 Google Docs 或论坛帖子中阅读。
 
@@ -7600,29 +7238,24 @@ Lorem Ipsum
 
 <table><tbody><tr><td>本节并非与 ChatGPT 一同编写。</td></tr></tbody></table>
 
-![Common Errors](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/Cpp_Errors.png)
+![Common Errors](/static-img/Cpp_Errors.png)
 
 在熟悉编程的过程中，你会遇到不同类型的错误和问题。定义错误/问题的类别有四种。
 
-* 语法错误 - 违反编程语言的语法和结构规则。每种语言都有其自身的规则和指南需要遵循。例如，Python 语言不使用分号或花括号来定义代码块。
+*   语法错误 - 违反编程语言的语法和结构规则。每种语言都有其自身的规则和指南需要遵循。例如，Python 语言不使用分号或花括号来定义代码块。
 
-* 链接器错误 - 在链接阶段出现的问题，例如未解决的引用或模块或库之间的冲突。链接器问题也可能非常复杂且难以解决，因为它不会为开发者提供很多信息。
+*   链接器错误 - 在链接阶段出现的问题，例如未解决的引用或模块或库之间的冲突。链接器问题也可能非常复杂且难以解决，因为它不会为开发者提供很多信息。
 
-* 运行时错误 - 在程序执行过程中发生的错误，导致程序崩溃或行为异常。如果你能够访问崩溃报告器，运行时错误可以相当快速地解决，崩溃报告器通常包含调用栈（可以精确指出导致崩溃的函数或代码）。
+*   运行时错误 - 在程序执行过程中发生的错误，导致程序崩溃或行为异常。如果你能够访问崩溃报告器，运行时错误可以相当快速地解决，崩溃报告器通常包含调用栈（可以精确指出导致崩溃的函数或代码）。
 
-* 语义错误 - 当代码在语法上正确但行为不符合预期或预期时发生的逻辑错误。语义错误可能是最难解决的一种错误，因为你需要从逻辑而非语法上理解代码。
+*   语义错误 - 当代码在语法上正确但行为不符合预期或预期时发生的逻辑错误。语义错误可能是最难解决的一种错误，因为你需要从逻辑而非语法上理解代码。
+
 
 编译器只会对语法和链接器问题报错。编译错误是指编译器无法编译的状态。这可能是由于代码中的错误，或者更不寻常的是，由于编译器本身的错误。
 
 运行时错误可以通过崩溃报告器解决。而语义错误可以通过理解代码的逻辑推理来解决。
 
-<ObsidianCallout type="TIP">
-  <ObsidianCalloutTitle>
-    如果你感到卡壳或思维混乱，不妨花几分钟甚至几小时做点别的事情。比如出去走走、玩电子游戏、听音乐或看电影或视频。这可以帮助你大脑重新思考并更快地解决问题。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!TIP\] 如果你感到卡壳或思维混乱，不妨花几分钟甚至几小时做点别的事情。比如出去走走、玩电子游戏、听音乐或看电影或视频。这可以帮助你大脑重新思考并更快地解决问题。
 
 你可以在微软网站上找到所有的编译器错误。
 
@@ -7734,13 +7367,7 @@ int main()
 
 如果你无法访问可视化调试器，那么最常见且痛苦的方法就是在代码周围添加打印消息。我不推荐这种方法，因为它需要更多时间来追踪函数或代码行，并添加大量打印语句。相反，我建议你使用崩溃报告器或可视化调试器。
 
-<ObsidianCallout type="TIP">
-  <ObsidianCalloutTitle>
-    你也可以使用断言来测试代码的失败情况。但也要在失败时添加消息，这将供崩溃报告器捕获。这将增加崩溃发生时的可理解性。你可以在本节中了解更多关于断言的信息。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!TIP\] 你也可以使用断言来测试代码的失败情况。但也要在失败时添加消息，这将供崩溃报告器捕获。这将增加崩溃发生时的可理解性。你可以在本节中了解更多关于断言的信息。
 
 例如，如果你尝试访问数组的一个超出范围的索引，它将导致运行时错误，因为程序将尝试访问一个无效的内存位置。
 
@@ -7789,11 +7416,13 @@ int32 Year = ActiveYears[10]; // Will cause an overflow
 
 #### 🔍 作用域问题
 
-作用域指的是代码中变量可访问的区域。在 C++中，作用域由 \{ 和 } （大括号）定义。
+
+作用域指的是代码中变量可访问的区域。在 C++中，作用域由 \{ 和 \} （大括号）定义。
+
 
 有三种类型的作用域。局部、类和全局。
 
-***
+* * *
 
 **局部作用域**
 
@@ -7838,7 +7467,7 @@ void PrintDeath(APlayerCharacter* Player)
 }
 ```
 
-***
+* * *
 
 **类作用域**
 
@@ -7880,7 +7509,7 @@ void KillPlayer(APlayerCharacter* Player)
 }
 ```
 
-***
+* * *
 
 **全局作用域**
 
@@ -8124,13 +7753,7 @@ NameToNumbersMap numbers;
 std::map<std::string, std::vector<int>> numbers;
 ```
 
-<ObsidianCallout type="WARNING">
-  <ObsidianCalloutTitle>
-    Typedefs 不适用于 UHT [8](#user-content-fn-1) 。这意味着你不能将其暴露给 Blueprint。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!WARNING\] Typedefs 不适用于 UHT [8](#user-content-fn-1) 。这意味着你不能将其暴露给 Blueprint。
 
 #### 引入变量
 
@@ -8224,14 +7847,14 @@ PrimaryComponentTick.bStartWithTickEnabled = false;
 
 #### 如果你必须使用计时
 
-* 将 tick 间隔设置为你能接受的最高值。不幸的是，对于平滑移动的物体，这通常是每帧
+*   将 tick 间隔设置为你能接受的最高值。不幸的是，对于平滑移动的物体，这通常是每帧
 
 ```cpp
 PrimaryActorTick.TickInterval = 0.2f;
 PrimaryComponentTick.TickInterval = 0.2f;
 ```
 
-* 启用/禁用 tick，仅在需要时才 tick。
+*   启用/禁用 tick，仅在需要时才 tick。
 
 ```cpp
 SetActorTickEnabled()
@@ -8303,21 +7926,9 @@ void FMyTickableThing::Tick( float DeltaTime )
 }
 ```
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    Tick 任何你想的对象， `UObject` 或不 Tick！
-  </ObsidianCalloutTitle>
+> \[!NOTE\] Tick 任何你想的对象， `UObject` 或不 Tick！
 
-  <ObsidianCalloutBody />
-</ObsidianCallout>
-
-<ObsidianCallout type="WARNING">
-  <ObsidianCalloutTitle>
-    UHT [3](#user-content-fn-2) 不支持在 `USTRUCT` 内部暴露函数。然而，你仍然可以在 `USTRUCT` 内部有函数，但不仅暴露给蓝图。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!WARNING\] UHT [3](#user-content-fn-2) 不支持在 `USTRUCT` 内部暴露函数。然而，你仍然可以在 `USTRUCT` 内部有函数，但不仅暴露给蓝图。
 
 ### 🔌 直接引用
 
@@ -8364,7 +7975,7 @@ f = 11; // COMPILER ERROR!!! Cannot modify const variable!!
 
 数学表达式节点类似于一个折叠的图。它是一个单一节点，你可以双击来打开构成其功能的子图。最初，名称/表达式是空的。每当你重命名节点时，新的表达式会被解析并生成一个新的子图。
 
-![Math Node Example](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/math_node_example.png)
+![Math Node Example](/static-img/math_node_example.png)
 
 你可以在 Unreal 的文档中了解更多关于数学表达式节点的信息。
 
@@ -8400,13 +8011,7 @@ void KillCharacter();
 $ ke * KillCharacter
 ```
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    在命令行界面（CLI）的上下文中，美元符号（ `$` ）通常被称为“提示符号”或简单地称为“提示”。它表示 CLI 已准备好接收用户的输入。提示的具体外观和行为可能会根据所使用的操作系统和外壳而有所不同。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] 在命令行界面（CLI）的上下文中，美元符号（ `$` ）通常被称为“提示符号”或简单地称为“提示”。它表示 CLI 已准备好接收用户的输入。提示的具体外观和行为可能会根据所使用的操作系统和外壳而有所不同。
 
 ### 重命名变量而不破坏引用
 
@@ -8416,21 +8021,17 @@ $ ke * KillCharacter
 
 为解决此问题，虚幻引擎使用核心重定向功能。核心重定向功能应在您的项目的 `DefaultEngine.ini` 文件中配置，或者对于插件，应在该插件的带前缀的自命名的.ini 文件中配置（例如，引擎的 Paper2D 插件的 `BasePaper2D.ini` 文件，或游戏插件的 `Default<GamePluginName>.ini` 文件）。
 
-无论哪种情况，核心重定向功能都将被放置在"\[CoreRedirects]"部分中。这些核心重定向功能在加载资源时会自动重新映射过时数据，从而防止因重命名过程导致的数据丢失。
+无论哪种情况，核心重定向功能都将被放置在"\[CoreRedirects\]"部分中。这些核心重定向功能在加载资源时会自动重新映射过时数据，从而防止因重命名过程导致的数据丢失。
 
 以下是属性值重定向的结构：
 
-
 ```ini
-
 +PropertyRedirect=(OldName="CurrentClass.OldVariableName", NewName="NewOldVariableName")
 ```
 
 Here's a full example of different use cases with redirects:
 
-
 ```ini
-
 [CoreRedirects]
 +PropertyRedirect=(OldName="PlayerCharacter.StartHealth", NewName="InitialHealth")
 
@@ -8455,7 +8056,7 @@ Here's a full example of different use cases with redirects:
 
 你可以在虚幻引擎的文档中了解更多信息。
 
-***
+* * *
 
 The `MatchSubstring` argument can be used in any Core Redirect type. If present and set to `true`, the `OldName` and `NewName` fields will be treated as substrings rather than requiring exact matches. This enables multiple matches with a single Core Redirect. In the following example, we will start with a struct and a class.
 
@@ -8491,7 +8092,7 @@ public:
 };
 ```
 
-![Original Values](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/OriginalValues.jpg)
+![Original Values](/static-img/OriginalValues.jpg)
 
 这是我们保存到 \`AMyActor\` 资产中的原始代码和原始值集。
 
@@ -8531,25 +8132,19 @@ public:
 
 结果如下：
 
-![NoCoreRedirect](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/NoCoreRedirect.jpg)
+![NoCoreRedirect](/static-img/NoCoreRedirect.jpg)
 
 代码中属性名称已更改，但未创建核心重定向。因此，没有数据值迁移到新属性。
 
-![CoreRedirectWithoutMatchSubstring](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/CoreRedirectWithoutMatchSubstring.jpg)
+![CoreRedirectWithoutMatchSubstring](/static-img/CoreRedirectWithoutMatchSubstring.jpg)
 
 \`PropertyRedirects=(OldName="TestInt",NewName="TestInteger")\` 导致只有两个名称完全匹配的属性迁移其数据。
 
-![CoreRedirectWithMatchSubstring](https://github.com/MrRobinOfficial/Guide-UnrealEngine/raw/main/static/img/CoreRedirectWithMatchSubstring.jpg)
+![CoreRedirectWithMatchSubstring](/static-img/CoreRedirectWithMatchSubstring.jpg)
 
 \`PropertyRedirects=(OldName="TestInt",NewName="TestInteger",MatchSubstring=true)\` 由于子字符串匹配，导致我们所有的四个属性迁移。
 
-<ObsidianCallout type="NOTE">
-  <ObsidianCalloutTitle>
-    由于 `MatchSubtring` 需要更彻底地检查传入的资产，因此可能会影响启动时间。 `MatchSubstring` 旨在作为进行大规模更改时的临时修复。建议立即重新保存涉及这些更改的资产，并将任何相关的代码更改与项目源代码数据库一起检查入，并删除核心重定向而不将其提交到源代码控制。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!NOTE\] 由于 `MatchSubtring` 需要更彻底地检查传入的资产，因此可能会影响启动时间。 `MatchSubstring` 旨在作为进行大规模更改时的临时修复。建议立即重新保存涉及这些更改的资产，并将任何相关的代码更改与项目源代码数据库一起检查入，并删除核心重定向而不将其提交到源代码控制。
 
 ### 曲线采样
 
@@ -8714,13 +8309,7 @@ void YourClass::OnRequestCompleted(const FString& Result, bool bWasSuccessful)
 }
 ```
 
-<ObsidianCallout type="TIP">
-  <ObsidianCalloutTitle>
-    你可以通过 Postman 使用 Star Wars API 示例来测试 HTTP 请求。
-  </ObsidianCalloutTitle>
-
-  <ObsidianCalloutBody />
-</ObsidianCallout>
+> \[!TIP\] 你可以通过 Postman 使用 Star Wars API 示例来测试 HTTP 请求。
 
 你可以在 Unreal 的文档中了解更多关于 HTTP 模块的信息。
 
@@ -8809,37 +8398,43 @@ FString YourClass::DecryptToString(FString EncryptedValue, FString EncryptionKey
 
 ### 在线工具
 
-| 作者                | 标题                   | 描述                     | 链接                                                                         |
-| ----------------- | -------------------- | ---------------------- | -------------------------------------------------------------------------- |
-| Naotsun           | UnrealMacroGenerator |                        | https://marketplace.visualstudio.com/items?itemName=Naotsun.Naotsun-UE-UMG |
-| Sébastien Rancoud | blueprintUE          | 非官方工具，旨在帮助虚幻引擎开发者      | https://blueprintue.com/                                                   |
-| 马特·戈德博尔特          | 编译器探索器               | 从你的网络浏览器交互式运行编译器并与汇编交互 | https://godbolt.org/                                                       |
-|                   | 虚幻引擎 4 控制台变量和命令      | 所有 UE 命令列表             | https://digilander.libero.it/ZioYuri78/                                    |
+| 作者 | 标题 | 描述 | 链接 |
+| --- | --- | --- | --- |
+| Naotsun | UnrealMacroGenerator |  | Visual Studio Marketplace |
+| Sébastien Rancoud | blueprintUE | 非官方工具，旨在帮助虚幻引擎开发者 | 蓝图 UE |
+| 马特·戈德博尔特 | 编译器探索器 | 从你的网络浏览器交互式运行编译器并与汇编交互 | 编译器探索器 |
+|  | 虚幻引擎 4 控制台变量和命令 | 所有 UE 命令列表 | UE 命令 |
 
 ### 杂项
 
-| 作者       | 标题    | 描述              | 链接                                                                                         |
-| -------- | ----- | --------------- | ------------------------------------------------------------------------------------------ |
-| 托马斯·英格拉姆 | 开发者笔记 | 查看和发布开发者文档中的笔记。 | https://chrome.google.com/webstore/detail/developer-notes/fchdfdnnpkphopmdaochdfnmcahndmnb |
+| 作者 | 标题 | 描述 | 链接 |
+| --- | --- | --- | --- |
+| 托马斯·英格拉姆 | 开发者笔记 | 查看和发布开发者文档中的笔记。 | Chrome 网上应用店 |
+
+## 🆘 支持
+
+如果你有任何问题或问题，只需通过我的 YouTube 频道、电子邮件或 Twitter DM 写给我。
+
+<table><tbody><tr><td>IS 14 PAGES LONG!</td></tr></tbody></table>
 
 ## 📍 脚注
 
 ## 脚注
 
-1. C 是一种过程式编程语言，以其效率和可移植性而闻名，常用于系统级编程和嵌入式系统开发。 ↩ ↩ 2
+1.  C 是一种过程式编程语言，以其效率和可移植性而闻名，常用于系统级编程和嵌入式系统开发。 ↩ ↩ 2
 
-2. JavaScript 是一种通用、动态的脚本语言，常用于网页开发，为网站添加交互性和功能。 ↩ ↩ 2
+2.  JavaScript 是一种通用、动态的脚本语言，常用于网页开发，为网站添加交互性和功能。 ↩ ↩ 2
 
-3. 虚幻引擎头文件工具（UHT）是一个强大的工具，用于管理虚幻引擎项目中 C++文件之间的依赖关系。头文件工具设计为与虚幻构建工具（UBT）协同工作，后者负责编译引擎及其所有模块。 ↩ ↩ 2 ↩ 3 ↩ 4 ↩ 5 ↩ 6 ↩ 7 ↩ 8 ↩ 9 ↩ 10 ↩ 11 ↩ 12
+3.  虚幻引擎头文件工具（UHT）是一个强大的工具，用于管理虚幻引擎项目中 C++文件之间的依赖关系。头文件工具设计为与虚幻构建工具（UBT）协同工作，后者负责编译引擎及其所有模块。 ↩ ↩ 2 ↩ 3 ↩ 4 ↩ 5 ↩ 6 ↩ 7 ↩ 8 ↩ 9 ↩ 10 ↩ 11 ↩ 12
 
-4. Python 是一种用户友好型、高级语言，常用于脚本编写、数据分析、Web 开发和人工智能应用。 ↩ ↩ 2
+4.  Python 是一种用户友好型、高级语言，常用于脚本编写、数据分析、Web 开发和人工智能应用。 ↩ ↩ 2
 
-5. Java 是一种多用途、跨平台的语言，以其“一次编写，到处运行”的能力而闻名，常用于 Web 开发和企业应用。 ↩
+5.  Java 是一种多用途、跨平台的语言，以其“一次编写，到处运行”的能力而闻名，常用于 Web 开发和企业应用。 ↩
 
-6. C#是由微软开发的一种高级、面向对象的编程语言，广泛用于使用.NET 框架构建 Windows 应用程序和游戏。 ↩ ↩ 2 ↩ 3 ↩ 4
+6.  C#是由微软开发的一种高级、面向对象的编程语言，广泛用于使用.NET 框架构建 Windows 应用程序和游戏。 ↩ ↩ 2 ↩ 3 ↩ 4
 
-7. C++中的宏是预处理器指令，能够在编译前通过文本替换来定义可重用的代码片段。这里有一个关于它的视频。 ↩ ↩ 2 ↩ 3 ↩ 4 ↩ 5 ↩ 6 ↩ 7 ↩ 8
+7.  C++中的宏是预处理器指令，能够在编译前通过文本替换来定义可重用的代码片段。这里有一个关于它的视频。 ↩ ↩ 2 ↩ 3 ↩ 4 ↩ 5 ↩ 6 ↩ 7 ↩ 8
 
-8. 关键字，也称为保留字。 ↩ ↩ 2 ↩ 3 ↩ 4 ↩ 5 ↩ 6
+8.  关键字，也称为保留字。 ↩ ↩ 2 ↩ 3 ↩ 4 ↩ 5 ↩ 6
 
-9. GitHub 是一个基于网络的平台和版本控制仓库，它允许个人和团队通过提供代码存储、版本跟踪、问题跟踪以及拉取请求和代码审查等协作功能来共同开发软件项目。链接到其网站。 ↩
+9.  GitHub 是一个基于网络的平台和版本控制仓库，它允许个人和团队通过提供代码存储、版本跟踪、问题跟踪以及拉取请求和代码审查等协作功能来共同开发软件项目。链接到其网站。 ↩
