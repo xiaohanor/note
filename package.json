@@ -11,25 +11,25 @@
   "dependencies": {
     "class-variance-authority": "^0.7.1",
     "feed": "^5.1.0",
-    "fumadocs-core": "15.8.5",
-    "fumadocs-mdx": "12.0.3",
-    "fumadocs-obsidian": "^0.0.3",
-    "fumadocs-ui": "15.8.5",
-    "lucide-react": "^0.544.0",
-    "next": "15.5.4",
+    "fumadocs-core": "16.0.1",
+    "fumadocs-mdx": "13.0.0",
+    "fumadocs-obsidian": "^0.0.4",
+    "fumadocs-ui": "16.0.1",
+    "lucide-react": "^0.546.0",
+    "next": "16.0.0",
     "ogl": "^1.0.11",
     "react": "^19.2.0",
     "react-dom": "^19.2.0",
     "tailwind-merge": "^3.3.1"
   },
   "devDependencies": {
-    "@types/node": "24.6.2",
+    "@types/node": "24.9.1",
     "@types/react": "^19.2.0",
-    "@types/react-dom": "^19.2.0",
+    "@types/react-dom": "^19.2.2",
     "typescript": "^5.9.3",
     "@types/mdx": "^2.0.13",
-    "@tailwindcss/postcss": "^4.1.14",
-    "tailwindcss": "^4.1.14",
+    "@tailwindcss/postcss": "^4.1.15",
+    "tailwindcss": "^4.1.15",
     "postcss": "^8.5.6"
   }
 }
