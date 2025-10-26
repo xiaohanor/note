@@ -2,6 +2,10 @@
 title: UE5 C++ 指南
 ---
 
+<Callout type="warn">
+    本文章翻译自 [MrRobinOfficial's Guide-UnrealEngine](https://github.com/MrRobinOfficial/Guide-UnrealEngine)，初版为机器翻译，目前正在人工校对中，持续更新......
+</Callout>
+
 **你对使用 C++在 Unreal Engine 中创建游戏感兴趣吗？**
 
 *在这个仓库中，我们将指导你开始使用 Unreal Engine 和 C++的基础知识。我们将涵盖 C++编程的基础，例如数据类型和指针，并展示如何在 Unreal Engine 的游戏开发中使用这些概念。我们还将向你介绍 Unreal Engine 模块系统，这是将你的游戏代码组织成更小、更易于管理部分的重要方面。*
@@ -1424,11 +1428,11 @@ typedef FPlatformTypes::TYPE_OF_NULLPTR	TYPE_OF_NULLPTR;
 
 ### 文本宏
 
-* `TEXT` - This macro is used for specifying wide-character (UTF-16) encoding. This makes the string literal platform independent. Without this macro, you are using ANSI encoding (which can cause issues on other machines).
+* `TEXT` - 该宏用于指定宽字符（UTF-16）编码，从而使字符串字面量具有平台无关性。没有该宏，您将使用ANSI编码（这可能会在其他机器上引起问题）。
 
-* `INVTEXT` - This macro is calling FText::AsCultureInvariant(TEXT(InTextLiteral)) with InTextLiteral as parameter. Helpful creating culture invariant FText from the given string literal.
+* `INVTEXT` - 此宏调用 FText::AsCultureInvariant(TEXT(InTextLiteral))，其中 InTextLiteral 作为参数。它有助于从给定的字符串字面量创建文化无关的 FText。
 
-* `LOCTEXT` - This macro is used to create `FText` literals specifically for localization. It takes a namespace and a key to identify the localized string.
+* `LOCTEXT` - 该宏用于专门为本地化创建 `FText` 字面量。它接受一个命名空间和一个键来标识本地化的字符串。
 
 #### FName
 
@@ -1824,7 +1828,7 @@ FUIntReact UnsignedRect = FIntRect(UnsignedMinPoint, UnsignedMaxPoint);
 
 <Callout> 使用 `FInt32Rect` 表示 `int32` ， `FUint32Rect` 表示 `uint32` ， `FInt64Rect` 表示 `int64` ，以及 `FUint64Rect` 表示 `uint64` ，作为后端转换的显式数据类型。</Callout>
 
-#### 旋转器
+#### Rotator
 
 一个表示三维空间中旋转的结构体，包含三个浮点数值分别对应 `Pitch` ， `Yaw` ，和 `Roll` 角度。它通常用于表示物体的方向，并提供许多有用功能，如四元数转换以及其他向量和旋转器的旋转功能。
 
@@ -1871,7 +1875,7 @@ FQuat MyQuaternion = FQuat::Identify; // (0, 0, 0, 0)
 
 <Callout> 使用 `FQuat4f` 代替 `float` ，使用 `FQuat4d` 代替 `double` ，作为后端转换的明确数据类型。</Callout>
 
-#### 转换
+#### Transform
 
 一个表示 3D 变换的结构，包含一个 `FVector` 用于平移、一个 `FQuat` 用于旋转和一个 `FVector` 用于缩放。它通常用于表示 3D 空间中物体的位置、方向和大小，并提供许多用于变换其他向量和变换的实用函数。
 
@@ -2080,7 +2084,7 @@ FString HexString = HexColor.ToHex(); // Convert it back to a string. The format
 
 你也可以在 Unreal 的文档中了解更多关于颜色的信息。
 
-### 💐 收藏集
+### 💐 集合
 
 ![Collections](/static-img/Collections.png)
 
@@ -5394,7 +5398,54 @@ bool UAnalyticsBlueprintLibrary::StartSession()
 2.  日志详细程度
 3.  实际要记录到控制台的内容
 
-<table><tbody><tr><td>预定义的日志类别 LogPath LogController LogPhysics LogBlueprint LogBlueprintUserMessages LogAnimation LogRootMotion LogLevel LogSkeletalMesh LogStaticMesh LogNet LogRep LogNetPlayerMovement LogNetTraffic LogRepTraffic LogNetFastTArray LogNetDormancy LogSkeletalControl LogSubtitle LogTexture LogPlayerManagement LogSecurity LogEngineSessionManager LogHAL LogSerialization LogUnrealMath LogUnrealMatrix LogContentComparisonCommandlet LogNetPackageMap LogNetSerialization LogMemory LogProfilingDebugging LogCore LogOutputDevice LogSHA LogStats LogStreaming LogInit LogExit LogExec LogScript LogLocalization LogLongPackageNames LogProcess LogLoad LogTemp</td></tr></tbody></table>
+预定义的日志类别
+
+-   `LogPath`
+-   `LogController`
+-   `LogPhysics`
+-   `LogBlueprint`
+-   `LogBlueprintUserMessages`
+-   `LogAnimation`
+-   `LogRootMotion`
+-   `LogLevel`
+-   `LogSkeletalMesh`
+-   `LogStaticMesh`
+-   `LogNet`
+-   `LogRep`
+-   `LogNetPlayerMovement`
+-   `LogNetTraffic`
+-   `LogRepTraffic`
+-   `LogNetFastTArray`
+-   `LogNetDormancy`
+-   `LogSkeletalControl`
+-   `LogSubtitle`
+-   `LogTexture`
+-   `LogPlayerManagement`
+-   `LogSecurity`
+-   `LogEngineSessionManager`
+-   `LogHAL`
+-   `LogSerialization`
+-   `LogUnrealMath`
+-   `LogUnrealMatrix`
+-   `LogContentComparisonCommandlet`
+-   `LogNetPackageMap`
+-   `LogNetSerialization`
+-   `LogMemory`
+-   `LogProfilingDebugging`
+-   `LogCore`
+-   `LogOutputDevice`
+-   `LogSHA`
+-   `LogStats`
+-   `LogStreaming`
+-   `LogInit`
+-   `LogExit`
+-   `LogExec`
+-   `LogScript`
+-   `LogLocalization`
+-   `LogLongPackageNames`
+-   `LogProcess`
+-   `LogLoad`
+-   `LogTemp`
 
 最常见的日志类别，你可能会使用，是 `LogTemp` 和 `LogBlueprintUserMessages` 用于蓝图消息。
 
@@ -7934,7 +7985,7 @@ void MyCharacter::DoSomething()
 }
 ```
 
-### ⏱️ 正在计时
+### ⏱️ Ticking
 
 #### 对演员
 
@@ -7950,7 +8001,7 @@ PrimaryComponentTick.bCanEverTick =  false;
 PrimaryComponentTick.bStartWithTickEnabled = false;
 ```
 
-#### 如果你必须使用计时
+#### 如果你必须使用 Tick
 
 *   将 tick 间隔设置为你能接受的最高值。不幸的是，对于平滑移动的物体，这通常是每帧
 
