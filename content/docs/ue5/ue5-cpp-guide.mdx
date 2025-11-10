@@ -2889,7 +2889,7 @@ for (const TPair<FName, int32>& Element : MyMap)
 }
 ```
 
-你可以在 Unreal 的文档中了解更多信息。
+你可以在 [Unreal's docs](https://docs.unrealengine.com/5.3/en-US/API/Runtime/Core/Containers/TSortedMap/)中了解更多信息。
 
 #### TList
 
@@ -2906,11 +2906,41 @@ TList<ElementType>* Next; // Pointer to the next node
 
 一个链表相比于数组有一些优势，主要在于它在添加和删除元素时具有 O(1)的时间复杂度。这是因为每个节点都指向链表中的下一个节点。因此，链表在添加和删除元素时的时间复杂度为 O(1)。
 
-你可以通过 Joel Olawanle 了解更多关于时间复杂度的信息。
+你可以通过 [Joel Olawanle](https://www.freecodecamp.org/news/big-o-cheat-sheet-time-complexity-chart/) 了解更多关于时间复杂度的信息。
 
 使用数组相比于链表有一些缺点：
 
-<table><tbody><tr><td>缓存未命中 当计算机读取内存时，它从 RAM（随机存取存储器）中读取。因此，它的名称是随机访问内存。使用 TArray ，你的内存分配是连续的。这意味着 TArray 将请求一个大的空间来存放其内存块。 然而，如果 TArray 找不到或无法适应一个特定的位置（因为 TArray 可以增长和缩小），它需要重新计算并找到一个新的位置。这使得添加或删除元素变得令人烦恼。 但 TArray 拥有的东西是链表所缺乏的，那就是缓存命中。缓存命中是一个术语，其中 CPU 可以将一个数组预加载到 CPU 缓存内存中。因为数组存储在连续的内存中，允许 CPU 预加载整个数组，而无需在内存位置之间来回跳转。 对于链表来说，没有连续的内存。这意味着 CPU 需要在不同位置找到每个节点。这不允许 CPU 将其先前结果缓存到内存中。这就称为缓存未命中。 来自 Dhathri Vupparapalli 博客的图片。 这是 SimonDev 关于缓存未命中和命中的视频。 你还可以在维基百科上了解更多关于 CPU 缓存的信息。 内存空间 TList 每个节点占用更多的内存空间。 因为每个节点都需要跟踪列表中的下一个节点。而下一个变量是一个指针，它在 32 位计算机上占用 4 个字节，在 64 位计算机上占用 8 个字节。 如果你只想使用基本数据类型，例如 ( int , float , double , bool 或 char )，那么你可以直接使用 TArray 。虽然 TArray 存储了一些开销，但这个开销非常小。 没有辅助函数 TList 仅提供数据元素和下一个节点的指针。 TList 不提供任何在列表中添加或删除节点的辅助函数。 如果您希望拥有这些函数，那么您可以直接使用 TLinkedList 。 只能向前遍历。 使用 TList 时，你只能向前移动。 这是因为每个节点都没有前一个节点。也就是说，你不能在列表中向后移动。 如果你想要向后移动，那么你只需要使用 TDoubleLinkedList 即可。</td></tr></tbody></table>
+# 缓存未命中与容器选择
+
+## 缓存未命中
+
+当计算机读取内存时，它从 RAM（随机存取存储器）中读取。因此，它的名称是“随机访问内存”。
+
+使用 `TArray` 时，内存分配是连续的。这意味着 `TArray` 会请求一段较大的连续空间来存放其内存块。然而，如果 `TArray` 在某个位置找不到或无法适应（因为 `TArray` 可以增长和缩小），它需要重新分配并找到一个新的位置。这会让添加或删除元素变得较为昂贵。
+
+但 `TArray` 拥有链表所缺乏的优势：缓存命中。缓存命中是指 CPU 可以将数组数据预加载到 CPU 缓存中。由于数组存储在连续的内存中，CPU 能够高效预取，而无需在内存位置之间来回跳转。
+
+对于链表来说，没有连续的内存布局。这意味着 CPU 需要在不同位置查找每个节点，不利于缓存预取，从而更容易发生“缓存未命中”。
+
+参考：
+- [SimonDev 关于缓存未命中/命中的视频](https://www.youtube.com/watch?v=247cXLkYt2M)
+- [维基百科：更多关于 CPU 缓存的信息](https://en.wikipedia.org/wiki/Cache_(computing))
+
+ **内存空间**
+
+- `TList` 每个节点占用更多的内存空间，因为每个节点都需要跟踪列表中的下一个节点。这个“下一个”变量是一个指针：在 32 位计算机上占用 4 个字节，在 64 位计算机上占用 8 个字节。
+- 如果你只使用基本数据类型（如 `int`、`float`、`double`、`bool` 或 `char`），通常可以直接使用 `TArray`。虽然 `TArray` 存在一些管理开销，但这个开销相对很小。
+
+ **没有辅助函数**
+
+- `TList` 仅提供数据元素和“下一个节点”的指针，不提供在列表中添加或删除节点的辅助函数。
+- 如果你希望拥有这些辅助函数，可以考虑使用 `TLinkedList`。
+
+ **只能向前遍历**
+
+- 使用 `TList` 时，你只能向前移动，因为节点中没有指向前一个节点的指针；也就是说，无法向后遍历。
+- 如果需要双向遍历，可以使用 `TDoubleLinkedList`。
+
 
 **这里有一个例子：**
 
@@ -2947,7 +2977,7 @@ while (CurrentNode != nullptr)
 
 <Callout> 一般来说，您几乎总是应该使用 `TArray` ，除非您有使用链表的具体原因。</Callout>
 
-您可以在虚幻引擎的文档中了解更多信息。
+您可以在[Unreal's docs](https://docs.unrealengine.com/5.3/en-US/API/Runtime/Core/Containers/TList/)中了解更多信息。
 
 #### TLinkedList
 
@@ -2982,7 +3012,7 @@ for (TLinkedList<int32>::TIterator It(&HeadNode); It; It.Next())
 }
 ```
 
-你可以在 Unreal 的文档中了解更多信息。
+你可以在 [Unreal's docs](https://docs.unrealengine.com/5.3/en-US/API/Runtime/Core/Containers/TLinkedList/)中了解更多信息。
 
 #### TDoubleLinkedList
 
@@ -3069,7 +3099,7 @@ else
 }
 ```
 
-你可以在 Unreal 的文档中了解更多信息。
+你可以在 [Unreal's docs](https://docs.unrealengine.com/5.3/en-US/API/Runtime/Core/Containers/TDoubleLinkedList/)中了解更多信息。
 
 #### TQueue
 
@@ -3126,7 +3156,7 @@ while (!MyQueue.IsEmpty())
 }
 ```
 
-你可以在 Unreal 的文档中了解更多信息。
+你可以在 Unreal's docs](https://docs.unrealengine.com/5.3/en-US/API/Runtime/Core/Containers/TQueue/)中了解更多信息。
 
 #### TArrayView
 
@@ -3134,7 +3164,7 @@ while (!MyQueue.IsEmpty())
 
 一个静态大小的元素数组视图。设计用于允许函数在函数既不添加也不删除元素时，将固定大小的 C 风格数组或 `TArray` 与任意分配器作为参数传入。
 
-您可以从 Unreal 的文档中了解更多信息。
+您可以从 [Unreal's docs](https://docs.unrealengine.com/5.3/en-US/API/Runtime/Core/Containers/TArrayView/)中了解更多信息。
 
 这里有一个示例：
 
@@ -3213,7 +3243,7 @@ void ModifyArrayView()
 }
 ```
 
-#### 字符串视图
+#### String View
 
 `FStringView` 是一个轻量级、非拥有的字符串数据视图，复制视图本身是高效的，并且不会影响底层数据。但是，当你复制 `FStringView` 时，新的视图实例仍然引用相同的原始字符串数据。
 
@@ -3245,9 +3275,9 @@ MyString = TEXT("Modified String");
 UE_LOG(LogTemp, Log, TEXT("Copied StringView: %s"), *CopiedStringView);
 ```
 
-你可以在 Unreal 的文档中了解更多信息。
+你可以在 [Unreal's docs](https://docs.unrealengine.com/5.3/en-US/API/Runtime/Core/Containers/TStringView/)中了解更多信息。
 
-#### 字符串构建器
+#### String Builder
 
 在处理字符串时，你可能需要将很多字符串拼接在一起。有时，这会创建复杂且难以阅读的代码。而 `FString` 是可变的，允许开发者在不复制新实例的情况下修改其数据。字符串构建器仍然是一个非常有用的工具。
 
@@ -3335,7 +3365,7 @@ MessageBuilder << TEXTVIEW("Player's health: ") << FString::SanitizeFloat(Player
 return FString { MessageBuilder };
 ```
 
-你可以在 Unreal 的文档中了解更多信息。
+你可以在 [Unreal's docs](https://docs.unrealengine.com/5.3/en-US/API/Runtime/Core/Containers/TStringBuilderBase/)中了解更多信息。
 
 #### TEnumAsByte
 
@@ -3382,7 +3412,7 @@ UE_LOG(LogTemp, Log, TEXT("Integer value of the: %i"), IntVal);
 
 <Callout> `UPROPERTY` 支持常规枚举，并取代了使用 `TEnumAsByte` 的需求。</Callout>
 
-你可以在虚幻引擎的文档中了解更多信息。
+你可以在[Unreal's docs](https://docs.unrealengine.com/5.3/en-US/API/Runtime/Core/Containers/TEnumAsByte/)中了解更多信息。
 
 ### 🧨 值类型 vs 引用类型
 
@@ -3408,7 +3438,7 @@ int& B = A; // A reference
 
 在 C++中，默认情况下一切都是值类型。即使是类，也与 C# [6](#user-content-fn-12) 不同。
 
-你可以在 Low Level Learning 上观看关于 C++中引用的视频。
+你可以在 [references in C++ from Low Level Learning](https://www.youtube.com/watch?v=wro8Bb6JnwU) 上观看关于 C++中引用的视频。
 
 这是一个示例：
 
@@ -3462,7 +3492,7 @@ int main()
 }
 ```
 
-在引用中，你只能分配一次，并且在整个代码中不能更改。例如，你可以直接引用传递到函数中的参数。然后可以在函数内部修改这个参数，类似于 C#中的输出参数的工作方式 [6](#user-content-fn-12) 。
+在引用中，你只能分配一次，并且在整个代码中不能更改。例如，你可以直接引用传递到函数中的参数。然后可以在函数内部修改这个参数，类似于 C#中的[输出](https://learn.microsoft.com/en-us/dotnet/csharp/language-reference/keywords/out-parameter-modifier)参数的工作方式 [6](#user-content-fn-12) 。
 
 这是一个示例：
 
@@ -3487,7 +3517,7 @@ if (DamageHealth(PlayerHealth)) // Passing the `PlayerHealth` as a direct refere
 
 ![Pointers](/static-img/Pointers.png)
 
-最后，我们来看指针。本节将介绍原始指针和智能指针。如果你对指针一无所知，强烈建议观看 Cherno 关于指针的视频。
+最后，我们来看指针。本节将介绍原始指针和智能指针。如果你对指针一无所知，强烈建议观看 [Cherno 关于指针](https://www.youtube.com/watch?v=DTxHyVn0ODg)的视频。
 
 指针和引用相似之处在于它们都指向变量，但有一个关键区别。指针是间接引用，意味着它们可以在代码中改变，指向不同的变量。而普通引用是直接的，并且只能指向它们初始化时指定的变量。
 
@@ -3503,7 +3533,7 @@ if (DamageHealth(PlayerHealth)) // Passing the `PlayerHealth` as a direct refere
 
 当程序尝试访问它没有权限访问的内存位置时会发生段错误，这通常发生在程序尝试解引用空指针时。当这种情况发生时，操作系统通常会终止程序并生成错误消息。
 
-你可以在 Microsoft Learn 上了解更多关于原始指针的信息。
+你可以在 [raw pointers from Microsoft Learn](https://learn.microsoft.com/en-us/cpp/cpp/raw-pointers?view=msvc-170) 上了解更多关于原始指针的信息。
 
 为了避免这种情况，在使用指针之前，你必须先检查它是否有效。
 
@@ -3548,7 +3578,7 @@ TObjectPtr<AActor> ActorPtr = nullptr;
 
 虚幻引擎库中的关键智能指针包括 `TSharedPtr` 、 `TWeakPtr` 和 `TUniquePtr` 。它们设计用于处理各种所有权场景，并提供比原始指针更安全的替代方案。
 
-你可以在他们的文档中了解更多关于 Unreal Smart Pointer Library 的信息。
+你可以在[他们的文档](https://docs.unrealengine.com/5.2/en-US/smart-pointers-in-unreal-engine/)中了解更多关于 Unreal Smart Pointer Library 的信息。
 
 ##### TSharedPtr
 
@@ -3741,7 +3771,7 @@ if (SoftPtr.IsValid())
 
 ### 🔖 关键字
 
-在 C++中，关键字是编译器具有特殊含义的保留字。关键字不能用作代码中变量、函数或其他标识符的名称。
+在 C++中，关键字是编译器具有特殊含义的[保留字](https://en.wikipedia.org/wiki/Reserved_word)。关键字不能用作代码中变量、函数或其他标识符的名称。
 
 C++中的关键字用于定义程序的结构和行为。它们用于声明变量、函数、类和其他类型的标识符。它们还控制程序的执行流程，例如使用 `if` 、 `for` 和 `switch` 语句。
 
@@ -3804,7 +3834,7 @@ constinit int sizeOfAnArray = getSizeOfAnArray();
 
 <Callout type="warn"> `consteval` 和 `constinit` 关键字仅在 C++ 20 版本中受支持。这意味着如果你的编译器不支持这些关键字，你将无法使用它们。 </Callout>
 
-<Callout> Unreal Engine 现在支持 C++ 版本 20。</Callout>
+<Callout> Unreal Engine 现在支持 [C++ 版本 20](https://dev.epicgames.com/documentation/en-us/unreal-engine/epic-cplusplus-coding-standard-for-unreal-engine#modernc++languagesyntax:~:text=Unreal%20Engine%20compiles%20with%20a%20language%20version%20of%20C%2B%2B20%20by%20default%20and%20requires%20a%20minimum%20version%20of%20C%2B%2B17%20to%20build.)。</Callout>
 
 ```cpp
 // Example of using constinit keyword
@@ -3817,7 +3847,7 @@ struct Data
 static_assert(Data::j == 20);
 ```
 
-这里有一个视频，由 Cazz 解释 C++ 中常量关键字的作用。
+这里有一个视频，由 [Cazz](https://www.youtube.com/watch?v=KBny6MZJR64) 解释 C++ 中常量关键字的作用。
 
 #### 访问修饰符
 
@@ -3869,7 +3899,7 @@ int main()
 #### 类、结构体和内存
 
 *   `class` 和 `struct` - 用于定义封装数据和函数的用户自定义类型。在常规 C++ 中， `class` 和 `struct` 实际上是同一回事。 `struct` 暴露的成员默认为公有。
-*   `new` - 为对象分配内存（在堆内存上）并调用其构造函数。
+*   `new` - 为对象分配内存（在[堆内存](https://en.wikipedia.org/wiki/Memory_management#HEAP)上）并调用其构造函数。
 *   `delete` - 释放使用 `new` 关键字分配的内存。
 
 ```cpp
@@ -5816,9 +5846,9 @@ void CleanupCharacters(int32 Count)
 
 * * *
 
-您可以从文档中了解更多关于断言的信息。
+您可以从[Assertions from the docs](https://docs.unrealengine.com/5.1/en-US/asserts-in-unreal-engine/)中了解更多关于断言的信息。
 
-您也可以从 Sneaky Kitty Game Dev 观看关于它的视频。
+您也可以从 [Sneaky Kitty Game Dev](https://www.youtube.com/watch?v=zGeJgI2xiT4) 观看关于它的视频。
 
 * * *
 
@@ -6012,9 +6042,9 @@ bool bIsBound = MyEvent.IsBound();
 
 UMG（虚幻引擎运动图形）是虚幻引擎中的一种可视化界面设计工具，能够为游戏和应用创建用户界面（UI）和交互元素。它提供了一个用户友好的、基于节点的系统，用于设计 UI 元素并将它们连接到 C++代码以实现功能和交互。
 
-你可以在文档中了解更多信息。
+你可以在[文档](https://docs.unrealengine.com/5.2/en-US/umg-ui-designer-for-unreal-engine/)中了解更多信息。
 
-还有一个关于 Lively Geek 制作的 UMG Widget 与 C++的视频。
+还有一个关于 Lively Geek 制作的 [UMG Widget 与 C++](https://www.youtube.com/watch?v=T7v3UnL6PNU)的视频。
 
 ### 使用 C++的 UMG
 
@@ -6060,11 +6090,11 @@ void UMainMenu::UpdatePlayerDisplayName()
 
 在函数内部，我们检查 `PlayerDisplayNameText` 组件是否有效。如果有效，我们使用 `SetText()` 函数来更新组件显示的文本。在这种情况下，我们使用 `FText::FromString` 将 `NewDisplayName` 字符串转换为 FText 对象，然后再将其分配给 `PlayerDisplayNameText` 组件。
 
-您可以从 BenUI 的文章中了解更多关于使用 C++绑定组件的信息。
+您可以从[BenUI 的文章](https://benui.ca/unreal/ui-bindwidget/)中了解更多关于使用 C++绑定组件的信息。
 
 ### UI 缓动库
 
-BenUI 还创建了一个免费的实用插件，帮助您在 C++中动画化 UMG。插件可以从 github [9](#user-content-fn-5) 安装。仓库链接。
+BenUI 还创建了一个免费的实用插件，帮助您在 C++中动画化 UMG。插件可以从 github [9](#user-content-fn-5) 安装。[仓库链接](https://github.com/benui-dev/UE-BUITween)。
 
 这是来自 UI 过渡库的一个示例：
 
@@ -6087,7 +6117,7 @@ UBUITween::Create( SomeWidget, 0.2f )
 
 <Callout> Unreal Engine 模块与 C++ 20 模块无关。</Callout>
 
-您可以在此处了解更多关于 Unreal Engine 模块的信息！
+您可以在[此处](https://dev.epicgames.com/documentation/en-us/unreal-engine/unreal-engine-modules)了解更多关于 Unreal Engine 模块的信息！
 
 以下是 Unreal Engine 常用模块列表：
 
@@ -6912,7 +6942,7 @@ DrawCentripetalCatmullRomSpline(GetWorld(), Points, Colors, Alpha, NumSamplesPer
 
 这是 `.bat` 文件（仅限 Windows）用于定位当前引擎目录，并将你自定义的插件编译到另一个引擎版本：
 
-```
+```bash
 @echo off
 
 :: Setting up config variables
@@ -6943,7 +6973,7 @@ exit 0
 
 这是 bash 文件（仅限 Linux）版本：
 
-```
+```bash
 #!/bin/bash
 
 # Setting up config variables
@@ -7082,7 +7112,7 @@ GetWorldTimerManager().GetTimerRate(this, &AUTWeapon::RefireCheckTimer);
 GetWorldTimerManager().GetTimerElapsed(this, &AUTWeapon::RefireCheckTimer);
 ```
 
-你可以在虚幻引擎的文档中了解更多关于游戏玩法计时器的信息。
+你可以在虚幻引擎的文档中了解更多关于[游戏玩法计时器](https://docs.unrealengine.com/5.3/en-US/gameplay-timers-in-unreal-engine/)的信息。
 
 ## 🧵 游戏玩法标签
 
@@ -7092,7 +7122,7 @@ GetWorldTimerManager().GetTimerElapsed(this, &AUTWeapon::RefireCheckTimer);
 
 使用 Gameplay 标签，您可以定义一个标签树结构，其中每个标签都可以有子标签。您还可以使用查询语法查询特定标签或子标签。
 
-您可以在虚幻引擎的博客上了解更多关于 Gameplay 标签的信息。
+您可以在[虚幻引擎的博客](https://www.unrealengine.com/es-ES/tech-blog/using-gameplay-tags-to-label-and-organize-your-content-in-ue4)上了解更多关于 Gameplay 标签的信息。
 
 <Callout type="warn">
   要在 C++中使用 Gameplay 标签，您必须在构建系统中包含该模块（ `GameplayTags` ）。
@@ -7191,9 +7221,9 @@ bool bHasAnyTag = Tags.HasAny(IgnoreTags, TEXT("MyTag"));
 
 游戏引擎运行游戏最常见的方式，仅仅是使用一个 while 循环。这种模式非常简单易懂，并且可以一致地执行。然而，这种模式并不能带来最佳的性能效益。为了提升性能，通常你需要将代码改写为多线程。
 
-你可以从 Robert Nystrom 那里了解更多关于游戏循环的信息。
+你可以从[Robert Nystrom](https://gameprogrammingpatterns.com/game-loop.html)那里了解更多关于游戏循环的信息。
 
-Ayliroé 撰写了一份关于 Unreal 的多线程和异步任务系统的精彩文档，你可以在 Google Docs 或论坛帖子中阅读。
+Ayliroé 撰写了一份关于 Unreal 的多线程和异步任务系统的精彩文档，你可以在 [Google Docs](https://docs.google.com/document/d/1uw9Dfui5ZepSrBpMc1DrxFOeRFnDu8ubzFse8Mr_s7E/) 或[Forum Post](https://forums.unrealengine.com/t/multithreading-and-performance-in-unreal/1216417/1)中阅读。
 
 默认情况下，Unreal 支持多线程，但只部分利用了它。虽然音频、渲染和统计有专门的线程，但大多数操作仍然在游戏线程中执行，包括 EventTicks 和 Blueprints。
 
@@ -7203,13 +7233,13 @@ Ayliroé 撰写了一份关于 Unreal 的多线程和异步任务系统的精彩
 
 多线程是指中央处理器（CPU）（或多核处理器中的单个核心）能够同时提供多个执行线程的能力，并由操作系统支持。在多线程应用程序中，线程共享单个或多个核心的资源，包括计算单元、CPU 缓存和转换后备缓冲器（TLB）。这使得计算速度更快。
 
-为了让您的游戏准备好支持多线程，您也需要改变思维方式。当将代码拆分到多个线程时可能会产生竞态条件，即两个操作同时发生，并竞争哪个将首先执行。这可能导致不稳定并引发错误。
+为了让您的游戏准备好支持多线程，您也需要改变思维方式。当将代码拆分到多个线程时可能会产生[竞态条件](https://en.wikipedia.org/wiki/Race_condition)，即两个操作同时发生，并竞争哪个将首先执行。这可能导致不稳定并引发错误。
 
-您可以从 Vulkan Guide 中了解更多关于多线程的信息。
+您可以从 [Multithreading from Vulkan Guide](https://vkguide.dev/docs/extra-chapter/multithreading/) 中了解更多关于多线程的信息。
 
-您也可以观看 Chris Kanich 关于死锁的视频。
+您也可以观看 [Chris Kanich about deadlocks](https://www.youtube.com/watch?v=oEbXlSH8hyE) 关于死锁的视频。
 
-如果你想在蓝图内部创建多线程且只需最少的 C++代码，那么这里有一个来自 Ispheria 项目的视频。
+如果你想在蓝图内部创建多线程且只需最少的 C++代码，那么这里有一个[来自 Ispheria 项目的视频](https://www.youtube.com/watch?v=0Yyh3oQgonI)。
 
 ### 可运行对象
 
@@ -7296,7 +7326,7 @@ auto* Thread = new FMyThread( /*Parameters*/ );
 
 ### 任务
 
-TaskGraph，是一个试图在多个现有线程之间平衡工作负载的工作管理器。这非常适合发送小操作包，因为它将线程管理的复杂性抽象化，还支持定义任务之间的依赖关系。
+[TaskGraph](https://docs.unrealengine.com/5.0/en-US/tasks-systems-in-unreal-engine/)，是一个试图在多个现有线程之间平衡工作负载的工作管理器。这非常适合发送小操作包，因为它将线程管理的复杂性抽象化，还支持定义任务之间的依赖关系。
 
 排队任务不会因线程已运行而引起性能问题，但系统可能会反应较慢，因为它需要在有限的池中寻找位置来安排工作，因此应避免发送长时间的任务以防止线程堵塞。有时，它也可能直接在游戏线程中运行任务，具体取决于配置。
 
@@ -7312,11 +7342,11 @@ AsyncTask(ENamedThreads::AnyHiPriThreadNormalTask, [this] ()
 });
 ```
 
-如果你不了解 lambda，那么强烈建议你阅读这一部分的介绍。
+如果你不了解 lambda，那么强烈建议你阅读这[section](https://github.com/MrRobinOfficial/Guide-UnrealEngine/#-lambda)的介绍。
 
 #### ParallelFor
 
-`AsyncTask` 的一个更高级版本，它将一个 for 循环拆分成多个在 TaskGraph 中运行的 Tasks。
+`AsyncTask` 的一个[更高级版本](https://isaratech.com/ue4-improving-speed-with-parallelfor/)，它将一个 for 循环拆分成多个在 TaskGraph 中运行的 Tasks。
 
 ```cpp
 ParallelFor(Array.Num(), [&](int32 i)
@@ -7327,7 +7357,7 @@ ParallelFor(Array.Num(), [&](int32 i)
 });
 ```
 
-操作内部的顺序或线程安全性没有保证，因此你可能需要使用互斥锁或原子操作与它一起使用。MSVC 有一个类似的#pragma loop(hint\_parallel(n))。实际上，你的循环内容必须足够重要才能真正从这种方法中受益。
+操作内部的顺序或线程安全性没有保证，因此你可能需要使用互斥锁或原子操作与它一起使用。MSVC 有[一个类似](https://learn.microsoft.com/en-us/cpp/preprocessor/loop?view=msvc-170)的#pragma loop(hint\_parallel(n))。实际上，你的循环内容必须足够重要才能真正从这种方法中受益。
 
 #### FNonAbandonableTask
 
@@ -7370,13 +7400,13 @@ MyTask->StartBackgroundTask();
 
 * * *
 
-如前所述，Ayliroé撰写了关于 Unreal 多线程和异步任务系统的精彩文档，你可以从 Google Docs 或论坛帖子中阅读。
+如前所述，Ayliroé撰写了关于 Unreal 多线程和异步任务系统的精彩文档，你可以从 [Google Docs](https://docs.google.com/document/d/1uw9Dfui5ZepSrBpMc1DrxFOeRFnDu8ubzFse8Mr_s7E/) 或[Forum Post](https://forums.unrealengine.com/t/multithreading-and-performance-in-unreal/1216417/1)中阅读。
 
 ## 🎯 扩展 Unreal Editor
 
 <table><tbody><tr><td>这一部分并非与 ChatGPT 一同编写。</td></tr></tbody></table>
 
-您可以通过这个 github 仓库找到编辑图标，由 EpicKiwi 制作。
+您可以通过这个 github 仓库找到编辑图标，由 [github repo, made by EpicKiwi](https://github.com/EpicKiwi/unreal-engine-editor-icons) 制作。
 
 ### Slate
 
@@ -7398,20 +7428,20 @@ Lorem Ipsum
 
 *   链接器错误 - 在链接阶段出现的问题，例如未解决的引用或模块或库之间的冲突。链接器问题也可能非常复杂且难以解决，因为它不会为开发者提供很多信息。
 
-*   运行时错误 - 在程序执行过程中发生的错误，导致程序崩溃或行为异常。如果你能够访问崩溃报告器，运行时错误可以相当快速地解决，崩溃报告器通常包含调用栈（可以精确指出导致崩溃的函数或代码）。
+*   运行时错误 - 在程序执行过程中发生的错误，导致程序崩溃或行为异常。如果你能够访问崩溃报告器，运行时错误可以相当快速地解决，崩溃报告器通常包含[调用栈](https://en.wikipedia.org/wiki/Call_stack)（可以精确指出导致崩溃的函数或代码）。
 
 *   语义错误 - 当代码在语法上正确但行为不符合预期或预期时发生的逻辑错误。语义错误可能是最难解决的一种错误，因为你需要从逻辑而非语法上理解代码。
 
 
-编译器只会对语法和链接器问题报错。编译错误是指编译器无法编译的状态。这可能是由于代码中的错误，或者更不寻常的是，由于编译器本身的错误。
+编译器只会对语法和链接器问题报错。编译错误是指[编译器](https://en.wikipedia.org/wiki/Compiler)无法编译的状态。这可能是由于代码中的错误，或者更不寻常的是，由于编译器本身的错误。
 
-运行时错误可以通过崩溃报告器解决。而语义错误可以通过理解代码的逻辑推理来解决。
+运行时错误可以通过[崩溃报告器](https://en.wikipedia.org/wiki/Crash_reporter)解决。而语义错误可以通过理解代码的逻辑推理来解决。
 
 <Callout type="success">
   如果你感到卡壳或思维混乱，不妨花几分钟甚至几小时做点别的事情。比如出去走走、玩电子游戏、听音乐或看电影或视频。这可以帮助你大脑重新思考并更快地解决问题。
 </Callout>
 
-你可以在微软网站上找到所有的编译器错误。
+你可以在[Microsoft website](https://learn.microsoft.com/en-us/cpp/error-messages/compiler-errors-1/compiler-errors-c2000-c3999)上找到所有的编译器错误。
 
 ### ⛔ 编译器错误
 
@@ -7440,7 +7470,7 @@ Lorem Ipsum
 #define true 1
 ```
 
-错误消息的链接。
+错误消息的[Link](https://learn.microsoft.com/en-us/cpp/error-messages/compiler-errors-1/compiler-error-c2007)。
 
 #### 编译器错误 C2065
 
@@ -7475,7 +7505,7 @@ int main()
 }
 ```
 
-错误消息链接。
+错误消息[Link](https://learn.microsoft.com/en-us/cpp/error-messages/compiler-errors-1/compiler-error-c2065)。
 
 #### 编译器错误 C2628
 
@@ -7507,7 +7537,7 @@ int main()
 }
 ```
 
-错误消息的链接。
+错误消息的[Link](https://learn.microsoft.com/en-us/cpp/error-messages/compiler-errors-2/compiler-error-c2628)。
 
 ### 💣 运行时错误
 
@@ -7573,7 +7603,7 @@ int32 Year = ActiveYears[10]; // Will cause an overflow
 #### 🔍 作用域问题
 
 
-作用域指的是代码中变量可访问的区域。在 C++中，作用域由 \{ 和 \} （大括号）定义。
+[作用域](<https://en.wikipedia.org/wiki/Scope_(computer_science)>)指的是代码中变量可访问的区域。在 C++中，作用域由 \{ 和 \} （大括号）定义。
 
 
 有三种类型的作用域。局部、类和全局。
@@ -7710,9 +7740,9 @@ public:
 
 这里有一个视频，讲解了使用虚幻引擎和 C++的一些最佳实践。
 
-有一个名为《最佳实践（2019-2021）》的视频，由 Stephen Maloney 制作，介绍了其中一些最佳实践。
+有一个名为[《最佳实践（2019-2021）》的视频，由 Stephen Maloney 制作](https://www.youtube.com/watch?v=g7WVBZZTRDk)，介绍了其中一些最佳实践。
 
-视频中还有一个谷歌文档（如果视频内容不够），提供了更多关于他一些技巧和窍门的详细信息。
+视频中还有一个[Google documentation](https://docs.google.com/document/d/1kIgOM7VONlPtx3WPiKdNVRYquX-GTduqSw0mU7on5h8)（如果视频内容不够），提供了更多关于他一些技巧和窍门的详细信息。
 
 ### 禁用 BlueprintPure
 
@@ -8123,7 +8153,7 @@ f = 11; // COMPILER ERROR!!! Cannot modify const variable!!
 
 ### K2Node
 
-您可以通过奥斯卡·奥尔森了解更多关于 K2Node 的信息。
+您可以通过[K2Node by Oscar Olsson](https://olssondev.github.io/2023-02-13-K2Nodes/)了解更多关于 K2Node 的信息。
 
 ### ➗ 数学表达式节点
 
@@ -8210,11 +8240,11 @@ Here's a full example of different use cases with redirects:
 +StructRedirects=(OldName="MyStruct",NewName="MyNewStruct")
 ```
 
-你可以在虚幻引擎的文档中了解更多信息。
+你可以在[Unreal's docs](https://docs.unrealengine.com/5.3/en-US/core-redirects-in-unreal-engine/)中了解更多信息。
 
 * * *
 
-The `MatchSubstring` argument can be used in any Core Redirect type. If present and set to `true`, the `OldName` and `NewName` fields will be treated as substrings rather than requiring exact matches. This enables multiple matches with a single Core Redirect. In the following example, we will start with a struct and a class.
+`MatchSubstring` 参数可用于任何核心重定向类型。如果存在且设置为 `true`，则 `OldName` 和 `NewName` 字段将被视为子字符串，而不是要求完全匹配。这使得单个核心重定向可以进行多次匹配。在下面的示例中，我们将从一个结构体和一个类开始。
 
 原始代码和值：
 
@@ -8335,11 +8365,21 @@ if (IsValid(TimeCycle))
 }
 ```
 
-你可以在 Unreal 的文档中了解更多关于曲线的信息。
+你可以在 [curves on Unreal's docs](https://docs.unrealengine.com/5.3/en-US/API/Runtime/Engine/Curves/UCurveFloat/) 中了解更多关于曲线的信息。
 
 ### HTTP 请求
 
-<table><tbody><tr><td>模块： HTTP 头文件： #include "HttpModule.h" #include "Interfaces/IHttpResponse.h" #include "PlatformHttp.h" #include "JsonObjectConverter.h" // Include this, if you want to send some JSON data into the request</td></tr></tbody></table>
+- 模块：HTTP
+
+- 头文件：
+
+```cpp
+#include "HttpModule.h"
+#include "Interfaces/IHttpResponse.h"
+#include "PlatformHttp.h"
+#include "JsonObjectConverter.h" // Include this, if you want to send some JSON data into the request
+```
+
 
 ```cpp
 // .h
