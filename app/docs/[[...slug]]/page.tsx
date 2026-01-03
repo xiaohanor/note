@@ -4,7 +4,8 @@ import {
   DocsDescription,
   DocsPage,
   DocsTitle,
-} from "fumadocs-ui/page";
+  PageLastUpdate,
+} from "fumadocs-ui/layouts/docs/page";
 import { notFound } from "next/navigation";
 import { getMDXComponents } from "@/mdx-components";
 import type { Metadata } from "next";
@@ -17,16 +18,18 @@ export default async function Page(props: PageProps<"/docs/[[...slug]]">) {
   if (!page) notFound();
 
   const { body: MDX, toc, full, lastModified } = page.data;
+  const lastUpdateDate =
+    lastModified instanceof Date
+      ? lastModified
+      : lastModified
+        ? new Date(lastModified)
+        : undefined;
 
   return (
-    <DocsPage
-      toc={toc}
-      full={full}
-      lastUpdate={lastModified ? new Date(lastModified) : undefined}
-      tableOfContent={{ style: "clerk" }}
-    >
+    <DocsPage toc={toc} full={full} tableOfContent={{ style: "clerk" }}>
       <DocsTitle>{page.data.title}</DocsTitle>
       <DocsDescription>{page.data.description}</DocsDescription>
+      {lastUpdateDate ? <PageLastUpdate date={lastUpdateDate} /> : null}
       <div className="flex flex-row gap-2 items-center border-b pt-2 pb-6">
         <LLMCopyButton markdownUrl={`${page.url}.mdx`} />
         <ViewOptions
